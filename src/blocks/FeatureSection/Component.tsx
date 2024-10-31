@@ -84,7 +84,7 @@ export const FeatureSection: React.FC<Props> = (props) => {
                 <div className="w-full mt-4 block md:mt-8">
                   <CMSLink
                     {...link}
-                    className="px-12 py-4 h-14 text-lg font-semibold duration-300 ease-in-out"
+                    className="px-12 py-4 h-14 text-lg font-semibold duration-300 ease-in-out rounded"
                     appearance={'default'}
                   />
                 </div>

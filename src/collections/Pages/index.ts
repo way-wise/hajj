@@ -32,6 +32,7 @@ import { TeamBlock } from '@/blocks/TeamBlock/config'
 import { TestimonialBlock } from '@/blocks/TestimonialBlock/config'
 import { HeadingBlock } from '@/blocks/HeadingBlock/config'
 import { SpacerBlock } from '@/blocks/SpacerBlock/config'
+import { keyWords } from './keywords'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -43,6 +44,7 @@ export const Pages: CollectionConfig = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    group: 'content',
     livePreview: {
       url: ({ data }) => {
         const path = generatePreviewPath({
@@ -130,6 +132,21 @@ export const Pages: CollectionConfig = {
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
+            {
+              name: 'keywords',
+              type: 'array',
+              label: 'Key Words',
+              maxRows: 20,
+              interfaceName: 'KeyWordsSEO',
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                  maxLength: 40
+                }
+              ]
+            }
           ],
         },
       ],

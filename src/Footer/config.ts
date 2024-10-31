@@ -12,6 +12,21 @@ export const Footer: GlobalConfig = {
   },
   fields: [
     {
+      name: 'theme',
+      type: 'select',
+      defaultValue: 'theme01',
+      options: [
+        {
+          label: 'Theme01',
+          value: 'theme01',
+        },
+        {
+          label: 'Theme02',
+          value: 'theme02',
+        },
+      ],
+    },
+    {
       name: 'footerLogo',
       type: 'upload',
       relationTo: 'media',

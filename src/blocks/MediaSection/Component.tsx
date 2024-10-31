@@ -28,7 +28,8 @@ export const MediaSection: React.FC<Props> = (props) => {
     media,
     richText,
     links,
-    position = 'default',
+    position = 'box',
+    backgroundAlign = 'center',
     staticImage,
     background,
     bgColor,
@@ -42,7 +43,7 @@ export const MediaSection: React.FC<Props> = (props) => {
       className={cn(
         'relative min-h-56 md:min-h-80',
         {
-          'container my-8': position === 'default' && enableGutter,
+          'container my-8': position === 'box' && enableGutter,
         },
         className,
       )}
@@ -52,7 +53,7 @@ export const MediaSection: React.FC<Props> = (props) => {
       )}
       {background === 'gradient' && (
         <div
-          className={`w-full min-h-56 md:min-h-80 ${position === 'default' && enableGutter && 'rounded-2xl'}`}
+          className={`w-full min-h-56 md:min-h-80 ${position === 'box' && enableGutter && 'rounded-2xl'}`}
           style={{
             backgroundImage: `linear-gradient(${angle}deg, ${startColor} 0%, ${endColor} 100%)`,
           }}
@@ -84,7 +85,7 @@ export const MediaSection: React.FC<Props> = (props) => {
             </div>
             <div className="flex flex-col gap-8">
               {(links || []).map(({ link }, i) => {
-                return <CMSLink key={i} size="lg" {...link} />
+                return <CMSLink className='rounded' key={i} size="lg" {...link} />
               })}
             </div>
           </div>

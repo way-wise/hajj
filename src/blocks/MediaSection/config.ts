@@ -1,11 +1,18 @@
 import { linkGroup } from '@/fields/linkGroup'
 import {
+  BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
+import { Banner } from '../Banner/config'
+import { SpacerBlock } from '../SpacerBlock/config'
+import { CallToAction } from '../CallToAction/config'
+import { MediaBlock } from '../MediaBlock/config'
+import { HeadingBlock } from '../HeadingBlock/config'
+import { ColorPickerField } from '@/fields/colorPicker'
 
 export const MediaSection: Block = {
   slug: 'mediaSection',
@@ -37,19 +44,42 @@ export const MediaSection: Block = {
     },
     {
       name: 'position',
-      type: 'select',
-      defaultValue: 'default',
+      type: 'radio',
+      defaultValue: 'box',
       required: true,
       options: [
         {
-          label: 'Default',
-          value: 'default',
+          label: 'Box',
+          value: 'box',
         },
         {
           label: 'Fullscreen',
           value: 'fullscreen',
         },
       ],
+    },
+    {
+      name: 'backgroundAlign',
+      type: 'radio',
+      defaultValue: 'center',
+      required: true,
+      options: [
+        {
+          label: 'Center',
+          value: 'center',
+        },
+        {
+          label: 'Left',
+          value: 'left',
+        },
+        {
+          label: 'Right',
+          value: 'right',
+        },
+      ],
+      admin: {
+        condition: (_, { background }) => background === 'image',
+      },
     },
     {
       name: 'richText',
@@ -61,6 +91,9 @@ export const MediaSection: Block = {
             HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            BlocksFeature({
+              blocks: [Banner, SpacerBlock, CallToAction, MediaBlock, HeadingBlock],
+            }),
           ]
         },
       }),
@@ -90,20 +123,32 @@ export const MediaSection: Block = {
     {
       type: 'row',
       fields: [
-        {
-          name: 'startColor',
-          type: 'text',
-          admin: {
-            condition: (_, { background }) => background === 'gradient',
+        ...ColorPickerField(
+          {
+            name: 'startColor',
+            required: false,
+            admin: {
+              condition: (_, { background }) => background === 'gradient',
+            },
           },
-        },
-        {
-          name: 'endColor',
-          type: 'text',
-          admin: {
-            condition: (_, { background }) => background === 'gradient',
+          {
+            type: 'hex',
+            showPreview: true,
           },
-        },
+        ),
+        ...ColorPickerField(
+          {
+            name: 'endColor',
+            required: false,
+            admin: {
+              condition: (_, { background }) => background === 'gradient',
+            },
+          },
+          {
+            type: 'hex',
+            showPreview: true,
+          },
+        ),
         {
           name: 'angle',
           type: 'number',

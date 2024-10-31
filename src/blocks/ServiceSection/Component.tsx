@@ -21,8 +21,8 @@ export const ServiceSection: React.FC<Props> = (props) => {
       className="bg-no-repeat bg-cover bg-center py-12 md:py-20 lg:py-32"
     >
       {intro && (
-        <div className="container max-w-3xl mb-12 m-auto">
-          <div className="md:p-6 text-shadow-sm shadow-gray-700">
+        <div className="container w-auto md:max-w-3xl mx-5 mb-12 md:mx-auto bg-gray-700/60 backdrop-blur rounded-2xl">
+          <div className="p-8 md:p-6">
             <RichText className="text-white" content={intro} enableGutter={false} />
           </div>
         </div>
@@ -33,12 +33,12 @@ export const ServiceSection: React.FC<Props> = (props) => {
             {services.map((service, index) => (
               <div
                 key={index}
-                className={`h-full flex bg-gray-800/20 backdrop-blur-md rounded-xl overflow-hidden group hover:bg-gray-800/70 transition duration-500 ease-in-out
+                className={`h-full flex bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden group hover:bg-gray-800/90 transition duration-500 ease-in-out
                 ${service?.alignment === 'mediaContent' ? 'flex-col' : 'flex-col-reverse'}
                 ${(index + 1) % 2 == 0 ? 'items-end' : 'items-start'}
                 `}
               >
-                <div className="h-64 w-full relative">
+                <div className={`${column > 2 ? 'h-64' : 'h-[350px]'} w-full relative`}>
                   {service?.contentImage && typeof service?.contentImage === 'object' && (
                     <React.Fragment>
                       <Media
@@ -49,9 +49,9 @@ export const ServiceSection: React.FC<Props> = (props) => {
                       />
                     </React.Fragment>
                   )}
-                  <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-blue-700 bg-fixed opacity-0 transition duration-300 ease-in-out group-hover:opacity-50"></div>
+                  <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-primary bg-fixed opacity-0 transition duration-300 ease-in-out group-hover:opacity-40"></div>
                 </div>
-                <div className="flex p-4 md:p-6 text-shadow-sm shadow-gray-700">
+                <div className="flex p-4 md:p-6">
                   {service?.richText && (
                     <RichText
                       className="text-white"
@@ -61,7 +61,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
                   )}
                   {service?.enableLink && service?.link && (
                     <div className="w-full mt-4 block md:mt-8">
-                      <CMSLink {...service?.link} />
+                      <CMSLink className='rounded-lg' {...service?.link} />
                     </div>
                   )}
                 </div>

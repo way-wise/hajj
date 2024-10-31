@@ -6,6 +6,17 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "KeyWordsSEO".
+ */
+export type KeyWordsSEO =
+  | {
+      title: string;
+      id?: string | null;
+    }[]
+  | null;
+
 export interface Config {
   auth: {
     users: UserAuthOperations;
@@ -14,9 +25,13 @@ export interface Config {
     pages: Page;
     posts: Post;
     invoices: Invoice;
+    inboxes: Inbox;
+    projects: Project;
     media: Media;
     categories: Category;
     users: User;
+    services: Service;
+    features: Feature;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -128,6 +143,7 @@ export interface Page {
     title?: string | null;
     image?: (string | null) | Media;
     description?: string | null;
+    keywords?: KeyWordsSEO;
   };
   publishedAt?: string | null;
   slug?: string | null;
@@ -169,6 +185,32 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    tablet?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -679,7 +721,8 @@ export interface ServiceSection {
  */
 export interface MediaSection {
   background: 'default' | 'color' | 'gradient' | 'image';
-  position: 'default' | 'fullscreen';
+  position: 'box' | 'fullscreen';
+  backgroundAlign?: ('center' | 'left' | 'right') | null;
   richText?: {
     root: {
       type: string;
@@ -1076,6 +1119,40 @@ export interface BillingsTo {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inboxes".
+ */
+export interface Inbox {
+  id: string;
+  subject?: string | null;
+  message?: string | null;
+  attachments?: (string | null) | Media;
+  clients?: (string | null) | User;
+  projects?: (string | null) | Project;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: string;
+  title?: string | null;
+  status?: ('pending' | 'approved' | 'decline' | 'ongoing' | 'complete') | null;
+  description?: string | null;
+  deadline?: string | null;
+  starting_date?: string | null;
+  completion_date?: string | null;
+  estimated_budget?: number | null;
+  payable_amount?: number | null;
+  paid_amount?: number | null;
+  due_amount?: number | null;
+  clients?: (string | null) | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1134,6 +1211,14 @@ export interface PayloadLockedDocument {
         value: string | Invoice;
       } | null)
     | ({
+        relationTo: 'inboxes';
+        value: string | Inbox;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: string | Project;
+      } | null)
+    | ({
         relationTo: 'media';
         value: string | Media;
       } | null)
@@ -1144,6 +1229,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: string | Service;
+      } | null)
+    | ({
+        relationTo: 'features';
+        value: string | Feature;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1205,6 +1298,7 @@ export interface PayloadMigration {
  */
 export interface Header {
   id: string;
+  theme?: ('theme01' | 'theme02') | null;
   logo: string | Media;
   callback?: string | null;
   navItems?:
@@ -1246,6 +1340,7 @@ export interface Header {
  */
 export interface Footer {
   id: string;
+  theme?: ('theme01' | 'theme02') | null;
   footerLogo?: (string | null) | Media;
   footerBg?: (string | null) | Media;
   about?: string | null;
