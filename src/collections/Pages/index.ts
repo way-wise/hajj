@@ -32,7 +32,6 @@ import { TeamBlock } from '@/blocks/TeamBlock/config'
 import { TestimonialBlock } from '@/blocks/TestimonialBlock/config'
 import { HeadingBlock } from '@/blocks/HeadingBlock/config'
 import { SpacerBlock } from '@/blocks/SpacerBlock/config'
-import { keyWords } from './keywords'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
