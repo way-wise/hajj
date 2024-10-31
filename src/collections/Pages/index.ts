@@ -133,18 +133,8 @@ export const Pages: CollectionConfig = {
             }),
             {
               name: 'keywords',
-              type: 'array',
+              type: 'textarea',
               label: 'Key Words',
-              maxRows: 20,
-              interfaceName: 'KeyWordsSEO',
-              fields: [
-                {
-                  name: 'title',
-                  type: 'text',
-                  required: true,
-                  maxLength: 40
-                }
-              ]
             }
           ],
         },
