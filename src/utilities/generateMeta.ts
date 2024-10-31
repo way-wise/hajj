@@ -17,6 +17,9 @@ export const generateMeta = async (args: { doc: Page | Post }): Promise<Metadata
     ? doc?.meta?.title + ' | Way-Wise Tech'
     : 'Way-Wise Tech'
 
+  const keywords = doc?.meta?.keywords
+    ? doc?.meta?.keywords : ''
+
   return {
     description: doc?.meta?.description,
     openGraph: mergeOpenGraph({
@@ -32,5 +35,6 @@ export const generateMeta = async (args: { doc: Page | Post }): Promise<Metadata
       url: Array.isArray(doc?.slug) ? doc?.slug.join('/') : '/',
     }),
     title,
+    keywords
   }
 }

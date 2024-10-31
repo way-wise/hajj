@@ -46,6 +46,7 @@ const ColourPickerComponent: React.FC<Props> = props => {
   const isReadonly = Boolean(admin?.readOnly)
 
   const inputRef = useRef<HTMLInputElement>(null)
+  const colorPickerRef = useRef<HTMLDivElement>(null)
 
   const { value = '', setValue } = useField<string>({
     path,
@@ -53,7 +54,7 @@ const ColourPickerComponent: React.FC<Props> = props => {
 
   const isExpanded = Boolean(custom.expanded)
 
-  const [color, setColor] = useState<string | undefined>(value ?? defaultColor)
+  const [color, setColor] = useState<string|undefined>(value ?? defaultColor)
   const [isAdding, setIsAdding] = useState(isExpanded)
 
   const Picker = useMemo(() => {
@@ -63,7 +64,7 @@ const ColourPickerComponent: React.FC<Props> = props => {
 
   const handleAddColorViaPicker = useCallback(
     (val?: string) => {
-      if (val !== value && !isReadonly) {
+      if (val !== color && !isReadonly) {
         setColor(val)
         if (inputRef.current) {
           inputRef.current.value = val ?? ''
@@ -76,7 +77,7 @@ const ColourPickerComponent: React.FC<Props> = props => {
 
   const handleAddColor = useCallback(
     (val?: string) => {
-      if (val !== value && !isReadonly) {
+      if (val !== color && !isReadonly) {
         setColor(val)
       }
     },
@@ -85,21 +86,37 @@ const ColourPickerComponent: React.FC<Props> = props => {
   )
 
   useEffect(() => {
-    setValue(color)
+      if (color !== value && !isReadonly) {
+        setValue(color)
+      }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAdding])
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (colorPickerRef.current && !colorPickerRef.current.contains(event.target)) {
+        setIsAdding(false)
+      }
+    }
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
 
   return (
     <div className={`bfColourPickerFieldWrapper`}>
-      {Array.isArray(beforeInput) && beforeInput.map((Component: any, i) => <Component key={i} />)}
+      {Array.isArray(beforeInput) && beforeInput.map((Component:any, i) => <Component key={i} />)}
       <FieldLabel
         htmlFor={`bfColourPickerField-${path.replace(/\./gi, '__')}`}
         label={label}
         field={field}
       />
       {(isExpanded || isAdding) && (
-        <div>
+        <div ref={colorPickerRef}>
           <div
             className={['colourPickerWrapper', isReadonly && 'readOnly'].filter(Boolean).join(' ')}
             // @ts-expect-error
@@ -128,6 +145,7 @@ const ColourPickerComponent: React.FC<Props> = props => {
             defaultValue={value}
             readOnly={isReadonly}
             className={`manual-field-input`}
+            style={{backgroundColor: color}}
           />
         </div>
       )}
@@ -136,7 +154,7 @@ const ColourPickerComponent: React.FC<Props> = props => {
           <button
             type="button"
             className={`chip chip--clickable`}
-            style={{ backgroundColor: value }}
+            style={{ backgroundColor: value, height: '40px', width: '40px', border: 'none', borderRadius: '3px 0 0 3px' }}
             aria-label={color}
             onClick={() => {
               setIsAdding(!isAdding)
@@ -150,19 +168,21 @@ const ColourPickerComponent: React.FC<Props> = props => {
               >
                 Preview
               </label>
-              <input
-                id={`bfColourPickerField-previewField-${path.replace(/\./gi, '__')}`}
-                className="previewField"
-                disabled
-                value={value}
-              />
+              <div className='field-type__wrap'>
+                <input
+                  id={`bfColourPickerField-previewField-${path.replace(/\./gi, '__')}`}
+                  className="previewField"
+                  disabled
+                  value={value}
+                  style={{ height: '40px', width: 'auto' }}
+                  />
+              </div>
             </>
           )}
         </div>
       )}
       <FieldDescription
         className={`field-description-${path.replace(/\./g, '__')}`}
-        description={admin?.description}
         field={field}
       />
       {Array.isArray(afterInput) && afterInput.map((Component:any, i) => <Component key={i} />)}

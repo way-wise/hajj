@@ -5,7 +5,7 @@ node_modules
 .env
 .next
 .vercel
-ecosystem.config.js
+ecosystem.config.cjs
 
 # Payload default media upload directory
 public/media/

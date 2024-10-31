@@ -6,17 +6,6 @@
  * and re-run `payload generate:types` to regenerate this file.
  */
 
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "KeyWordsSEO".
- */
-export type KeyWordsSEO =
-  | {
-      title: string;
-      id?: string | null;
-    }[]
-  | null;
-
 export interface Config {
   auth: {
     users: UserAuthOperations;
@@ -169,7 +158,7 @@ export interface Page {
     title?: string | null;
     image?: (string | null) | Media;
     description?: string | null;
-    keywords?: KeyWordsSEO;
+    keywords?: string | null;
   };
   publishedAt?: string | null;
   slug?: string | null;
@@ -418,6 +407,7 @@ export interface Post {
     title?: string | null;
     image?: (string | null) | Media;
     description?: string | null;
+    keywords?: string | null;
   };
   publishedAt?: string | null;
   authors?: (string | User)[] | null;
@@ -1698,12 +1688,7 @@ export interface PagesSelect<T extends boolean = true> {
         image?: T;
         description?: T;
         preview?: T;
-        keywords?:
-          | T
-          | {
-              title?: T;
-              id?: T;
-            };
+        keywords?: T;
       };
   publishedAt?: T;
   slug?: T;
@@ -1729,6 +1714,7 @@ export interface PostsSelect<T extends boolean = true> {
         image?: T;
         description?: T;
         preview?: T;
+        keywords?: T;
       };
   publishedAt?: T;
   authors?: T;

@@ -145,6 +145,11 @@ export const Posts: CollectionConfig = {
               titlePath: 'meta.title',
               descriptionPath: 'meta.description',
             }),
+            {
+              name: 'keywords',
+              type: 'textarea',
+              label: 'Key Words',
+            }
           ],
         },
       ],
