@@ -28,6 +28,6 @@ export const RenderHero: React.FC<Page['hero']> = (props) => {
   const HeroToRender = heroes[type]
 
   if (!HeroToRender) return null
-
+  {/* @ts-expect-error */}
   return <HeroToRender {...props} />
 }

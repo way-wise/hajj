@@ -33,8 +33,12 @@ import { revalidateRedirects } from './hooks/revalidateRedirects'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { Page, Post } from 'src/payload-types'
 import { Invoices } from './collections/Invoices'
+import Inboxes from './collections/Inboxes'
+import Projects from './collections/Projects'
 import { pageHandler } from './endpoints/pageHandler'
 import { paymentHandler } from './endpoints/paymentHandler'
+import Services from './collections/Services'
+import Features from './collections/Features'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -153,7 +157,7 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
-  collections: [Pages, Posts, Invoices, Media, Categories, Users],
+  collections: [Pages, Posts, Invoices, Media, Categories, Users, Services, Features, Inboxes, Projects],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   endpoints: [

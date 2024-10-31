@@ -12,6 +12,21 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
+      name: 'theme',
+      type: 'select',
+      defaultValue: 'theme01',
+      options: [
+        {
+          label: 'Theme01',
+          value: 'theme01',
+        },
+        {
+          label: 'Theme02',
+          value: 'theme02',
+        }
+      ],
+    },
+    {
       name: 'logo',
       type: 'upload',
       relationTo: 'media',

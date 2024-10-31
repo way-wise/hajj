@@ -34,9 +34,9 @@ export const LandingHero: React.FC<Page['hero']> = ({ links, media, backgrounds,
         <div className="container h-full px-2.5 py-12">
           <div className="flex justify-center items-center h-full">
             <div className="w-full px-4 py-12">
-              <div className="grid grid-cols-4 gap-6 md:grid-cols-8 lg:grid-cols-12">
-                <div className="col-span-4 lg:col-span-6 flex justify-center items-center">
-                  <div>
+              <div className="grid grid-cols-4 gap-4 md:grid-cols-8 lg:grid-cols-12">
+                <div className="col-span-4 lg:col-span-7 flex justify-center items-center">
+                  <div className='bg-gray-700/60 p-6 backdrop-blur rounded-xl'>
                     <div className="text-gray-50 text-shadow-sm shadow-gray-700">
                       {richText && (
                         <RichText className="mb-6" content={richText} enableGutter={false} />
@@ -48,7 +48,7 @@ export const LandingHero: React.FC<Page['hero']> = ({ links, media, backgrounds,
                           return (
                             <li key={i}>
                               <CMSLink
-                                className="px-12 py-4 h-14 text-lg font-semibold duration-300 ease-in-out"
+                                className="px-12 py-4 h-14 text-lg font-semibold duration-300 ease-in-out rounded"
                                 {...link}
                               />
                             </li>
@@ -58,7 +58,7 @@ export const LandingHero: React.FC<Page['hero']> = ({ links, media, backgrounds,
                     )}
                   </div>
                 </div>
-                <div className="col-span-4 lg:col-span-6 justify-end items-center hidden sm:flex">
+                <div className="col-span-4 lg:col-span-5 justify-end items-center hidden sm:flex">
                   {media && typeof media === 'object' && (
                     <div
                       className="relative w-10/12 translate-y-0"

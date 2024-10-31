@@ -1,10 +1,10 @@
 'use client'
 import { CopyToClipboard, TextField, useFormFields } from '@payloadcms/ui'
-import type { TextFieldClientComponent } from 'payload'
+import type { TextFieldClientProps } from 'payload'
 import * as React from 'react'
 
-const LinkToPaymentIntent: React.FC<TextFieldClientComponent> = (field ) => {
-  const { name, label } = field
+const LinkToPaymentIntent: React.FC<TextFieldClientProps> = ({field}) => {
+  const { label } = field
 
   const { value: stripePaymentIntentID } = useFormFields(([fields]) => fields.stripePaymentIntentID) || {}
 

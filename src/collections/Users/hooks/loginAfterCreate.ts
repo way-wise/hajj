@@ -7,7 +7,7 @@ export const loginAfterCreate: CollectionAfterChangeHook = async ({
   req: { body = {}, payload },
 }) => {
   if (operation === 'create' && !req.user) {
-    const { email, password } = body
+    const { email, password } = body as any
 
     if (email && password) {
       const { token, user } = await payload.login({

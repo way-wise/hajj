@@ -40,10 +40,10 @@ export default {
       },
       screens: {
         '2xl': '86rem',
-        lg: '64rem',
+        lg: '80rem',
         md: '48rem',
         sm: '40rem',
-        xl: '80rem',
+        xl: '92rem',
       },
     },
     extend: {
@@ -118,6 +118,7 @@ export default {
           dark: '#1E232E',
           light: '#F0F2F9',
         },
+        'main-primary': '#d94222',
       },
       fontFamily: {
         mono: ['var(--font-geist-mono)'],
@@ -162,6 +163,16 @@ export default {
       },
       dropShadow: {
         three: '0px 5px 15px rgba(6, 8, 15, 0.05)',
+      },
+      sidebar: {
+        DEFAULT: 'hsl(var(--sidebar-background))',
+        foreground: 'hsl(var(--sidebar-foreground))',
+        primary: 'hsl(var(--sidebar-primary))',
+        'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+        accent: 'hsl(var(--sidebar-accent))',
+        'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+        border: 'hsl(var(--sidebar-border))',
+        ring: 'hsl(var(--sidebar-ring))',
       },
     },
   },

@@ -1,12 +1,15 @@
 import { link } from '@/fields/link'
 import {
   AlignFeature,
+  BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
+import { SpacerBlock } from '../SpacerBlock/config'
+import { HeadingBlock } from '../HeadingBlock/config'
 
 export const ServiceSection: Block = {
   slug: 'serviceSection',
@@ -23,6 +26,9 @@ export const ServiceSection: Block = {
             AlignFeature(),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            BlocksFeature({
+              blocks: [SpacerBlock, HeadingBlock],
+            }),
           ]
         },
       }),
@@ -71,6 +77,9 @@ export const ServiceSection: Block = {
                 AlignFeature(),
                 FixedToolbarFeature(),
                 InlineToolbarFeature(),
+                BlocksFeature({
+                  blocks: [SpacerBlock, HeadingBlock],
+                }),
               ]
             },
           }),

@@ -1,12 +1,18 @@
 import { link } from '@/fields/link'
 import {
   AlignFeature,
+  BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import type { Block } from 'payload'
+import { Banner } from '@/blocks/Banner/config'
+import { SpacerBlock } from '@/blocks/SpacerBlock/config'
+import { CallToAction } from '@/blocks/CallToAction/config'
+import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { HeadingBlock } from '@/blocks/HeadingBlock/config'
 
 export const MediaContentSection: Block = {
   slug: 'mediaContentSection',
@@ -55,6 +61,9 @@ export const MediaContentSection: Block = {
             AlignFeature(),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            BlocksFeature({
+              blocks: [Banner, SpacerBlock, CallToAction, MediaBlock, HeadingBlock],
+            }),
           ]
         },
       }),

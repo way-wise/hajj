@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback, useMemo, useRef } from 'react'
+import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
 import { extend } from 'colord'
 import namesPlugin from 'colord/plugins/names'
 import type { TextFieldClientProps } from 'payload'
@@ -36,9 +36,9 @@ const ColourComponents: Record<Config['type'], any> = {
 }
 
 const ColourPickerComponent: React.FC<Props> = props => {
-  const { field, custom, admin } = props
+  const { field, custom } = props
 
-  const { label } = field
+  const { label, admin } = field
   const { path, readOnly: readOnlyFromProps } = useFieldProps()
 
   const beforeInput = admin?.components?.beforeInput
@@ -53,37 +53,46 @@ const ColourPickerComponent: React.FC<Props> = props => {
 
   const isExpanded = Boolean(custom.expanded)
 
-  const [color, setColor] = useState(value ?? defaultColor)
+  const [color, setColor] = useState<string | undefined>(value ?? defaultColor)
   const [isAdding, setIsAdding] = useState(isExpanded)
 
   const Picker = useMemo(() => {
     return ColourComponents[custom.type]
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleAddColorViaPicker = useCallback(
     (val?: string) => {
       if (val !== value && !isReadonly) {
-        setValue(val)
+        setColor(val)
         if (inputRef.current) {
           inputRef.current.value = val ?? ''
         }
       }
     },
-    [setIsAdding, setValue, inputRef, isReadonly],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setIsAdding, inputRef, isReadonly],
   )
 
   const handleAddColor = useCallback(
     (val?: string) => {
       if (val !== value && !isReadonly) {
-        setValue(val)
+        setColor(val)
       }
     },
-    [setIsAdding, setValue, isReadonly],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [setIsAdding, isReadonly],
   )
+
+  useEffect(() => {
+    setValue(color)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAdding])
+
 
   return (
     <div className={`bfColourPickerFieldWrapper`}>
-      {Array.isArray(beforeInput) && beforeInput.map((Component, i) => <Component key={i} />)}
+      {Array.isArray(beforeInput) && beforeInput.map((Component: any, i) => <Component key={i} />)}
       <FieldLabel
         htmlFor={`bfColourPickerField-${path.replace(/\./gi, '__')}`}
         label={label}
@@ -122,7 +131,7 @@ const ColourPickerComponent: React.FC<Props> = props => {
           />
         </div>
       )}
-      {!isExpanded && (
+      {!isExpanded && !isAdding && (
         <div className="buttonContainer">
           <button
             type="button"
@@ -154,9 +163,9 @@ const ColourPickerComponent: React.FC<Props> = props => {
       <FieldDescription
         className={`field-description-${path.replace(/\./g, '__')}`}
         description={admin?.description}
-        value={value}
+        field={field}
       />
-      {Array.isArray(afterInput) && afterInput.map((Component, i) => <Component key={i} />)}
+      {Array.isArray(afterInput) && afterInput.map((Component:any, i) => <Component key={i} />)}
     </div>
   )
 }

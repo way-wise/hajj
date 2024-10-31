@@ -1,6 +1,7 @@
 import type { Field } from 'payload'
 
 import {
+  BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
@@ -9,6 +10,8 @@ import {
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '@/fields/linkGroup'
+import { HeadingBlock } from '@/blocks/HeadingBlock/config'
+import { SpacerBlock } from '@/blocks/SpacerBlock/config'
 
 export const hero: Field = {
   name: 'hero',
@@ -70,6 +73,9 @@ export const hero: Field = {
             ParagraphFeature(),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
+            BlocksFeature({
+              blocks: [SpacerBlock, HeadingBlock],
+            }),
           ]
         },
       }),
