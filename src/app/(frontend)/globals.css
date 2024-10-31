@@ -1,0 +1,398 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-size: auto;
+    font-weight: auto;
+  }
+
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 240 5% 96%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 228 92% 63%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 6% 90%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.2rem;
+
+    --success: 196 52% 74%;
+    --warning: 34 89% 85%;
+    --error: 10 100% 86%;
+  }
+
+  [data-theme='dark'] {
+    --background: 0 0% 0%;
+    --foreground: 210 40% 98%;
+
+    --card: 240 6% 10%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 228 92% 63%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 240 4% 16%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --success: 196 100% 14%;
+    --warning: 34 51% 25%;
+    --error: 10 39% 43%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 mt-0 font-extrabold dark:text-white !leading-tight;
+  }
+  h2 {
+    @apply text-2xl md:text-3xl lg:text-4xl mb-2 mt-0 font-extrabold dark:text-white;
+  }
+  h3 {
+    @apply text-xl md:text-2xl lg:text-3xl mb-2 mt-0 font-extrabold dark:text-white;
+  }
+  h4 {
+    @apply text-lg md:text-xl lg:text-2xl mb-2 mt-0 font-bold dark:text-white;
+  }
+  h5 {
+    @apply text-sm md:text-base lg:text-xl mb-2 mt-0 font-medium dark:text-white;
+  }
+  h6 {
+    @apply text-xs md:text-sm lg:text-base mb-2 mt-0 font-medium dark:text-white;
+  }
+  p {
+    @apply text-sm md:text-base;
+  }
+}
+
+html {
+  opacity: 0;
+}
+
+html[data-theme='dark'],
+html[data-theme='light'] {
+  opacity: initial;
+}
+
+@media print {
+  html,
+  body {
+    position: relative;
+  }
+}
+
+@keyframes float {
+  0% {
+    transform: translatey(0px);
+  }
+  50% {
+    transform: translatey(-20px);
+  }
+  100% {
+    transform: translatey(0px);
+  }
+}
+
+.messageout-enter {
+  position: absolute;
+  top: 0;
+  left: calc(13% + 5px);
+  right: calc(13% + 5px);
+  opacity: 0.01;
+  transform: translateY(0%) scale(0.01);
+}
+/* ending ENTER animation */
+.messageout-enter-active {
+  opacity: 1;
+  transform: translateY(0%) scale(1);
+  transition: all 1000ms ease-in-out;
+}
+
+/* starting EXIT animation */
+.messageout-exit {
+  opacity: 1;
+  transform: scale(1.01);
+}
+
+/* ending EXIT animation */
+.messageout-exit-active {
+  opacity: 0;
+  transform: scale(4);
+  transition: all 1000ms ease-in-out;
+}
+
+.sliderContainer {
+  aspect-ratio: 16 / 9;
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  height: 93vh;
+}
+
+.sliderImageContainer {
+  transition: 500ms linear;
+}
+
+.sliderImage {
+  width: 100%;
+  animation-duration: calc(1ms * var(--timing, 100));
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+  animation-play-state: paused;
+}
+
+/* COMMENT THESE OUT FOR HOW IT WORKS */
+.sliderContainer {
+  overflow: hidden;
+}
+
+.sliderImageContainer {
+  opacity: 0;
+}
+
+.sliderImage {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+/* COMMENT THESE OUT FOR HOW IT WORKS */
+
+.sliderPlaying .sliderImage {
+  animation-play-state: running;
+}
+
+.sliderClear {
+  animation-name: none !important;
+}
+
+.animation0 {
+  animation-name: ken-burns-center;
+}
+.animation1 {
+  animation-name: ken-burns-center;
+}
+.animation2 {
+  animation-name: ken-burns-center;
+}
+.animation3 {
+  animation-name: ken-burns-center;
+}
+.animation4 {
+  animation-name: ken-burns-center;
+}
+.animation5 {
+  animation-name: ken-burns-center;
+}
+.animation6 {
+  animation-name: ken-burns-middle-right;
+}
+.animation7 {
+  animation-name: ken-burns-top-middle;
+}
+.animation8 {
+  animation-name: ken-burns-bottom-middle;
+}
+.animation9 {
+  animation-name: ken-burns-center;
+}
+.animation10 {
+  animation-name: ken-burns-bottom-right-reverse;
+}
+.animation11 {
+  animation-name: ken-burns-top-right-reverse;
+}
+.animation12 {
+  animation-name: ken-burns-top-left-reverse;
+}
+.animation13 {
+  animation-name: ken-burns-bottom-left-reverse;
+}
+.animation14 {
+  animation-name: ken-burns-middle-left-reverse;
+}
+.animation15 {
+  animation-name: ken-burns-middle-right-reverse;
+}
+.animation16 {
+  animation-name: ken-burns-top-middle-reverse;
+}
+.animation17 {
+  animation-name: ken-burns-bottom-middle-reverse;
+}
+.animation18 {
+  animation-name: ken-burns-center-reverse;
+}
+
+.animationFadeOut {
+  opacity: 0;
+}
+
+.animationFadeIn {
+  opacity: 1;
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeout {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.5;
+  }
+}
+
+@keyframes ken-burns-bottom-right {
+  to {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(-10%, -7%, 0);
+  }
+}
+@keyframes ken-burns-top-right {
+  to {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(-10%, 6%, 0);
+  }
+}
+@keyframes ken-burns-top-left {
+  to {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(4%, 6%, 0);
+  }
+}
+@keyframes ken-burns-bottom-left {
+  to {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(4%, -7%, 0);
+  }
+}
+@keyframes ken-burns-middle-left {
+  to {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(4%, 0, 0);
+  }
+}
+@keyframes ken-burns-middle-right {
+  to {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(-4%, 0, 0);
+  }
+}
+@keyframes ken-burns-top-middle {
+  to {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(0, 4%, 0);
+  }
+}
+@keyframes ken-burns-bottom-middle {
+  to {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(0, -4%, 0);
+  }
+}
+@keyframes ken-burns-center {
+  to {
+    transform: scale3d(1.1, 1.1, 1.1);
+  }
+}
+
+@keyframes ken-burns-bottom-right-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(-10%, -7%, 0);
+  }
+}
+@keyframes ken-burns-top-right-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(-10%, 6%, 0);
+  }
+}
+@keyframes ken-burns-top-left-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(10%, 6%, 0);
+  }
+}
+@keyframes ken-burns-bottom-left-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(10%, -7%, 0);
+  }
+}
+@keyframes ken-burns-middle-left-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(10%, 0, 0);
+  }
+}
+@keyframes ken-burns-middle-right-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(-10%, 0, 0);
+  }
+}
+@keyframes ken-burns-top-middle-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(0, 10%, 0);
+  }
+}
+@keyframes ken-burns-bottom-middle-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3) translate3d(0, -10%, 0);
+  }
+}
+@keyframes ken-burns-center-reverse {
+  from {
+    transform: scale3d(1.3, 1.3, 1.3);
+  }
+}
