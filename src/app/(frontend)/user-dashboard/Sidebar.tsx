@@ -1,15 +1,13 @@
-'use client'
-
 import React, { FC } from 'react';
-import { usePathname, useRouter } from "next/navigation";
-import Link from 'next/link';
+import { getMeUser } from '@/utilities/getMeUser';
 
-interface SidebarProps {
+const Sidebar: FC = async() => {
+    const { user } = await getMeUser({
+        nullUserRedirect: `/signin?error=${encodeURIComponent(
+            'You must be logged in to access your account.',
+        )}&redirect=${encodeURIComponent('/account')}`,
+    })
 
-}
-
-const Sidebar: FC<SidebarProps> = () => {
-    const pathname = usePathname();
     return (
         <div className='w-1/4 rounded-xl border border-gray-200 dark:border-gray-700 shadow-lg mt-16'>
             <div className='flex justify-center items-center -mt-16'>
@@ -17,8 +15,9 @@ const Sidebar: FC<SidebarProps> = () => {
             </div>
             <div className='p-5'>
                 <div className='mt-8 space-y-2'>
-                    <h2 className='text-xl text-gray-900'>Client Name</h2>
-                    <p className='text-base text-gray-800'>client@mail.com</p>
+                    <h2 className='text-xl text-gray-900'>{user?.name}</h2>
+                    <p className='text-base text-gray-800'>{user?.email}</p>
+                    <p className='text-sm text-gray-800'>{user?.roles}</p>
                     <p className='text-sm text-gray-800'>+8801977777777</p>
                 </div>
                 <ul className='my-5 flex gap-2 items-center'>

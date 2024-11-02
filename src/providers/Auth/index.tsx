@@ -56,8 +56,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setUser(data?.user)
         return data?.user
       }
+      else {
+        return data.user = data.errors[0]
+      }
 
-      throw new Error('An error occurred while attempting to login.')
     } catch (e) {
       throw new Error(e.message)
     }
