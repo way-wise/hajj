@@ -21,6 +21,7 @@ export interface Config {
     features: Feature;
     inboxes: Inbox;
     projects: Project;
+    'project-query': ProjectQuery;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -39,6 +40,7 @@ export interface Config {
     features: FeaturesSelect<false> | FeaturesSelect<true>;
     inboxes: InboxesSelect<false> | InboxesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'project-query': ProjectQuerySelect<false> | ProjectQuerySelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1197,6 +1199,27 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-query".
+ */
+export interface ProjectQuery {
+  id: string;
+  title?: string | null;
+  services?: (string | null) | Service;
+  description?: string | null;
+  docsLinks?:
+    | {
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1281,6 +1304,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: string | Project;
+      } | null)
+    | ({
+        relationTo: 'project-query';
+        value: string | ProjectQuery;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1971,6 +1998,26 @@ export interface ProjectsSelect<T extends boolean = true> {
   paid_amount?: T;
   due_amount?: T;
   clients?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-query_select".
+ */
+export interface ProjectQuerySelect<T extends boolean = true> {
+  title?: T;
+  services?: T;
+  description?: T;
+  docsLinks?:
+    | T
+    | {
+        link?: T;
+        id?: T;
+      };
+  minPrice?: T;
+  maxPrice?: T;
+  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }

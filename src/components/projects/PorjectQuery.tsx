@@ -14,6 +14,16 @@ import {
   SelectValue,
 } from '../ui/select'
 import { Textarea } from '../ui/textarea'
+import { stringify } from 'qs-esm'
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from '../ui/multi-select'
+import { Feature, Service } from '@/payload-types'
 
 const ProjectQuery = () => {
   const [docsUploadError, setDocsUploadError] = useState('')
@@ -22,7 +32,10 @@ const ProjectQuery = () => {
     two: '',
     three: '',
   })
-  const [services, setServices] = useState([])
+  const [services, setServices] = useState<{label:string, value:string}[]>([])
+  const [selectedServices, setselectedServices] = useState<string[]>([])
+  const [features, setFeatures] = useState([])
+  const [selectedFeatures, setselectedFeatures] = useState<string[]>([])
 
   const [serviceInfo, setServiceInfo] = useState<any>({
     service: {},
@@ -54,10 +67,32 @@ const ProjectQuery = () => {
   }, [serviceInfo?.features])
 
   useEffect(() => {
-    ;(async () => {
-      const { data } = await api.get('/api/services?depth=1')
-      setServices(data.docs)
-    })()
+    const getServices = async () => {
+      try {
+        const stringifiedQuery = stringify(
+          {
+            limit: 100,
+            where: {
+              isActive: {
+                equals: true,
+              },
+            },
+          },
+          { addQueryPrefix: true },
+        )
+        const req = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/services${stringifiedQuery}`,
+        )
+        const data = await req.json()
+        const docs = data.docs || []
+        let serviceData:any = []
+        docs.map(el => serviceData.push({label:el.title, value:el.id}))
+        setServices(serviceData)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getServices()
   }, [])
 
   const handleSubmit = async (e) => {
@@ -89,35 +124,27 @@ const ProjectQuery = () => {
       <div className="space-y-4">
         <div>
           <label>Select Service</label>
-
-          <Select
-            onValueChange={(value: any) => {
-              setServiceInfo((prev) => ({
-                ...prev,
-                service: JSON.parse(value),
-              }))
-            }}
-            value={serviceInfo.service ? JSON.stringify(serviceInfo.service) : undefined}
-            required
+          <MultiSelector
+            values={selectedServices}
+            onValuesChange={setselectedServices}
+            options={services}
+            loop={false}
           >
-            <SelectTrigger>
-              {serviceInfo.service.title ? (
-                <SelectValue>{serviceInfo.service.title}</SelectValue>
-              ) : (
-                <span className="text-muted-foreground text-sm">Select a service</span>
-              )}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Our incredible services</SelectLabel>
-                {services?.map((service: any) => (
-                  <SelectItem key={service.id} value={service}>
-                    {service.title}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            <MultiSelectorTrigger>
+              <MultiSelectorInput placeholder="Select your framework" />
+            </MultiSelectorTrigger>
+            <MultiSelectorContent>
+              <MultiSelectorList>
+                {services &&
+                  services.length > 0 &&
+                  services.map((option, i) => (
+                    <MultiSelectorItem key={i} value={option.value}>
+                      {option.label}
+                    </MultiSelectorItem>
+                  ))}
+              </MultiSelectorList>
+            </MultiSelectorContent>
+          </MultiSelector>
         </div>
 
         {serviceInfo.service.features && (
