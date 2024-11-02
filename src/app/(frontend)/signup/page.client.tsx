@@ -82,8 +82,7 @@ export function SignupClient({ className, ...props }: UserAuthFormProps) {
             <div className="">
               <p>
                 {`Already verified your account? `}
-                <Link href={`/login`}>Log in now</Link>
-                {'.'}
+                <Link className='text-primary' href={`/signin`}>Log in</Link>
               </p>
             </div>
           </div>

@@ -12,14 +12,15 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { useAuth } from '@/providers/Auth'
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> { }
 
 export function SigninClient({ className, ...props }: UserAuthFormProps) {
   const router = useRouter()
   const { user, login } = useAuth()
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    if(user && user?.id){
+    if (user && user?.id) {
       router.push('/')
     }
   }, [router, user])
@@ -28,7 +29,7 @@ export function SigninClient({ className, ...props }: UserAuthFormProps) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting, isDirty, isValid },
+    formState: { isSubmitting, isDirty, isValid },
   } = useForm()
   const handleSignIn = async ({ email, password }) => {
     try {
@@ -36,9 +37,13 @@ export function SigninClient({ className, ...props }: UserAuthFormProps) {
         email,
         password,
       }
-      await login(data),
-      router.push('/')
-      toast.success('Signin successfull!')
+      const result = await login(data);
+      if (result && 'id' in result) {
+        router.push('/');
+        toast.success('Signin successful!');
+      } else {
+        setError((result as any)?.message || 'An unknown error occurred');
+      }
     } catch (err) {
       toast.error(err)
     }
@@ -68,6 +73,13 @@ export function SigninClient({ className, ...props }: UserAuthFormProps) {
           Enter your credentials to signin in your account
         </p>
       </div>
+
+      {error && (
+        <div className="mb-6 p-4 text-red-700 bg-red-100 border border-red-400 rounded-lg">
+          <p>{error}</p>
+        </div>
+      )}
+
       <div className={cn('grid gap-6', className)} {...props}>
         <form onSubmit={handleSubmit(handleSignIn, handleError)}>
           <div className="grid gap-2">
@@ -118,7 +130,7 @@ export function SigninClient({ className, ...props }: UserAuthFormProps) {
                   <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                 </svg>
               )}
-              Sign Up
+              Login
             </Button>
           </div>
         </form>
@@ -157,7 +169,8 @@ export function SigninClient({ className, ...props }: UserAuthFormProps) {
         GitHub
       </Button> */}
       </div>
-      <div className="mt-8 py-2 border-t text-center">
+      <div className='text-primary text-center'><Link href='/forgot-password'>Forgot Password?</Link></div>
+      <div className="py-2 border-t text-center">
         Don&apos;t have an account? &nbsp;
         <Link href="/signup" className="font-medium text-primary hover:underline">
           Sign Up
