@@ -11,6 +11,7 @@ const Projects: CollectionConfig = {
       'paid_amount',
       'due_amount',
     ],
+    useAsTitle: 'title',
   },
   fields: [
     {

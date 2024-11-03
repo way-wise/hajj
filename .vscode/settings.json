@@ -1,6 +1,10 @@
 {
-  "files.autoSave": "onFocusChange",
+  "files.autoSave": "off",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "always"
-  }
+  },
+  "cSpell.words": [
+    "chonky",
+    "Signin"
+  ]
 }
