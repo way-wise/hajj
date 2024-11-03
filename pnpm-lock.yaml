@@ -132,6 +132,9 @@ importers:
       prism-react-renderer:
         specifier: ^2.3.1
         version: 2.4.0(react@19.0.0-rc-65a56d0e-20241020)
+      qs:
+        specifier: ^6.13.0
+        version: 6.13.0
       qs-esm:
         specifier: ^7.0.2
         version: 7.0.2
@@ -184,6 +187,9 @@ importers:
       '@types/node':
         specifier: 22.5.4
         version: 22.5.4
+      '@types/qs':
+        specifier: ^6.9.16
+        version: 6.9.16
       '@types/react':
         specifier: npm:types-react@19.0.0-rc.1
         version: types-react@19.0.0-rc.1
@@ -2403,6 +2409,9 @@ packages:
 
   '@types/prismjs@1.26.5':
     resolution: {integrity: sha512-AUZTa7hQ2KY5L7AmtSiqxlhWxb4ina0yd8hNbl4TWuqnv/pFP0nDMb3YrfSBf4hJVGLh2YEIBfKaBW/9UEl6IQ==}
+
+  '@types/qs@6.9.16':
+    resolution: {integrity: sha512-7i+zxXdPD0T4cKDuxCUXJ4wHcsJLwENa6Z3dCu8cfCK743OGy5Nu1RmAGqDPsoTDINVEcdXKRvR/zre+P2Ku1A==}
 
   '@types/react-transition-group@4.4.11':
     resolution: {integrity: sha512-RM05tAniPZ5DZPzzNFP+DmrcOdD0efDUxMy3145oljWSl3x9ZV5vhme98gTxFrj2lhXvmGNnUiuDyJgY9IKkNA==}
@@ -8945,6 +8954,8 @@ snapshots:
       pg-types: 2.2.0
 
   '@types/prismjs@1.26.5': {}
+
+  '@types/qs@6.9.16': {}
 
   '@types/react-transition-group@4.4.11':
     dependencies:
