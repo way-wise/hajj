@@ -180,10 +180,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                 </ul>
               </nav>
             </div>
-            <div className="flex items-center justify-end">
-              <div>
-                <ThemeSelector />
-              </div>
+            <div className="flex items-center justify-end ms-6">
               {user && user?.id ? (
                 <div className="relative group">
                   <div
