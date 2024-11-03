@@ -2,7 +2,6 @@
 
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-// import { FaCheckCircle } from 'react-icons/fa';
 
 const ProjectDetails: React.FC = () => {
     const { id } = useParams();
@@ -56,14 +55,45 @@ const ProjectDetails: React.FC = () => {
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                                className="h-full rounded-full"
+                                style={{
+                                    width: `${project.progress}%`,
+                                    background: project.progress < 50
+                                        ? 'linear-gradient(to right, #f87171, #ef4444)'
+                                        : 'linear-gradient(to right, #34d399, #10b981)',
+                                    transition: 'width 0.4s ease',
+                                }}
+                            ></div>
+                        </div>
+                    </div>
                     <div className="p-6 my-6 rounded-lg border border-gray-100 shadow-sm">
                         <h2 className="text-lg font-semibold text-gray-800">Project Features</h2>
                         <ul className="mt-4 grid gap-4 md:grid-cols-2">
                             {project?.projectFeatures.map((item: any, index: number) => (
-                                <li key={index} className="flex items-center justify-between space-x-3 p-4 border border-gray-200 rounded-lg shadow hover:bg-gray-50">
-                                    {/* <FaCheckCircle className="text-green-500" /> */}
-                                    <span className="text-gray-700 font-medium">{item.featureName}</span>
-                                    <span className="text-gray-700 font-medium">{item.featureProgress}%</span>
+                                <li key={index} className="space-y-3 p-4 border border-gray-200 rounded-lg shadow hover:bg-gray-50">
+                                    <div className="flex items-center justify-between">
+                                        <span
+                                            className={`font-medium p-1 rounded ${item.isComplete === true ? 'bg-green-100 text-green-800' : 'text-gray-700'}`}
+                                        >
+                                            {item.featureName}
+                                        </span>
+                                        <span className="text-gray-700 font-medium">{item.featureProgress}%</span>
+                                    </div>
+                                    <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                        <div
+                                            className="h-full rounded-full"
+                                            style={{
+                                                width: `${item.featureProgress}%`,
+                                                background: item.featureProgress < 50
+                                                    ? 'linear-gradient(to right, #f87171, #ef4444)'
+                                                    : 'linear-gradient(to right, #34d399, #10b981)',
+                                                transition: 'width 0.4s ease',
+                                            }}
+                                        ></div>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
