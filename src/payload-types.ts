@@ -23,6 +23,7 @@ export interface Config {
     projects: Project;
     'project-query': ProjectQuery;
     'project-documentations': ProjectDocumentation;
+    'email-template': EmailTemplate;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -43,6 +44,7 @@ export interface Config {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'project-query': ProjectQuerySelect<false> | ProjectQuerySelect<true>;
     'project-documentations': ProjectDocumentationsSelect<false> | ProjectDocumentationsSelect<true>;
+    'email-template': EmailTemplateSelect<false> | EmailTemplateSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1259,6 +1261,37 @@ export interface ProjectDocumentation {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-template".
+ */
+export interface EmailTemplate {
+  id: string;
+  name: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  variables?:
+    | {
+        variable?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1351,6 +1384,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'project-documentations';
         value: string | ProjectDocumentation;
+      } | null)
+    | ({
+        relationTo: 'email-template';
+        value: string | EmailTemplate;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2083,6 +2120,22 @@ export interface ProjectDocumentationsSelect<T extends boolean = true> {
   content?: T;
   project?: T;
   user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-template_select".
+ */
+export interface EmailTemplateSelect<T extends boolean = true> {
+  name?: T;
+  content?: T;
+  variables?:
+    | T
+    | {
+        variable?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }

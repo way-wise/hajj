@@ -25,9 +25,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <InitTheme />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <link rel="icon" type="image/png" href="/favicon.png" />
-
       </head>
-      <body className={`${inter.className}`}>
+      <body className={`${inter.className} min-h-screen`}>
         <Providers>
           <AdminBar
             adminBarProps={{
@@ -55,5 +54,5 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: './',
-  }
+  },
 }
