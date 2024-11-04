@@ -1171,11 +1171,13 @@ export interface Feature {
  */
 export interface Inbox {
   id: string;
-  subject?: string | null;
-  message?: string | null;
-  attachments?: (string | null) | Media;
-  clients?: (string | null) | User;
+  subject: string;
+  message: string;
+  sender: string | User;
+  clients: string | User;
   projects?: (string | null) | Project;
+  attachments?: (string | null) | Media;
+  isRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2018,9 +2020,11 @@ export interface FeaturesSelect<T extends boolean = true> {
 export interface InboxesSelect<T extends boolean = true> {
   subject?: T;
   message?: T;
-  attachments?: T;
+  sender?: T;
   clients?: T;
   projects?: T;
+  attachments?: T;
+  isRead?: T;
   updatedAt?: T;
   createdAt?: T;
 }
