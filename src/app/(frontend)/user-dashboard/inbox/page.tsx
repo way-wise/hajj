@@ -15,16 +15,11 @@ interface Message {
     id: string
     subject: string
     message: string
-    sender: {
+    receiver: {
         id: string
         name: string
         email: string
         roles: string[]
-    }
-    attachments?: {
-        id: string
-        url: string
-        filename: string
     }
     projects?: {
         id: string
@@ -36,12 +31,7 @@ interface Message {
             roles: string[]
         }
     }
-    receiver: {
-        id: string
-        name: string
-        email: string
-        roles: string[]
-    }
+    isRead: boolean
     createdAt: string
     updatedAt: string
 }
@@ -57,7 +47,6 @@ interface MessageData {
     message: string
     receiver: string
     projects?: string
-    attachments?: string
 }
 
 export default function InboxPage() {
@@ -77,7 +66,9 @@ export default function InboxPage() {
     })
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" })
+        }
     }
 
     const fetchMessages = async () => {
@@ -85,23 +76,23 @@ export default function InboxPage() {
 
         try {
             setLoading(true)
+
             const response = await api.get('/api/inboxes', {
                 params: {
                     depth: 2,
-                    sort: '-createdAt',
-                    where: {
+                    sort: 'createdAt',
+                    where: JSON.stringify({
                         or: [
                             { receiver: { equals: userId } },
-                            { sender: { equals: userId } },
                             ...(projectId ? [{ projects: { equals: projectId } }] : [])
                         ]
-                    }
+                    })
                 }
             })
 
             if (response.data.docs) {
                 setMessages(response.data.docs)
-                scrollToBottom()
+                setTimeout(scrollToBottom, 100)
             }
         } catch (error: any) {
             console.error('Fetch error:', error)
@@ -136,29 +127,11 @@ export default function InboxPage() {
         try {
             setSending(true)
 
-            let attachmentId = null
-            if (formData.attachment) {
-                const fileData = new FormData()
-                fileData.append('file', formData.attachment)
-
-                try {
-                    const uploadResponse = await api.post('/api/media', fileData)
-                    if (uploadResponse.data?.id) {
-                        attachmentId = uploadResponse.data.id
-                    }
-                } catch (uploadError) {
-                    console.error('File upload error:', uploadError)
-                    toast.error('Failed to upload file')
-                    return
-                }
-            }
-
             const messageData: MessageData = {
                 subject: formData.subject.trim(),
                 message: formData.message.trim(),
                 receiver: userId,
-                ...(projectId && { projects: projectId }),
-                ...(attachmentId && { attachments: attachmentId })
+                ...(projectId ? { projects: projectId } : {})
             }
 
             const response = await api.post('/api/inboxes', messageData)
@@ -198,7 +171,9 @@ export default function InboxPage() {
     }, [userId, projectId])
 
     useEffect(() => {
-        scrollToBottom()
+        if (messages.length > 0) {
+            scrollToBottom()
+        }
     }, [messages])
 
     if (!userId) {
@@ -227,40 +202,33 @@ export default function InboxPage() {
                             </div>
                         ) : (
                             messages.map((message) => {
-                                const isCurrentUserSender = message.sender?.id === userId;
+                                const isCurrentUserReceiver = message.receiver?.id === userId
+                                const isAdmin = message.receiver?.roles?.includes('admin')
 
                                 return (
-                                    <div key={message.id} className={`flex ${isCurrentUserSender ? 'justify-end' : 'justify-start'} mb-4`}>
-                                        <div className={`max-w-[70%]`}>
-                                            <div className={`flex items-center mb-1 ${isCurrentUserSender ? 'justify-end' : 'justify-start'}`}>
+                                    <div
+                                        key={message.id}
+                                        className={`flex w-full ${isCurrentUserReceiver ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div className={`w-full max-w-[70%] ${isCurrentUserReceiver ? 'items-end' : 'items-start'}`}>
+                                            <div className={`flex items-center gap-2 mb-1 ${isCurrentUserReceiver ? 'justify-end' : 'justify-start'}`}>
                                                 <span className="text-xs text-gray-500">
-                                                    {isCurrentUserSender ? 'You' : message.sender?.name} • {new Date(message.createdAt).toLocaleString()}
+                                                    {isAdmin ? 'Admin' : (isCurrentUserReceiver ? 'You' : message.receiver?.name)} • {new Date(message.createdAt).toLocaleString()}
                                                 </span>
                                             </div>
                                             <div
-                                                className={`rounded-lg p-3 shadow-sm
-                                                    ${isCurrentUserSender
-                                                        ? 'bg-blue-500 text-white rounded-tr-none'
-                                                        : 'bg-white text-gray-800 rounded-tl-none border'}`}
+                                                className={`rounded-lg p-3 shadow-sm break-words
+                                                ${isCurrentUserReceiver
+                                                        ? 'bg-blue-500 text-white ml-auto rounded-tr-none'
+                                                        : 'bg-white text-gray-800 rounded-tl-none border'
+                                                    }`}
                                             >
                                                 <div className="font-medium mb-1">{message.subject}</div>
                                                 <p className="text-sm whitespace-pre-wrap">{message.message}</p>
-                                                {message.attachments && (
-                                                    <div className="mt-2 text-sm">
-                                                        <a
-                                                            href={message.attachments.url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className={`flex items-center gap-1 ${isCurrentUserSender ? 'text-white' : 'text-blue-500'}`}
-                                                        >
-                                                            📎 {message.attachments.filename}
-                                                        </a>
-                                                    </div>
-                                                )}
                                             </div>
                                         </div>
                                     </div>
-                                );
+                                )
                             })
                         )}
                         <div ref={messagesEndRef} />
