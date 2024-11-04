@@ -63,7 +63,7 @@ const Projects: FC<ProjectsProps> = () => {
             <div className="flex flex-col w-full">
                 <div className="bg-main-primary text-white p-4 w-full">
                     <h2 className="text-xl font-semibold">
-                        {user?.name ? `${user?.name} Projects` : 'Projects'}
+                        {user?.name ? `${user?.name}'s Projects` : 'Projects'}
                     </h2>
                 </div>
                 <div className="py-8 w-full">
