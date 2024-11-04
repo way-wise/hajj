@@ -14,65 +14,67 @@ const Projects: FC<ProjectsProps> = () => {
         return <p className="text-center text-gray-500">Loading...</p>;
     }
 
-    const clientId = user?.id;
+  const clientId = user?.id
 
-    const stringifiedQuery = qs.stringify(
-        {
-            where: {
-                clients: {
-                    equals: clientId,
-                },
-            },
+  const stringifiedQuery = qs.stringify(
+    {
+      where: {
+        clients: {
+          equals: clientId,
         },
-        { addQueryPrefix: true }
-    );
+      },
+    },
+    { addQueryPrefix: true },
+  )
 
-    const [projects, setProjects] = React.useState([]);
+  const [projects, setProjects] = React.useState([])
 
-    React.useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/projects${stringifiedQuery}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const result = await response.json();
-                setProjects(result.docs || []);
-            } catch (error) {
-                console.log('data not found');
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    if (!projects) {
-        return <p className="text-center text-gray-500">Loading...</p>;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/projects${stringifiedQuery}`,
+        )
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const result = await response.json()
+        setProjects(result.docs || [])
+      } catch (error) {
+        console.log('data not found')
+      }
     }
 
-    return (
-        <div className="container w-full py-12 flex items-start">
-            <div className="flex flex-col w-full">
-                <div className="bg-main-primary text-white p-4 w-full">
-                    <h2 className="text-xl font-semibold">
-                        {user?.name ? `${user?.name} Projects` : 'Projects'}
-                    </h2>
-                </div>
-                <div className="p-8 w-full">
-                    {projects?.length > 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                            {projects.map((project: any, idx: number) => {
-                                const formatDate = (dateString: string) => {
-                                    const date = new Date(dateString);
-                                    return date.toLocaleDateString('en-GB', {
-                                        day: '2-digit',
-                                        month: 'short',
-                                        year: 'numeric',
-                                    });
-                                };
+    fetchData()
+  }, [stringifiedQuery])
 
-                                const formattedDeadline = formatDate(project.deadline);
-                                const formattedStartingDate = formatDate(project.starting_date);
+  if (!projects) {
+    return <p className="text-center text-gray-500">Loading...</p>
+  }
+
+  return (
+    <div className="container w-full py-12 flex items-start">
+      <div className="flex flex-col w-full">
+        <div className="bg-main-primary text-white p-4 w-full">
+          <h2 className="text-xl font-semibold">
+            {user?.name ? `${user?.name} Projects` : 'Projects'}
+          </h2>
+        </div>
+        <div className="p-8 w-full">
+          {projects?.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+              {projects.map((project: any, idx: number) => {
+                const formatDate = (dateString: string) => {
+                  const date = new Date(dateString)
+                  return date.toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  })
+                }
+
+                const formattedDeadline = formatDate(project.deadline)
+                const formattedStartingDate = formatDate(project.starting_date)
 
                                 return (
                                     <Link href={`/projects/${project.id}`} key={idx} className="w-full">
@@ -111,4 +113,4 @@ const Projects: FC<ProjectsProps> = () => {
     );
 };
 
-export default Projects;
+export default Projects
