@@ -32,11 +32,10 @@ const layout = async ({
             docs
           </Link>
           <Link href={`/projects/${projectId}/assets`}>assets</Link>
-          <Link href={`/projects/${projectId}/assets`}>assets</Link>
-          <Link href={`/projects/${projectId}/assets`}>assets</Link>
+          <Link href={`/projects/${projectId}/inbox`}>inbox</Link>
         </div>
 
-        <div className="px-2 py-5 w-full">{children}</div>
+        <div className="px-10 py-5 w-full">{children}</div>
       </div>
     </div>
   )
