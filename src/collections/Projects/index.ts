@@ -11,6 +11,7 @@ const Projects: CollectionConfig = {
       'paid_amount',
       'due_amount',
     ],
+    useAsTitle: 'title',
   },
   fields: [
     {
@@ -112,6 +113,37 @@ const Projects: CollectionConfig = {
         position: 'sidebar',
       },
     },
+    {
+      name: 'progress',
+      type: 'number',
+      min: 0,
+      max: 100,
+    },
+    {
+      type: 'array',
+      name: 'projectFeatures',
+      fields:[
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'featureName',
+              type: 'text',
+              required: true
+            },
+            {
+              name: 'featureProgress',
+              type: 'number',
+            },
+            {
+              name: 'isComplete',
+              type: 'checkbox',
+              defaultValue: false
+            }
+          ]
+        }
+      ]
+    }
   ],
   timestamps: true,
 }

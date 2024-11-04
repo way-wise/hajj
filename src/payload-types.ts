@@ -22,6 +22,7 @@ export interface Config {
     inboxes: Inbox;
     projects: Project;
     'project-query': ProjectQuery;
+    'project-documentations': ProjectDocumentation;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -41,6 +42,7 @@ export interface Config {
     inboxes: InboxesSelect<false> | InboxesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'project-query': ProjectQuerySelect<false> | ProjectQuerySelect<true>;
+    'project-documentations': ProjectDocumentationsSelect<false> | ProjectDocumentationsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1194,6 +1196,15 @@ export interface Project {
   paid_amount?: number | null;
   due_amount?: number | null;
   clients?: (string | null) | User;
+  progress?: number | null;
+  projectFeatures?:
+    | {
+        featureName: string;
+        featureProgress?: number | null;
+        isComplete?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1215,6 +1226,33 @@ export interface ProjectQuery {
   minPrice?: number | null;
   maxPrice?: number | null;
   isActive?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-documentations".
+ */
+export interface ProjectDocumentation {
+  id: string;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  project: string | Project;
+  user: string | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -1308,6 +1346,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'project-query';
         value: string | ProjectQuery;
+      } | null)
+    | ({
+        relationTo: 'project-documentations';
+        value: string | ProjectDocumentation;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1998,6 +2040,15 @@ export interface ProjectsSelect<T extends boolean = true> {
   paid_amount?: T;
   due_amount?: T;
   clients?: T;
+  progress?: T;
+  projectFeatures?:
+    | T
+    | {
+        featureName?: T;
+        featureProgress?: T;
+        isComplete?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2018,6 +2069,18 @@ export interface ProjectQuerySelect<T extends boolean = true> {
   minPrice?: T;
   maxPrice?: T;
   isActive?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-documentations_select".
+ */
+export interface ProjectDocumentationsSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  project?: T;
+  user?: T;
   updatedAt?: T;
   createdAt?: T;
 }
