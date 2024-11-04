@@ -1,13 +1,16 @@
 'use client'
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import qs from 'qs';
 import { useAuth } from '@/providers/Auth';
 import Link from 'next/link';
 import Lottie from 'lottie-react';
 import loadingAnimation from '../../../../public/assets/loading-animation.json'
+import { Project } from '@/payload-types';
 
-interface ProjectsProps { }
+interface ProjectsProps { 
+    projects: Project
+ }
 
 const Projects: FC<ProjectsProps> = () => {
     const { user } = useAuth();
@@ -29,7 +32,8 @@ const Projects: FC<ProjectsProps> = () => {
         { addQueryPrefix: true },
     )
 
-    const [projects, setProjects] = React.useState([])
+    // const [projects, setProjects] = React.useState([])
+    const [projects, setProjects] = useState([])
 
     React.useEffect(() => {
         const fetchData = async () => {
