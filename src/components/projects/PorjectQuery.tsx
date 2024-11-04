@@ -33,9 +33,9 @@ const ProjectQuery = () => {
     three: '',
   })
   const [services, setServices] = useState<{label:string, value:string}[]>([])
-  const [selectedServices, setselectedServices] = useState<string[]>([])
-  const [features, setFeatures] = useState([])
-  const [selectedFeatures, setselectedFeatures] = useState<string[]>([])
+  const [selectedServices, setSelectedServices] = useState<string[]>([])
+  const [features, setFeatures] = useState<Feature[]>([])
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
 
   const [serviceInfo, setServiceInfo] = useState<any>({
     service: {},
@@ -95,6 +95,57 @@ const ProjectQuery = () => {
     getServices()
   }, [])
 
+  useEffect(() => {
+    const getFeatures = async (selectedServices) => {
+      try {
+        const stringifiedQuery = stringify(
+          {
+            limit: 300,
+            where: {
+              isActive: {
+                equals: true,
+              },
+              service:{
+                in: selectedServices
+              }
+            },
+          },
+          { addQueryPrefix: true },
+        )
+        const req = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/features${stringifiedQuery}`,
+        )
+        const data = await req.json()
+        setFeatures(data.docs || [])
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getFeatures(selectedServices)
+  }, [selectedServices])
+
+  const handleFeatureChange = (checked, id) => {
+    const newFeatures = JSON.parse(JSON.stringify(selectedFeatures))
+    const currentFeatures = checked ? [...newFeatures, id] : newFeatures.filter((el) => el !== id)
+    setSelectedFeatures(currentFeatures)
+  }
+
+  const getBadget = () => {
+    if(features && features.length > 0){
+      const newFeatures = JSON.parse(JSON.stringify(features))
+      let minBadget = 0
+      let maxBadget = 0
+      newFeatures.map((feature) =>{
+        if(selectedFeatures.includes(feature.id)){
+          minBadget += feature.minPrice
+          maxBadget += feature.maxPrice
+        }
+      })
+      return `$${minBadget} - $${maxBadget}`
+    }
+    return `$0`
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -120,13 +171,12 @@ const ProjectQuery = () => {
         Choose the service you need, then provide details to help us understand your requirements
         and deliver the best results.
       </p>
-
       <div className="space-y-4">
         <div>
           <label>Select Service</label>
           <MultiSelector
             values={selectedServices}
-            onValuesChange={setselectedServices}
+            onValuesChange={setSelectedServices}
             options={services}
             loop={false}
           >
@@ -146,12 +196,11 @@ const ProjectQuery = () => {
             </MultiSelectorContent>
           </MultiSelector>
         </div>
-
-        {serviceInfo.service.features && (
+        {features && (
           <>
             <h6>
               Project features (Optional){' '}
-              {!(serviceInfo.features.length > 1) && (
+              {!(features.length > 1) && (
                 <span className="text-xs text-red-500 animate-bounce ">
                   Please choose at least two
                 </span>
@@ -159,24 +208,14 @@ const ProjectQuery = () => {
             </h6>
 
             <div className="space-y-3 ml-2 max-h-[150px] overflow-y-auto">
-              {serviceInfo.service.features?.map((feature) => (
-                <div key={feature.id} className="flex items-center gap-2">
+              {features?.map((feature) => (
+                <div key={feature?.id} className="flex items-center gap-2">
                   <Checkbox
-                    checked={serviceInfo.features.some((f) => f.id === feature.id)}
-                    onCheckedChange={() => {
-                      setServiceInfo((prev) => {
-                        const isSelected = prev.features.some((f) => f.id === feature.id)
-                        return {
-                          ...prev,
-                          features: isSelected
-                            ? prev.features.filter((f) => f.id !== feature.id)
-                            : [...prev.features, feature],
-                        }
-                      })
-                    }}
+                    checked={selectedFeatures.includes(feature.id)}
+                    onCheckedChange={(checked) => handleFeatureChange(checked, feature.id)}
                     id={feature.id}
                   />
-                  <label htmlFor={feature.id} className="!mb-0">
+                  <label htmlFor={feature.id} className="!mb-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                     {feature.name}
                   </label>
                 </div>
@@ -269,9 +308,9 @@ const ProjectQuery = () => {
         </div>
         <hr />
 
-        {serviceInfo.features.length > 0 && (
+        {selectedFeatures.length > 0 && (
           <p>
-            Your estimated budget is: $ {serviceInfo.minBudget} - $ {serviceInfo.maxBudget}
+            Your estimated budget is: {getBadget()}
           </p>
         )}
 

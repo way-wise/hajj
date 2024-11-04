@@ -192,6 +192,7 @@ const MultiSelector = ({
     <MultiSelectContext.Provider
       value={{
         value,
+        options,
         onValueChange: onValueChangeHandler,
         open,
         setOpen,
