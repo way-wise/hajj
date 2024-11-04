@@ -1,80 +1,86 @@
 'use client'
 
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import qs from 'qs';
 import { useAuth } from '@/providers/Auth';
 import Link from 'next/link';
+import Lottie from 'lottie-react';
+import loadingAnimation from '../../../../public/assets/loading-animation.json'
+import { Project } from '@/payload-types';
 
-interface ProjectsProps { }
+interface ProjectsProps { 
+    projects: Project
+ }
 
 const Projects: FC<ProjectsProps> = () => {
     const { user } = useAuth();
 
     if (!user) {
-        return <p className="text-center text-gray-500">Loading...</p>;
+        return <div className="flex justify-center items-center text-center"><Lottie className='h-[300px] w-[300px]' animationData={loadingAnimation} loop={true} /></div>;
     }
 
-  const clientId = user?.id
+    const clientId = user?.id
 
-  const stringifiedQuery = qs.stringify(
-    {
-      where: {
-        clients: {
-          equals: clientId,
+    const stringifiedQuery = qs.stringify(
+        {
+            where: {
+                clients: {
+                    equals: clientId,
+                },
+            },
         },
-      },
-    },
-    { addQueryPrefix: true },
-  )
+        { addQueryPrefix: true },
+    )
 
-  const [projects, setProjects] = React.useState([])
+    // const [projects, setProjects] = React.useState([])
+    const [projects, setProjects] = useState([])
 
-  React.useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/projects${stringifiedQuery}`,
-        )
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
+    React.useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(
+                    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/projects${stringifiedQuery}`,
+                )
+                if (!response.ok) {
+                    throw new Error('Network response was not ok')
+                }
+                const result = await response.json()
+                setProjects(result.docs || [])
+            } catch (error) {
+                console.log('data not found')
+            }
         }
-        const result = await response.json()
-        setProjects(result.docs || [])
-      } catch (error) {
-        console.log('data not found')
-      }
+
+        fetchData()
+    }, [stringifiedQuery])
+
+    if (!projects) {
+        return <div className="flex justify-center items-center text-center"><Lottie className='h-[300px] w-[300px]' animationData={loadingAnimation} loop={true} /></div>
     }
 
-    fetchData()
-  }, [stringifiedQuery])
+    return (
+        <div className="container w-full py-12 flex items-start">
+            <div className="flex flex-col w-full">
+                <div className="bg-main-primary text-white p-4 w-full">
+                    <h2 className="text-xl font-semibold">
+                        {user?.name ? `${user?.name}'s Projects` : 'Projects'}
+                    </h2>
+                </div>
+                <div className="py-8 w-full">
+                    {projects?.length > 0 ? (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                            {projects.map((project: any, idx: number) => {
+                                const formatDate = (dateString: string) => {
+                                    const date = new Date(dateString)
+                                    return date.toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: 'short',
+                                        year: 'numeric',
+                                    })
+                                }
 
-  if (!projects) {
-    return <p className="text-center text-gray-500">Loading...</p>
-  }
-
-  return (
-    <div className="container w-full py-12 flex items-start">
-      <div className="flex flex-col w-full">
-        <div className="bg-main-primary text-white p-4 w-full">
-          <h2 className="text-xl font-semibold">
-            {user?.name ? `${user?.name} Projects` : 'Projects'}
-          </h2>
-        </div>
-        <div className="p-8 w-full">
-          {projects?.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-              {projects.map((project: any, idx: number) => {
-                const formatDate = (dateString: string) => {
-                  const date = new Date(dateString)
-                  return date.toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                  })
-                }
-
-                const formattedDeadline = formatDate(project.deadline)
-                const formattedStartingDate = formatDate(project.starting_date)
+                                // const formattedDeadline = formatDate(project.deadline)
+                                // const formattedStartingDate = formatDate(project.starting_date)
 
                                 return (
                                     <Link href={`/projects/${project.id}`} key={idx} className="w-full">
@@ -83,14 +89,14 @@ const Projects: FC<ProjectsProps> = () => {
                                                 <h2 className="text-xl">{project.title}</h2>
                                                 <span
                                                     className={`text-xs px-2 py-1 rounded border inline-flex ${project.status === 'approved'
-                                                            ? 'bg-green-300 border-green-500'
-                                                            : project.status === 'decline'
-                                                                ? 'bg-rose-300 border-rose-500'
-                                                                : project.status === 'ongoing'
-                                                                    ? 'bg-cyan-300 border-cyan-500'
-                                                                    : project.status === 'complete'
-                                                                        ? 'bg-blue-300 border-blue-500'
-                                                                        : 'bg-gray-300 border-gray-500'
+                                                        ? 'bg-green-300 border-green-500'
+                                                        : project.status === 'decline'
+                                                            ? 'bg-rose-300 border-rose-500'
+                                                            : project.status === 'ongoing'
+                                                                ? 'bg-cyan-300 border-cyan-500'
+                                                                : project.status === 'complete'
+                                                                    ? 'bg-blue-300 border-blue-500'
+                                                                    : 'bg-gray-300 border-gray-500'
                                                         }`}
                                                 >
                                                     {project.status}
