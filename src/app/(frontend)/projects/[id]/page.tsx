@@ -2,8 +2,6 @@
 
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
-import Lottie from 'lottie-react';
-import loadingAnimation from '../../../../../public/assets/loading-animation.json'
 import { Badge } from '@/components/ui/badge';
 
 const ProjectDetails: React.FC = () => {
@@ -30,7 +28,7 @@ const ProjectDetails: React.FC = () => {
     }, [id]);
 
     if (!project) {
-        return <div className="flex justify-center items-center text-center"><Lottie className='h-[300px] w-[300px]' animationData={loadingAnimation} loop={true} /></div>;
+        return <div className="flex justify-center items-center text-center h-[200px]"><p className='loader-loading'></p></div>;
     }
 
     return (
@@ -89,11 +87,11 @@ const ProjectDetails: React.FC = () => {
                                                 {
                                                     item.isComplete && item.isComplete === true || item.featureProgress === 100
                                                         ?
-                                                        <svg width="40" height="40" viewBox="0 0 48 48" fill="#19BF87" className='mx-[10px]' xmlns="http://www.w3.org/2000/svg">
+                                                        <svg width="40" height="40" viewBox="0 0 48 48" fill="#19BF87" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="M18 32.34L9.66 24l-2.82 2.82L18 38 42 14l-2.82-2.82L18 32.34z" stroke="#19BF87" strokeWidth="2" />
                                                         </svg>
                                                         :
-                                                        <Lottie className='h-12 w-12' animationData={loadingAnimation} loop={true} />
+                                                        <div className='loader-spinner'></div>
                                                 }
 
                                             </div>

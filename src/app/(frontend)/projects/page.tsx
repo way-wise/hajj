@@ -4,19 +4,17 @@ import React, { FC, useState } from 'react';
 import qs from 'qs';
 import { useAuth } from '@/providers/Auth';
 import Link from 'next/link';
-import Lottie from 'lottie-react';
-import loadingAnimation from '../../../../public/assets/loading-animation.json'
 import { Project } from '@/payload-types';
 
-interface ProjectsProps { 
+interface ProjectsProps {
     projects: Project
- }
+}
 
 const Projects: FC<ProjectsProps> = () => {
     const { user } = useAuth();
 
     if (!user) {
-        return <div className="flex justify-center items-center text-center"><Lottie className='h-[300px] w-[300px]' animationData={loadingAnimation} loop={true} /></div>;
+        return <div className="flex justify-center items-center text-center h-[200px]"><p className='loader-loading'></p></div>;
     }
 
     const clientId = user?.id
@@ -32,7 +30,6 @@ const Projects: FC<ProjectsProps> = () => {
         { addQueryPrefix: true },
     )
 
-    // const [projects, setProjects] = React.useState([])
     const [projects, setProjects] = useState([])
 
     React.useEffect(() => {
@@ -55,7 +52,7 @@ const Projects: FC<ProjectsProps> = () => {
     }, [stringifiedQuery])
 
     if (!projects) {
-        return <div className="flex justify-center items-center text-center"><Lottie className='h-[300px] w-[300px]' animationData={loadingAnimation} loop={true} /></div>
+        return <div className="flex justify-center items-center text-center h-[200px]"><p className='loader-loading'></p></div>
     }
 
     return (
