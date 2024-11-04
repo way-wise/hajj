@@ -239,7 +239,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                     </Link>
                     <Link
                       className="flex gap-2 items-center block rounded py-2.5 text-base text-dark hover:text-primary dark:text-white/70 dark:hover:text-white lg:px-3"
-                      href={'/user-dashboard/projects'}
+                      href={'/projects'}
                     >
                       <svg
                         viewBox="0 0 24 24"

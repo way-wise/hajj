@@ -30,7 +30,7 @@ const ProjectDetails: React.FC = () => {
     }, [id]);
 
     if (!project) {
-        return <div className="flex justify-center items-center text-center"><Lottie className='h-25 w-25' animationData={loadingAnimation} loop={true} /></div>;
+        return <div className="flex justify-center items-center text-center"><Lottie className='h-[300px] w-[300px]' animationData={loadingAnimation} loop={true} /></div>;
     }
 
     return (
