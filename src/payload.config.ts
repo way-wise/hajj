@@ -123,6 +123,7 @@ export default buildConfig({
       //   pass: process.env.SMTP_PASS,
       // },
     },
+    skipVerify: process.env.SMTP_EMAIL_SERVICE === 'true' ? true : false,
   }),
   // This config helps us configure global or default features that the other editors can inherit
   editor: lexicalEditor({

@@ -1,10 +1,13 @@
 'use client'
 
 import ProjectDocs from '@/components/projects/ProjectDocs'
+import { useAuth } from '@/providers/Auth'
 import { useParams } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
 
 const ProjectDetails: React.FC = () => {
+  const { user } = useAuth()
+
   const { id } = useParams()
   const [project, setProject] = useState<any>(null)
 
@@ -94,7 +97,7 @@ const ProjectDetails: React.FC = () => {
             <p className="text-black mt-4">{project.description}</p>
           </div>
 
-          <ProjectDocs id={id} />
+          <ProjectDocs projectId={id} userId={user?.id} />
         </div>
       </div>
     </div>

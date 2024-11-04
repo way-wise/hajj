@@ -1,51 +1,55 @@
-import { getCollections } from '@/utilities/getCollections'
+'use client'
+
+import { useEffect, useState } from 'react'
+import qs from 'qs'
 import RichText from '../RichText'
-import { useAuth } from '@/providers/Auth'
 
-const ProjectDocs = ({ id }) => {
-  const { user } = useAuth()
+const ProjectDocs = ({ projectId, userId }) => {
+  const [docs, setDocs] = useState<any>([])
+  const [loading, setLoading] = useState(false)
 
-  const clientId = user?.id
-  const docs = getCollections({
-    collection: 'project-documentations',
-    where: {
-      project: {
-        equals: id,
+  const query = qs.stringify(
+    {
+      where: {
+        user: {
+          equals: userId,
+        },
+
+        project: {
+          equals: projectId,
+        },
       },
     },
-  })
-  console.log('docs', docs)
-  //   useEffect(() => {
-  //     const fetchProjectDocs = async () => {
-  //       if (!id) return
+    { addQueryPrefix: true },
+  )
 
-  //       try {
-  //         const response = await fetch(
-  //           `${process.env.NEXT_PUBLIC_SERVER_URL}/api/project-documentations/${id}`,
-  //         )
+  useEffect(() => {
+    const fetchProjectDocs = async () => {
+      const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/project-documentations/${query}`
+      setLoading(true)
+      try {
+        const response = await fetch(url)
 
-  //         if (!response.ok) {
-  //           throw new Error('Network response was not ok')
-  //         }
+        if (!response.ok) {
+          throw new Error('Network response was not ok')
+        }
+        const result = await response.json()
 
-  //         const result = await response.json()
-  //         setProjectDocs(result)
-  //       } catch (error) {
-  //         console.error('Failed to fetch project documentation', error)
-  //       }
-  //     }
+        setDocs(result?.docs)
+      } catch (error) {
+        console.error('Failed to fetch project documentation', error)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-  //     fetchProjectDocs()
-  //   }, [id])
+    fetchProjectDocs()
+  }, [query])
+  if (loading) return <p>Loading...</p>
 
-  console.log('ProjectDocs', ProjectDocs)
   return (
     <div>
-      {/* <RichText
-        className="lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[1fr]"
-        content={docs.content}
-        enableGutter={false}
-      /> */}
+      <RichText content={docs?.content} />
     </div>
   )
 }
