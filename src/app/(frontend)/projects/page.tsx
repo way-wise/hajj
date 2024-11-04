@@ -55,9 +55,6 @@ const Projects: FC<ProjectsProps> = () => {
           <h2 className="text-xl font-semibold">
             {user?.name ? `${user?.name} Projects` : 'Projects'}
           </h2>
-          <a href="/cv.pdf" download="cv">
-            Download CV
-          </a>
         </div>
         <div className="p-8 w-full">
           {projects?.length > 0 ? (
