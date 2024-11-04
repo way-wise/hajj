@@ -1,7 +1,11 @@
 import { getCollections } from '@/utilities/getCollections'
 import RichText from '../RichText'
+import { useAuth } from '@/providers/Auth'
 
-const ProjectDocs = async ({ id }) => {
+const ProjectDocs = ({ id }) => {
+  const { user } = useAuth()
+
+  const clientId = user?.id
   const docs = getCollections({
     collection: 'project-documentations',
     where: {
