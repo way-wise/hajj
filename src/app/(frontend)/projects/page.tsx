@@ -11,11 +11,10 @@ interface ProjectsProps {
 }
 
 const Projects: FC<ProjectsProps> = () => {
+  const { user } = useAuth()
   const [projects, setProjects] = useState([])
 
   const [isLoading, setIsLoading] = useState(false)
-
-  const { user } = useAuth()
 
   const stringifiedQuery = qs.stringify(
     {
@@ -31,7 +30,6 @@ const Projects: FC<ProjectsProps> = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true)
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/api/projects${stringifiedQuery}`,
         )
@@ -39,20 +37,31 @@ const Projects: FC<ProjectsProps> = () => {
           throw new Error('Network response was not ok')
         }
         const result = await response.json()
-        setProjects(result.docs)
+        setProjects(result.docs || [])
       } catch (error) {
         console.log('data not found')
-      } finally {
-        setIsLoading(false)
       }
     }
 
     fetchData()
   }, [stringifiedQuery])
 
-  if (!user) {
-    return <p className="text-center text-gray-500">Loading...</p>
+  if (!projects) {
+    return (
+      <div className="flex justify-center items-center text-center h-[200px]">
+        <p className="loader-loading"></p>
+      </div>
+    )
   }
+
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center text-center h-[200px]">
+        <p className="loader-loading"></p>
+      </div>
+    )
+  }
+
 
   if (isLoading) {
     return <p className="text-center text-gray-500">Loading...</p>
