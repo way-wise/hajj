@@ -1196,6 +1196,15 @@ export interface Project {
   paid_amount?: number | null;
   due_amount?: number | null;
   clients?: (string | null) | User;
+  progress?: number | null;
+  projectFeatures?:
+    | {
+        featureName: string;
+        featureProgress?: number | null;
+        isComplete?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2031,6 +2040,15 @@ export interface ProjectsSelect<T extends boolean = true> {
   paid_amount?: T;
   due_amount?: T;
   clients?: T;
+  progress?: T;
+  projectFeatures?:
+    | T
+    | {
+        featureName?: T;
+        featureProgress?: T;
+        isComplete?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
