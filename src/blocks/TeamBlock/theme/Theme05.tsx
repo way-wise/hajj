@@ -49,7 +49,7 @@ export const TeamTheme05: React.FC<
                                 fill="none"
                                 stroke="currentColor"
                                 strokeLinecap="round"
-                                strokeLinejoin="round"
+                                stroke-linejoin="round"
                                 strokeWidth="2"
                                 className="w-5 h-5"
                                 viewBox="0 0 24 24"

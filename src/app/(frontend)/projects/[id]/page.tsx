@@ -43,14 +43,12 @@ const ProjectDetails: React.FC = () => {
         <div className="bg-gray-100 to-cyan-500 p-8 text-white">
           <h1 className="text-3xl text-black font-bold mb-2">{project.title}</h1>
         </div>
-
         <div className="p-8">
           <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
               className="h-full rounded-full"
               style={{
                 width: `${project.progress}%`,
-                maxWidth: '100%',
                 background: 'linear-gradient(to right, #34d399, #10b981)',
                 transition: 'width 0.4s ease',
               }}
@@ -61,9 +59,9 @@ const ProjectDetails: React.FC = () => {
           <div className="flex flex-col">
             <h2 className="text-lg font-semibold text-black">Project Details</h2>
             <div className="mt-2 text-sm text-black">
-              <div className="mb-2">
+              <p className="mb-2">
                 <strong>Status:</strong> <Badge variant={'success'}>{project.status}</Badge>{' '}
-              </div>
+              </p>
               <p className="mb-2">
                 <strong>Deadline:</strong> {new Date(project.deadline).toLocaleDateString()}
               </p>
@@ -105,7 +103,7 @@ const ProjectDetails: React.FC = () => {
                           width="24"
                           height="24"
                           viewBox="0 0 24 24"
-                          fill="#10b981"
+                          fill="#EF5221"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path d="M9 16.17l-4.17-4.17-1.41 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />

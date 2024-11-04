@@ -63,7 +63,7 @@ export const PricingTheme03: React.FC<
                                 stroke="currentColor"
                                 strokeWidth="2"
                                 strokeLinecap="round"
-                                strokeLinejoin="round"
+                                stroke-linejoin="round"
                               >
                                 <polyline points="20 6 9 17 4 12" />
                               </svg>

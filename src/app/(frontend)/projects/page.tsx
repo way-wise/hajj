@@ -1,14 +1,18 @@
 'use client'
 
+import React, { FC, useEffect, useState } from 'react'
+import qs from 'qs'
 import { useAuth } from '@/providers/Auth'
 import Link from 'next/link'
-import qs from 'qs'
-import { FC, useEffect, useState } from 'react'
+import { Project } from '@/payload-types'
 
-interface ProjectsProps {}
+interface ProjectsProps {
+  projects: Project
+}
 
 const Projects: FC<ProjectsProps> = () => {
   const [projects, setProjects] = useState([])
+
   const [isLoading, setIsLoading] = useState(false)
 
   const { user } = useAuth()
@@ -46,6 +50,10 @@ const Projects: FC<ProjectsProps> = () => {
     fetchData()
   }, [stringifiedQuery])
 
+  if (!user) {
+    return <p className="text-center text-gray-500">Loading...</p>
+  }
+
   if (isLoading) {
     return <p className="text-center text-gray-500">Loading...</p>
   }
@@ -55,10 +63,10 @@ const Projects: FC<ProjectsProps> = () => {
       <div className="flex flex-col w-full">
         <div className="bg-main-primary text-white p-4 w-full">
           <h2 className="text-xl font-semibold">
-            {user?.name ? `${user?.name} Projects` : 'Projects'}
+            {user?.name ? `${user?.name}'s Projects` : 'Projects'}
           </h2>
         </div>
-        <div className="p-8 w-full">
+        <div className="py-8 w-full">
           {projects?.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
               {projects.map((project: any, idx: number) => {
@@ -71,8 +79,8 @@ const Projects: FC<ProjectsProps> = () => {
                   })
                 }
 
-                const formattedDeadline = formatDate(project.deadline)
-                const formattedStartingDate = formatDate(project.starting_date)
+                // const formattedDeadline = formatDate(project.deadline)
+                // const formattedStartingDate = formatDate(project.starting_date)
 
                 return (
                   <Link href={`/projects/${project.id}`} key={idx} className="w-full">
