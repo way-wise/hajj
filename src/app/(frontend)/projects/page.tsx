@@ -1,37 +1,33 @@
 'use client'
 
-import React, { FC } from 'react';
-import qs from 'qs';
-import { useAuth } from '@/providers/Auth';
-import Link from 'next/link';
+import { useAuth } from '@/providers/Auth'
+import Link from 'next/link'
+import qs from 'qs'
+import { FC, useEffect, useState } from 'react'
 
-interface ProjectsProps { }
+interface ProjectsProps {}
 
 const Projects: FC<ProjectsProps> = () => {
-    const { user } = useAuth();
+  const [projects, setProjects] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
 
-    if (!user) {
-        return <p className="text-center text-gray-500">Loading...</p>;
-    }
-
-  const clientId = user?.id
+  const { user } = useAuth()
 
   const stringifiedQuery = qs.stringify(
     {
       where: {
         clients: {
-          equals: clientId,
+          equals: user?.id,
         },
       },
     },
     { addQueryPrefix: true },
   )
 
-  const [projects, setProjects] = React.useState([])
-
-  React.useEffect(() => {
+  useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true)
         const response = await fetch(
           `${process.env.NEXT_PUBLIC_SERVER_URL}/api/projects${stringifiedQuery}`,
         )
@@ -39,16 +35,18 @@ const Projects: FC<ProjectsProps> = () => {
           throw new Error('Network response was not ok')
         }
         const result = await response.json()
-        setProjects(result.docs || [])
+        setProjects(result.docs)
       } catch (error) {
         console.log('data not found')
+      } finally {
+        setIsLoading(false)
       }
     }
 
     fetchData()
   }, [stringifiedQuery])
 
-  if (!projects) {
+  if (isLoading) {
     return <p className="text-center text-gray-500">Loading...</p>
   }
 
@@ -76,41 +74,42 @@ const Projects: FC<ProjectsProps> = () => {
                 const formattedDeadline = formatDate(project.deadline)
                 const formattedStartingDate = formatDate(project.starting_date)
 
-                                return (
-                                    <Link href={`/projects/${project.id}`} key={idx} className="w-full">
-                                        <div className="p-6 border border-gray-100 shadow-md rounded-md cursor-pointer hover:shadow-lg transition-shadow w-full">
-                                            <div className="flex justify-between items-center">
-                                                <h2 className="text-xl">{project.title}</h2>
-                                                <span
-                                                    className={`text-xs px-2 py-1 rounded border inline-flex ${project.status === 'approved'
-                                                            ? 'bg-green-300 border-green-500'
-                                                            : project.status === 'decline'
-                                                                ? 'bg-rose-300 border-rose-500'
-                                                                : project.status === 'ongoing'
-                                                                    ? 'bg-cyan-300 border-cyan-500'
-                                                                    : project.status === 'complete'
-                                                                        ? 'bg-blue-300 border-blue-500'
-                                                                        : 'bg-gray-300 border-gray-500'
-                                                        }`}
-                                                >
-                                                    {project.status}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                );
-                            })}
-                        </div>
-                    ) : (
-                        <div className="text-center text-gray-600">
-                            <h1>You do not have any project yet.</h1>
-                            <Link href="/">Create a new project</Link>
-                        </div>
-                    )}
-                </div>
+                return (
+                  <Link href={`/projects/${project.id}`} key={idx} className="w-full">
+                    <div className="p-6 border border-gray-100 shadow-md rounded-md cursor-pointer hover:shadow-lg transition-shadow w-full">
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-xl">{project.title}</h2>
+                        <span
+                          className={`text-xs px-2 py-1 rounded border inline-flex ${
+                            project.status === 'approved'
+                              ? 'bg-green-300 border-green-500'
+                              : project.status === 'decline'
+                                ? 'bg-rose-300 border-rose-500'
+                                : project.status === 'ongoing'
+                                  ? 'bg-cyan-300 border-cyan-500'
+                                  : project.status === 'complete'
+                                    ? 'bg-blue-300 border-blue-500'
+                                    : 'bg-gray-300 border-gray-500'
+                          }`}
+                        >
+                          {project.status}
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                )
+              })}
             </div>
+          ) : (
+            <div className="text-center text-gray-600">
+              <h1>You do not have any project yet.</h1>
+              <Link href="/">Create a new project</Link>
+            </div>
+          )}
         </div>
-    );
-};
+      </div>
+    </div>
+  )
+}
 
 export default Projects

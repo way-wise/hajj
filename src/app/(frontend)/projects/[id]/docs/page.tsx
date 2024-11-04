@@ -6,10 +6,9 @@ import RichText from '@/components/RichText'
 import { useParams } from 'next/navigation'
 import { useAuth } from '@/providers/Auth'
 
-const ProjectDocsPage = (params) => {
+const ProjectDocsPage = () => {
     const { id:projectId } = useParams()
     const {user} = useAuth()
-    console.log('projectId',projectId)
     
   const [docs, setDocs] = useState<any>([])
   const [loading, setLoading] = useState(false)
