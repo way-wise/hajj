@@ -1,18 +1,9 @@
 'use client'
-import api from '@/utilities/axios'
+
 import { useEffect, useState } from 'react'
 import { Button } from '../ui/button'
 import { Checkbox } from '../ui/checkbox'
 import { Input } from '../ui/input'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select'
 import { Textarea } from '../ui/textarea'
 import { stringify } from 'qs-esm'
 import {
@@ -23,7 +14,7 @@ import {
   MultiSelectorList,
   MultiSelectorTrigger,
 } from '../ui/multi-select'
-import { Feature, Service } from '@/payload-types'
+import { Feature } from '@/payload-types'
 import { toast } from 'sonner'
 import { useFieldArray, useForm } from 'react-hook-form'
 
