@@ -5,7 +5,6 @@ import React, { useEffect, useState } from 'react'
 import Lottie from 'lottie-react'
 import loadingAnimation from '../../../../../public/assets/loading-animation.json'
 import { Badge } from '@/components/ui/badge'
-import Link from 'next/link'
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams()
@@ -44,12 +43,7 @@ const ProjectDetails: React.FC = () => {
         <div className="bg-gray-100 to-cyan-500 p-8 text-white">
           <h1 className="text-3xl text-black font-bold mb-2">{project.title}</h1>
         </div>
-        <div className="*:px-3 *:py-2 *:border-r *:border-t  *:border-b  *:border-primary *:capitalize mt-2">
-          <Link href={`/projects/${id}/docs`} className="first:border-l">
-            docs
-          </Link>
-          <Link href={`/projects/${id}/docs`}>assets</Link>
-        </div>
+
         <div className="p-8">
           <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
             <div
