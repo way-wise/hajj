@@ -36,18 +36,14 @@ const Inboxes: CollectionConfig = {
       required: true,
     },
     {
-      name: 'sender',
+      name: 'receiver',
       type: 'relationship',
       relationTo: 'users',
       required: true,
       hasMany: false,
-    },
-    {
-      name: 'clients',
-      type: 'relationship',
-      relationTo: 'users',
-      required: true,
-      hasMany: false,
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       name: 'projects',
@@ -55,6 +51,9 @@ const Inboxes: CollectionConfig = {
       relationTo: 'projects',
       required: false,
       hasMany: false,
+      admin: {
+        position: 'sidebar',
+      },
     },
     {
       name: 'attachments',
@@ -67,6 +66,9 @@ const Inboxes: CollectionConfig = {
       name: 'isRead',
       type: 'checkbox',
       defaultValue: false,
+      admin: {
+        position: 'sidebar',
+      },
     },
   ],
   timestamps: true,

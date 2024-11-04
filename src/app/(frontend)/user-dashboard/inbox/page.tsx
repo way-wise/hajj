@@ -8,7 +8,9 @@ import { Textarea } from '@/components/ui/textarea'
 import { toast } from "sonner"
 import api from '@/utilities/axios'
 import { useAuth } from '@/providers/Auth'
+import { Loader2 } from 'lucide-react'
 
+// Define interfaces
 interface Message {
     id: string
     subject: string
@@ -34,7 +36,7 @@ interface Message {
             roles: string[]
         }
     }
-    clients: {
+    receiver: {
         id: string
         name: string
         email: string
@@ -48,6 +50,14 @@ interface SendMessageForm {
     subject: string
     message: string
     attachment?: File | null
+}
+
+interface MessageData {
+    subject: string
+    message: string
+    receiver: string
+    projects?: string
+    attachments?: string
 }
 
 export default function InboxPage() {
@@ -78,11 +88,11 @@ export default function InboxPage() {
             const response = await api.get('/api/inboxes', {
                 params: {
                     depth: 2,
-                    sort: '-createdAt', // Sort by newest first
+                    sort: '-createdAt',
                     where: {
                         or: [
+                            { receiver: { equals: userId } },
                             { sender: { equals: userId } },
-                            { clients: { equals: userId } },
                             ...(projectId ? [{ projects: { equals: projectId } }] : [])
                         ]
                     }
@@ -126,37 +136,7 @@ export default function InboxPage() {
         try {
             setSending(true)
 
-            // Create the base message data
-            const messageData = {
-                subject: formData.subject.trim(),
-                message: formData.message.trim(),
-                sender: userId
-            }
-
-            // If it's a project message, set the client as the project owner
-            if (projectId) {
-                const projectResponse = await api.get(`/api/projects/${projectId}`)
-                if (projectResponse.data?.clients?.id) {
-                    messageData.clients = projectResponse.data.clients.id
-                    messageData.projects = projectId
-                }
-            } else {
-                // For direct messages, set the client as an admin
-                const adminResponse = await api.get('/api/users', {
-                    params: {
-                        where: {
-                            roles: {
-                                contains: 'admin'
-                            }
-                        }
-                    }
-                })
-                if (adminResponse.data?.docs?.[0]?.id) {
-                    messageData.clients = adminResponse.data.docs[0].id
-                }
-            }
-
-            // Handle file upload if exists
+            let attachmentId = null
             if (formData.attachment) {
                 const fileData = new FormData()
                 fileData.append('file', formData.attachment)
@@ -164,7 +144,7 @@ export default function InboxPage() {
                 try {
                     const uploadResponse = await api.post('/api/media', fileData)
                     if (uploadResponse.data?.id) {
-                        messageData.attachments = uploadResponse.data.id
+                        attachmentId = uploadResponse.data.id
                     }
                 } catch (uploadError) {
                     console.error('File upload error:', uploadError)
@@ -173,7 +153,13 @@ export default function InboxPage() {
                 }
             }
 
-            console.log('Sending message data:', messageData)
+            const messageData: MessageData = {
+                subject: formData.subject.trim(),
+                message: formData.message.trim(),
+                receiver: userId,
+                ...(projectId && { projects: projectId }),
+                ...(attachmentId && { attachments: attachmentId })
+            }
 
             const response = await api.post('/api/inboxes', messageData)
 
@@ -230,45 +216,53 @@ export default function InboxPage() {
                     {projectId ? 'Project Messages' : 'All Messages'}
                 </h2>
                 {loading ? (
-                    <div className="text-center text-gray-500">Loading messages...</div>
+                    <div className="flex items-center justify-center h-[500px] bg-gray-50 rounded-lg">
+                        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
+                    </div>
                 ) : (
                     <div className="space-y-4 h-[500px] overflow-y-auto p-4 bg-gray-50 rounded-lg">
-                        {messages.map((message) => {
-                            const isCurrentUserMessage = message.sender?.id === message.clients.id;
+                        {messages.length === 0 ? (
+                            <div className="text-center text-gray-500 py-8">
+                                No messages yet. Start a conversation!
+                            </div>
+                        ) : (
+                            messages.map((message) => {
+                                const isCurrentUserSender = message.sender?.id === userId;
 
-                            return (
-                                <div key={message.id} className={`flex ${!isCurrentUserMessage ? 'justify-end' : 'justify-start'} mb-4`}>
-                                    <div className={`max-w-[70%]`}>
-                                        <div className={`flex items-center mb-1 ${!isCurrentUserMessage ? 'justify-end' : 'justify-start'}`}>
-                                            <span className="text-xs text-gray-500">
-                                                {message.sender?.name} • {new Date(message.createdAt).toLocaleString()}
-                                            </span>
-                                        </div>
-                                        <div
-                                            className={`rounded-lg p-3 shadow-sm
-                                                ${!isCurrentUserMessage
-                                                    ? 'bg-blue-500 text-white rounded-tr-none'
-                                                    : 'bg-white text-gray-800 rounded-tl-none border'}`}
-                                        >
-                                            <div className="font-medium mb-1">{message.subject}</div>
-                                            <p className="text-sm">{message.message}</p>
-                                            {message.attachments && (
-                                                <div className="mt-2 text-sm">
-                                                    <a
-                                                        href={message.attachments.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className={`flex items-center gap-1 ${!isCurrentUserMessage ? 'text-white' : 'text-blue-500'}`}
-                                                    >
-                                                        📎 {message.attachments.filename}
-                                                    </a>
-                                                </div>
-                                            )}
+                                return (
+                                    <div key={message.id} className={`flex ${isCurrentUserSender ? 'justify-end' : 'justify-start'} mb-4`}>
+                                        <div className={`max-w-[70%]`}>
+                                            <div className={`flex items-center mb-1 ${isCurrentUserSender ? 'justify-end' : 'justify-start'}`}>
+                                                <span className="text-xs text-gray-500">
+                                                    {isCurrentUserSender ? 'You' : message.sender?.name} • {new Date(message.createdAt).toLocaleString()}
+                                                </span>
+                                            </div>
+                                            <div
+                                                className={`rounded-lg p-3 shadow-sm
+                                                    ${isCurrentUserSender
+                                                        ? 'bg-blue-500 text-white rounded-tr-none'
+                                                        : 'bg-white text-gray-800 rounded-tl-none border'}`}
+                                            >
+                                                <div className="font-medium mb-1">{message.subject}</div>
+                                                <p className="text-sm whitespace-pre-wrap">{message.message}</p>
+                                                {message.attachments && (
+                                                    <div className="mt-2 text-sm">
+                                                        <a
+                                                            href={message.attachments.url}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className={`flex items-center gap-1 ${isCurrentUserSender ? 'text-white' : 'text-blue-500'}`}
+                                                        >
+                                                            📎 {message.attachments.filename}
+                                                        </a>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            );
-                        })}
+                                );
+                            })
+                        )}
                         <div ref={messagesEndRef} />
                     </div>
                 )}
@@ -311,7 +305,14 @@ export default function InboxPage() {
                 </div>
                 <div className="flex justify-end">
                     <Button type="submit" disabled={sending} size="sm">
-                        {sending ? 'Sending...' : 'Send Message'}
+                        {sending ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Sending...
+                            </>
+                        ) : (
+                            'Send Message'
+                        )}
                     </Button>
                 </div>
             </form>

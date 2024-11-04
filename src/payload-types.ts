@@ -1173,8 +1173,7 @@ export interface Inbox {
   id: string;
   subject: string;
   message: string;
-  sender: string | User;
-  clients: string | User;
+  receiver: string | User;
   projects?: (string | null) | Project;
   attachments?: (string | null) | Media;
   isRead?: boolean | null;
@@ -2020,8 +2019,7 @@ export interface FeaturesSelect<T extends boolean = true> {
 export interface InboxesSelect<T extends boolean = true> {
   subject?: T;
   message?: T;
-  sender?: T;
-  clients?: T;
+  receiver?: T;
   projects?: T;
   attachments?: T;
   isRead?: T;
