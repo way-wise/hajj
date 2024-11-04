@@ -14,15 +14,73 @@ import {
   SelectValue,
 } from '../ui/select'
 import { Textarea } from '../ui/textarea'
+import { stringify } from 'qs-esm'
+import {
+  MultiSelector,
+  MultiSelectorContent,
+  MultiSelectorInput,
+  MultiSelectorItem,
+  MultiSelectorList,
+  MultiSelectorTrigger,
+} from '../ui/multi-select'
+import { Feature, Service } from '@/payload-types'
+import { toast } from 'sonner'
+import { useFieldArray, useForm } from 'react-hook-form'
 
 const ProjectQuery = () => {
   const [docsUploadError, setDocsUploadError] = useState('')
-  const [links, setLinks] = useState({
-    one: '',
-    two: '',
-    three: '',
+  const [services, setServices] = useState<{ label: string; value: string }[]>([])
+  const [selectedServices, setSelectedServices] = useState<string[]>([])
+  const [features, setFeatures] = useState<Feature[]>([])
+  const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
+  const [description, setDescription] = useState<string>('')
+  const [clientName, setClientName] = useState<string>('')
+  const [clientEmail, setClientEmail] = useState<string>('')
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting, isDirty, isValid },
+  } = useForm()
+  const { fields, append, remove } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormProvider)
+    name: 'links', // unique name for your Field Array
   })
-  const [services, setServices] = useState([])
+
+  const handleProjectQuery = async ({ name, email, password }) => {
+    try {
+      if (selectedServices.length === 0) {
+        toast.error('Minimum one service need to be selected')
+        return
+      }
+
+      let data = {
+        name: 'untitled',
+        services: selectedServices,
+        features: selectedFeatures,
+        maxPrice: serviceInfo.maxBudget,
+        minPrice: serviceInfo.minBudget,
+        description: serviceInfo.description,
+        docsLinks: links,
+      }
+
+      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/project-query`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      toast.success('Signup successfull!')
+    } catch (err) {
+      toast.error(err)
+    }
+  }
+  const handleError = (errors) => {
+    console.log(errors)
+  }
 
   const [serviceInfo, setServiceInfo] = useState<any>({
     service: {},
@@ -54,77 +112,125 @@ const ProjectQuery = () => {
   }, [serviceInfo?.features])
 
   useEffect(() => {
-    ;(async () => {
-      const { data } = await api.get('/api/services?depth=1')
-      setServices(data.docs)
-    })()
+    const getServices = async () => {
+      try {
+        const stringifiedQuery = stringify(
+          {
+            limit: 100,
+            where: {
+              isActive: {
+                equals: true,
+              },
+            },
+          },
+          { addQueryPrefix: true },
+        )
+        const req = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/services${stringifiedQuery}`,
+        )
+        const data = await req.json()
+        const docs = data.docs || []
+        let serviceData: any = []
+        docs.map((el) => serviceData.push({ label: el.title, value: el.id }))
+        setServices(serviceData)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    getServices()
   }, [])
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-
-    let postableData = {
-      name: serviceInfo.title,
-      services: serviceInfo.service,
-      maxPrice: serviceInfo.maxBudget,
-      minPrice: serviceInfo.minBudget,
-      description: serviceInfo.description,
-      docsLinks: [links.one, links.two, links.three],
+  useEffect(() => {
+    const getFeatures = async (selectedServices) => {
+      try {
+        const stringifiedQuery = stringify(
+          {
+            limit: 300,
+            where: {
+              isActive: {
+                equals: true,
+              },
+              service: {
+                in: selectedServices,
+              },
+            },
+          },
+          { addQueryPrefix: true },
+        )
+        const req = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/features${stringifiedQuery}`,
+        )
+        const data = await req.json()
+        setFeatures(data.docs || [])
+      } catch (err) {
+        console.log(err)
+      }
     }
+    getFeatures(selectedServices)
+  }, [selectedServices])
 
-    if (serviceInfo.features.length > 1) {
-      const res = await api.post('/api/project-query', postableData)
-      console.log('res', res)
+  const handleFeatureChange = (checked, id) => {
+    const newFeatures = JSON.parse(JSON.stringify(selectedFeatures))
+    const currentFeatures = checked ? [...newFeatures, id] : newFeatures.filter((el) => el !== id)
+    setSelectedFeatures(currentFeatures)
+  }
+
+  const getBadget = () => {
+    if (features && features.length > 0) {
+      const newFeatures = JSON.parse(JSON.stringify(features))
+      let minBadget = 0
+      let maxBadget = 0
+      newFeatures.map((feature) => {
+        if (selectedFeatures.includes(feature.id)) {
+          minBadget += feature.minPrice
+          maxBadget += feature.maxPrice
+        }
+      })
+      return `$${minBadget} - $${maxBadget}`
     }
+    return `$0`
   }
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-3xl mx-auto my-10 ">
+    <form
+      onSubmit={handleSubmit(handleProjectQuery, handleError)}
+      className="max-w-3xl mx-auto my-10 "
+    >
       <h1 className="text-2xl font-semibold mb-2 text-center">Get a quote for upcoming project</h1>
       <p className="mb-6 text-gray-600 text-center">
         Choose the service you need, then provide details to help us understand your requirements
         and deliver the best results.
       </p>
-
       <div className="space-y-4">
         <div>
-          <label>Select Service</label>
-
-          <Select
-            onValueChange={(value: any) => {
-              setServiceInfo((prev) => ({
-                ...prev,
-                service: JSON.parse(value),
-              }))
-            }}
-            value={serviceInfo.service ? JSON.stringify(serviceInfo.service) : undefined}
-            required
+          <label>Select Services</label>
+          <MultiSelector
+            values={selectedServices}
+            onValuesChange={setSelectedServices}
+            options={services}
+            loop={false}
           >
-            <SelectTrigger>
-              {serviceInfo.service.title ? (
-                <SelectValue>{serviceInfo.service.title}</SelectValue>
-              ) : (
-                <span className="text-muted-foreground text-sm">Select a service</span>
-              )}
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectLabel>Our incredible services</SelectLabel>
-                {services?.map((service: any) => (
-                  <SelectItem key={service.id} value={service}>
-                    {service.title}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+            <MultiSelectorTrigger>
+              <MultiSelectorInput placeholder="Select Services" />
+            </MultiSelectorTrigger>
+            <MultiSelectorContent>
+              <MultiSelectorList>
+                {services &&
+                  services.length > 0 &&
+                  services.map((option, i) => (
+                    <MultiSelectorItem key={i} value={option.value}>
+                      {option.label}
+                    </MultiSelectorItem>
+                  ))}
+              </MultiSelectorList>
+            </MultiSelectorContent>
+          </MultiSelector>
         </div>
-
-        {serviceInfo.service.features && (
+        {features && (
           <>
             <h6>
               Project features (Optional){' '}
-              {!(serviceInfo.features.length > 1) && (
+              {!(features.length > 1) && (
                 <span className="text-xs text-red-500 animate-bounce ">
                   Please choose at least two
                 </span>
@@ -132,24 +238,17 @@ const ProjectQuery = () => {
             </h6>
 
             <div className="space-y-3 ml-2 max-h-[150px] overflow-y-auto">
-              {serviceInfo.service.features?.map((feature) => (
-                <div key={feature.id} className="flex items-center gap-2">
+              {features?.map((feature) => (
+                <div key={feature?.id} className="flex items-center gap-2">
                   <Checkbox
-                    checked={serviceInfo.features.some((f) => f.id === feature.id)}
-                    onCheckedChange={() => {
-                      setServiceInfo((prev) => {
-                        const isSelected = prev.features.some((f) => f.id === feature.id)
-                        return {
-                          ...prev,
-                          features: isSelected
-                            ? prev.features.filter((f) => f.id !== feature.id)
-                            : [...prev.features, feature],
-                        }
-                      })
-                    }}
+                    checked={selectedFeatures.includes(feature.id)}
+                    onCheckedChange={(checked) => handleFeatureChange(checked, feature.id)}
                     id={feature.id}
                   />
-                  <label htmlFor={feature.id} className="!mb-0">
+                  <label
+                    htmlFor={feature.id}
+                    className="!mb-0 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
                     {feature.name}
                   </label>
                 </div>
@@ -164,8 +263,8 @@ const ProjectQuery = () => {
 
           <Textarea
             placeholder="Provide a detailed description of your project requirements"
-            value={serviceInfo.description}
-            onChange={(e) => setServiceInfo((prev) => ({ ...prev, description: e.target.value }))}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </div>
 
@@ -203,50 +302,22 @@ const ProjectQuery = () => {
         </div>
 
         <div>
-          <label>Add Documents Links (Optional)</label>
-          <div className="flex items-center gap-5 *:flex-1">
-            <Input
-              type="text"
-              value={links.one}
-              placeholder="link1"
-              onChange={(e: any) => {
-                setLinks((prev) => ({
-                  ...prev,
-                  one: e.target.value,
-                }))
-              }}
-            />
-            <Input
-              type="text"
-              value={links.two}
-              placeholder="link2"
-              onChange={(e: any) => {
-                setLinks((prev) => ({
-                  ...prev,
-                  two: e.target.value,
-                }))
-              }}
-            />
-            <Input
-              type="text"
-              value={links.three}
-              placeholder="link3"
-              onChange={(e: any) => {
-                setLinks((prev) => ({
-                  ...prev,
-                  three: e.target.value,
-                }))
-              }}
-            />
-          </div>
+          <label>Add reference Links (Optional)</label>
+          <ul className="list-none border-t border-b py-4">
+            {fields.map((item, index) => (
+              <li key={item.id} className="flex items-center gap-3">
+                <Input type="text" {...register(`test.${index}.link`)} />
+                <span onClick={() => remove(index)}>Delete</span>
+              </li>
+            ))}
+          </ul>
+          <span className="btn btn-primary" onClick={() => append({ link: '' })}>
+            append
+          </span>
         </div>
         <hr />
 
-        {serviceInfo.features.length > 0 && (
-          <p>
-            Your estimated budget is: $ {serviceInfo.minBudget} - $ {serviceInfo.maxBudget}
-          </p>
-        )}
+        {selectedFeatures.length > 0 && <p>Your estimated budget is: {getBadget()}</p>}
 
         <h6>Your Contact Information</h6>
         <div className="flex items-center gap-5">
@@ -254,9 +325,9 @@ const ProjectQuery = () => {
             type="text"
             placeholder="Name"
             required
-            value={serviceInfo.customerName}
+            value={clientName}
             onChange={(e) => {
-              setServiceInfo((prev) => ({ ...prev, customerName: e.target.value }))
+              setClientName(e.target.value)
             }}
           />
 
@@ -264,15 +335,32 @@ const ProjectQuery = () => {
             type="email"
             placeholder="Email"
             required
-            value={serviceInfo.customerEmail}
+            value={clientEmail}
             onChange={(e) => {
-              setServiceInfo((prev) => ({ ...prev, customerEmail: e.target.value }))
+              setClientEmail(e.target.value)
             }}
           />
         </div>
-        {/* Submit Button */}
         <div className="flex justify-end mt-4">
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={!isDirty || !isValid || isSubmitting}>
+            {isSubmitting && (
+              <svg
+                className="mr-2 h-4 w-4 animate-spin"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+              </svg>
+            )}
+            Submit
+          </Button>
         </div>
       </div>
     </form>

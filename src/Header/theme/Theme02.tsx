@@ -227,7 +227,6 @@ const HeaderTheme02: React.FC<HeaderTheme02Props> = ({ header }) => {
                             </Link>
                         </div>
                         <div className='flex gap-4 items-center'>
-                            <ThemeSelector />
                             <Link
                                 href="/signin"
                                 className="py-3 text-base font-medium text-white hover:opacity-70 dark:text-black block"
