@@ -1,166 +1,286 @@
 'use client'
 
-import * as React from 'react'
-import { Paperclip, Send } from 'lucide-react'
-
+import { useState, useEffect, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
+import { toast } from "sonner"
+import api from '@/utilities/axios'
+import { useAuth } from '@/providers/Auth'
+import { Loader2 } from 'lucide-react'
 
-import type { Page, Inbox } from '@/payload-types'
-
+// Define interfaces
 interface Message {
-    id: number
-    subject?: string
-    text: string
-    sender: 'user' | 'other'
-    attachment?: File
+    id: string
+    subject: string
+    message: string
+    receiver: {
+        id: string
+        name: string
+        email: string
+        roles: string[]
+    }
+    projects?: {
+        id: string
+        title: string
+        clients: {
+            id: string
+            name: string
+            email: string
+            roles: string[]
+        }
+    }
+    isRead: boolean
+    createdAt: string
+    updatedAt: string
 }
 
-export default function Inbox() {
-    const [messages, setMessages] = React.useState<Message[]>([
-        { id: 1, text: "Hello! How can I help you today?", sender: 'other' },
-    ])
-    const [subject, setSubject] = React.useState('')
-    const [newMessage, setNewMessage] = React.useState('')
-    const [attachment, setAttachment] = React.useState<File | null>(null)
-    const scrollAreaRef = React.useRef<HTMLDivElement>(null)
-    const fileInputRef = React.useRef<HTMLInputElement>(null)
+interface SendMessageForm {
+    subject: string
+    message: string
+    attachment?: File | null
+}
 
-    const handleSendMessage = (e: React.FormEvent) => {
-        e.preventDefault()
-        if (newMessage.trim() || attachment) {
-            const userMessage: Message = {
-                id: messages.length + 1,
-                subject: subject,
-                text: newMessage,
-                sender: 'user',
-                attachment: attachment || undefined
-            }
-            setMessages([...messages, userMessage])
-            setNewMessage('')
-            setSubject('')
-            setAttachment(null)
+interface MessageData {
+    subject: string
+    message: string
+    receiver: string
+    projects?: string
+}
 
-            // Simulate a response (you'd replace this with actual API call in a real app)
-            setTimeout(() => {
-                const botMessage: Message = {
-                    id: messages.length + 2,
-                    text: "Thanks for your message. How else can I assist you?",
-                    sender: 'other'
+export default function InboxPage() {
+    const { user } = useAuth()
+    const userId = user?.id
+    const searchParams = useSearchParams()
+    const projectId = searchParams.get('projectId')
+    const messagesEndRef = useRef<HTMLDivElement>(null)
+
+    const [messages, setMessages] = useState<Message[]>([])
+    const [loading, setLoading] = useState(true)
+    const [sending, setSending] = useState(false)
+    const [formData, setFormData] = useState<SendMessageForm>({
+        subject: '',
+        message: '',
+        attachment: null
+    })
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth", block: "end" })
+        }
+    }
+
+    const fetchMessages = async () => {
+        if (!userId) return
+
+        try {
+            setLoading(true)
+
+            const response = await api.get('/api/inboxes', {
+                params: {
+                    depth: 2,
+                    sort: 'createdAt',
+                    where: JSON.stringify({
+                        or: [
+                            { receiver: { equals: userId } },
+                            ...(projectId ? [{ projects: { equals: projectId } }] : [])
+                        ]
+                    })
                 }
-                setMessages(prevMessages => [...prevMessages, botMessage])
-            }, 1000)
+            })
+
+            if (response.data.docs) {
+                setMessages(response.data.docs)
+                setTimeout(scrollToBottom, 100)
+            }
+        } catch (error: any) {
+            console.error('Fetch error:', error)
+            toast.error(error?.response?.data?.message || 'Failed to fetch messages')
+        } finally {
+            setLoading(false)
         }
     }
 
-    const handleAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0]
-        if (file) {
-            setAttachment(file)
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setFormData(prev => ({
+                ...prev,
+                attachment: e.target.files![0]
+            }))
         }
     }
 
-    React.useEffect(() => {
-        if (scrollAreaRef.current) {
-            scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault()
+
+        if (!userId || !user) {
+            toast.error('Please log in to send messages')
+            return
+        }
+
+        if (!formData.subject.trim() || !formData.message.trim()) {
+            toast.error('Please fill in all required fields')
+            return
+        }
+
+        try {
+            setSending(true)
+
+            const messageData: MessageData = {
+                subject: formData.subject.trim(),
+                message: formData.message.trim(),
+                receiver: userId,
+                ...(projectId ? { projects: projectId } : {})
+            }
+
+            const response = await api.post('/api/inboxes', messageData)
+
+            if (response.data) {
+                toast.success('Message sent successfully')
+                setFormData({
+                    subject: '',
+                    message: '',
+                    attachment: null
+                })
+                await fetchMessages()
+            }
+        } catch (error: any) {
+            console.error('Submission error:', error)
+            toast.error(error?.response?.data?.message || 'Failed to send message')
+        } finally {
+            setSending(false)
+        }
+    }
+
+    const handleInputChange = (
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+        setFormData(prev => ({
+            ...prev,
+            [e.target.name]: e.target.value
+        }))
+    }
+
+    useEffect(() => {
+        if (userId) {
+            fetchMessages()
+            const interval = setInterval(fetchMessages, 30000)
+            return () => clearInterval(interval)
+        }
+    }, [userId, projectId])
+
+    useEffect(() => {
+        if (messages.length > 0) {
+            scrollToBottom()
         }
     }, [messages])
 
-    const [inboxes, setInboxes] = React.useState([]);
-    React.useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/inoxes`);
-                // throw new Error('Network response was not ok');
-                const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/inboxes`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const result = await response.json();
-                setInboxes(result);
-            }
-            catch (error) {
-                // setError(error.message);
-                alert('data not found')
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    console.log(inboxes)
-    return (
-        <div className="flex flex-col lg:h-[700px] min-h-max w-full">
-            <div className="bg-primary text-primary-foreground p-4">
-                <h2 className="text-xl font-semibold">Inbox</h2>
+    if (!userId) {
+        return (
+            <div className="my-10 p-8 text-center">
+                <p className="text-gray-500">Please log in to view your messages.</p>
             </div>
-            <ScrollArea className="flex-grow p-4" ref={scrollAreaRef}>
-                {messages.map((message) => (
-                    <div
-                        key={message.id}
-                        className={`mb-4 ${message.sender === 'user' ? 'text-right' : 'text-left'
-                            }`}
-                    >
-                        <div
-                            className={`inline-block p-2 rounded-lg ${message.sender === 'user'
-                                ? 'bg-primary text-primary-foreground'
-                                : 'bg-secondary text-secondary-foreground'
-                                }`}
-                        >
-                            {message.subject && (
-                                <div className="font-semibold mb-1">{message.subject}</div>
-                            )}
-                            <div>{message.text}</div>
-                            {message.attachment && (
-                                <div className="mt-1 text-sm">
-                                    Attachment: {message.attachment.name}
-                                </div>
-                            )}
-                        </div>
+        )
+    }
+
+    return (
+        <div className="container mx-auto p-4">
+            <div className="mb-4">
+                <h2 className="text-xl font-semibold mb-4 px-4">
+                    {projectId ? 'Project Messages' : 'All Messages'}
+                </h2>
+                {loading ? (
+                    <div className="flex items-center justify-center h-[500px] bg-gray-50 rounded-lg">
+                        <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
                     </div>
-                ))}
-            </ScrollArea>
-            <form onSubmit={handleSendMessage} className="p-4 bg-background">
-                <Input
-                    type="text"
-                    placeholder="Subject (optional)"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                    className="mb-2"
-                />
-                <Textarea
-                    placeholder="Type your message..."
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    className="mb-2"
-                    rows={3}
-                />
-                <div className="flex items-center space-x-2">
-                    <Button
-                        type="button"
-                        variant="outline"
-                        size="icon"
-                        onClick={() => fileInputRef.current?.click()}
-                    >
-                        <Paperclip className="h-4 w-4" />
-                        <span className="sr-only">Attach file</span>
-                    </Button>
-                    <Input
-                        type="file"
-                        ref={fileInputRef}
-                        className="hidden"
-                        onChange={handleAttachment}
+                ) : (
+                    <div className="space-y-4 h-[500px] overflow-y-auto p-4 bg-gray-50 rounded-lg">
+                        {messages.length === 0 ? (
+                            <div className="text-center text-gray-500 py-8">
+                                No messages yet. Start a conversation!
+                            </div>
+                        ) : (
+                            messages.map((message) => {
+                                const isCurrentUserReceiver = message.receiver?.id === userId
+                                const isAdmin = message.receiver?.roles?.includes('admin')
+
+                                return (
+                                    <div
+                                        key={message.id}
+                                        className={`flex w-full ${isCurrentUserReceiver ? 'justify-end' : 'justify-start'}`}
+                                    >
+                                        <div className={`w-full max-w-[70%] ${isCurrentUserReceiver ? 'items-end' : 'items-start'}`}>
+                                            <div className={`flex items-center gap-2 mb-1 ${isCurrentUserReceiver ? 'justify-end' : 'justify-start'}`}>
+                                                <span className="text-xs text-gray-500">
+                                                    {isAdmin ? 'Admin' : (isCurrentUserReceiver ? 'You' : message.receiver?.name)} • {new Date(message.createdAt).toLocaleString()}
+                                                </span>
+                                            </div>
+                                            <div
+                                                className={`rounded-lg p-3 shadow-sm break-words
+                                                ${isCurrentUserReceiver
+                                                        ? 'bg-blue-500 text-white ml-auto rounded-tr-none'
+                                                        : 'bg-white text-gray-800 rounded-tl-none border'
+                                                    }`}
+                                            >
+                                                <div className="font-medium mb-1">{message.subject}</div>
+                                                <p className="text-sm whitespace-pre-wrap">{message.message}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        )}
+                        <div ref={messagesEndRef} />
+                    </div>
+                )}
+            </div>
+
+            <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg border shadow-sm">
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <Input
+                            type="text"
+                            name="subject"
+                            value={formData.subject}
+                            onChange={handleInputChange}
+                            placeholder="Subject"
+                            disabled={sending}
+                            required
+                            className="text-sm"
+                        />
+                    </div>
+                    <div>
+                        <Input
+                            type="file"
+                            onChange={handleFileChange}
+                            disabled={sending}
+                            className="text-sm"
+                        />
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <Textarea
+                        name="message"
+                        value={formData.message}
+                        onChange={handleInputChange}
+                        placeholder="Type your message here"
+                        rows={3}
+                        disabled={sending}
+                        required
+                        className="text-sm"
                     />
-                    {attachment && (
-                        <span className="text-sm text-muted-foreground">
-                            {attachment.name}
-                        </span>
-                    )}
-                    <Button type="submit" className="ml-auto">
-                        <Send className="h-4 w-4 mr-2" />
-                        Send
+                </div>
+                <div className="flex justify-end">
+                    <Button type="submit" disabled={sending} size="sm">
+                        {sending ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                Sending...
+                            </>
+                        ) : (
+                            'Send Message'
+                        )}
                     </Button>
                 </div>
             </form>
