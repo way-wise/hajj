@@ -31,7 +31,6 @@ type AuthContext = {
 
 const Context = createContext({} as AuthContext)
 
-const CLOUD_CONNECTION_ERROR = 'An error occurred while attempting to connect to Payload Cloud'
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null | undefined>(undefined)
@@ -61,7 +60,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
     } catch (e) {
-      throw new Error(e.message)
+      // throw new Error(e.message)
+      console.log(e.message);
     }
   }, [])
 
@@ -82,7 +82,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('An error occurred while attempting to logout.')
       }
     } catch (e) {
-      throw new Error(e.message)
+      // throw new Error(e.message)
+      console.log(e.message);
     }
   }, [])
 
@@ -107,7 +108,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           throw new Error('An error occurred while attempting to fetch user.')
         }
       } catch (e) {
-        throw new Error(e.message)
+        // throw new Error(e.message)
+        console.log(e.message);
       }
     }
 
@@ -134,7 +136,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('An error occurred while attempting to reset your password.')
       }
     } catch (e) {
-      throw new Error(e.message)
+      // throw new Error(e.message)
+      console.log(e.message);
     }
   }, [])
 
@@ -159,7 +162,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         throw new Error('Invalid login')
       }
     } catch (e) {
-      throw new Error(e.message)
+      // throw new Error(e.message)
+      console.log(e.message);
     }
   }, [])
 
@@ -184,7 +188,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           throw new Error('An error occurred while updating your account.')
         }
       } catch (e) {
-        throw new Error(e.message)
+        // throw new Error(e.message)
+        console.log(e.message);
       }
     },
     [user],

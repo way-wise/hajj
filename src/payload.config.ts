@@ -40,9 +40,9 @@ import { pageHandler } from './endpoints/pageHandler'
 import { paymentHandler } from './endpoints/paymentHandler'
 import Services from './collections/Services'
 import Features from './collections/Features'
-import ProjectQuery from './collections/PorjectQuery'
 import ProjectDocumentations from './collections/ProjectDocumentations'
 import EmailTemplate from './collections/emailTemplate'
+import ProjectQueries from './collections/PorjectQuery'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -173,7 +173,7 @@ export default buildConfig({
     Features,
     Inboxes,
     Projects,
-    ProjectQuery,
+    ProjectQueries,
     ProjectDocumentations,
     EmailTemplate,
   ],

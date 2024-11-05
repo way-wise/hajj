@@ -17,6 +17,7 @@ import {
 import { Feature } from '@/payload-types'
 import { toast } from 'sonner'
 import { useFieldArray, useForm } from 'react-hook-form'
+import { useSearchParams } from 'next/navigation'
 
 const ProjectQuery = () => {
   const [docsUploadError, setDocsUploadError] = useState('')
@@ -24,9 +25,19 @@ const ProjectQuery = () => {
   const [selectedServices, setSelectedServices] = useState<string[]>([])
   const [features, setFeatures] = useState<Feature[]>([])
   const [selectedFeatures, setSelectedFeatures] = useState<string[]>([])
-  const [description, setDescription] = useState<string>('')
   const [maxBudget, setMaxBudget] = useState<number>(0)
   const [minBudget, setMinBudget] = useState<number>(0)
+  const [isSuccess, setIsSuccess] = useState<boolean>(false)
+
+  const params = useSearchParams()
+
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    if (params.get('success')) {
+      console.log('Query Successfull.');
+      setIsSuccess(true)
+    }
+  }, [params]);
 
   const {
     register,
@@ -54,11 +65,11 @@ const ProjectQuery = () => {
         minPrice: minBudget,
         description: description,
         docsLinks: links,
-        clientName: name,
-        clientEmail: email,
+        name: name,
+        email: email,
       }
 
-      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/project-query`, {
+      await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/projects/projectQueries`, {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -66,6 +77,7 @@ const ProjectQuery = () => {
         },
         body: JSON.stringify(data),
       })
+
       toast.success('Signup successfull!')
     } catch (err) {
       toast.error(err)
@@ -74,6 +86,8 @@ const ProjectQuery = () => {
   const handleError = (errors) => {
     console.log(errors)
   }
+
+  const message = 'Thank you for reaching out to us! Your query has been successfully submitted, and our team will get back to you as soon as possible. We appreciate your interest in Waywise Tech and look forward to assisting you with your project. Have a great day! 😊 If you have any more questions or need further assistance, feel free to contact us anytime.'
 
   useEffect(() => {
     const getServices = async () => {
@@ -172,6 +186,7 @@ const ProjectQuery = () => {
         message: 'Email not valid',
       },
     },
+    description: {}
   }
 
   return (
@@ -246,8 +261,7 @@ const ProjectQuery = () => {
 
           <Textarea
             placeholder="Provide a detailed description of your project requirements"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
+            {...register('description', projectQueryOptions.description)}
           />
         </div>
 
