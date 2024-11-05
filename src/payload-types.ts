@@ -1218,7 +1218,9 @@ export interface Project {
 export interface ProjectQuery {
   id: string;
   title?: string | null;
-  services?: (string | null) | Service;
+  project: string | Project;
+  services: (string | Service)[];
+  features: (string | Feature)[];
   description?: string | null;
   docsLinks?:
     | {
@@ -1228,7 +1230,6 @@ export interface ProjectQuery {
     | null;
   minPrice?: number | null;
   maxPrice?: number | null;
-  isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2097,7 +2098,9 @@ export interface ProjectsSelect<T extends boolean = true> {
  */
 export interface ProjectQuerySelect<T extends boolean = true> {
   title?: T;
+  project?: T;
   services?: T;
+  features?: T;
   description?: T;
   docsLinks?:
     | T
@@ -2107,7 +2110,6 @@ export interface ProjectQuerySelect<T extends boolean = true> {
       };
   minPrice?: T;
   maxPrice?: T;
-  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }

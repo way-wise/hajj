@@ -20,10 +20,25 @@ const ProjectQuery: CollectionConfig = {
       type: 'text',
     },
     {
+      name: 'project',
+      type: 'relationship',
+      relationTo: 'projects',
+      hasMany:false,
+      required: true,
+    },
+    {
       name: 'services',
       type: 'relationship',
       relationTo: 'services',
-      required: false,
+      hasMany:true,
+      required: true,
+    },
+    {
+      name: 'features',
+      type: 'relationship',
+      relationTo: 'features',
+      hasMany:true,
+      required: true,
     },
     {
       name: 'description',
@@ -48,12 +63,7 @@ const ProjectQuery: CollectionConfig = {
       name: 'maxPrice',
       type: 'number',
     },
-    {
-      name: 'isActive',
-      label: 'Is Active',
-      type: 'checkbox',
-      defaultValue: true,
-    },
+
   ],
 }
 
