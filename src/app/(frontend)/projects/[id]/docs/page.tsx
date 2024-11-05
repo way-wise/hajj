@@ -2,9 +2,14 @@
 
 import { useEffect, useState } from 'react'
 import qs from 'qs'
-import RichText from '../RichText'
+import RichText from '@/components/RichText'
+import { useParams } from 'next/navigation'
+import { useAuth } from '@/providers/Auth'
 
-const ProjectDocs = ({ projectId, userId }) => {
+const ProjectDocsPage = () => {
+    const { id:projectId } = useParams()
+    const {user} = useAuth()
+    
   const [docs, setDocs] = useState<any>([])
   const [loading, setLoading] = useState(false)
 
@@ -12,7 +17,7 @@ const ProjectDocs = ({ projectId, userId }) => {
     {
       where: {
         user: {
-          equals: userId,
+          equals: user?.id,
         },
 
         project: {
@@ -24,7 +29,7 @@ const ProjectDocs = ({ projectId, userId }) => {
   )
 
   useEffect(() => {
-    const fetchProjectDocs = async () => {
+    const fetchProjectDocsPage = async () => {
       const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/project-documentations/${query}`
       setLoading(true)
       try {
@@ -43,15 +48,17 @@ const ProjectDocs = ({ projectId, userId }) => {
       }
     }
 
-    fetchProjectDocs()
+    fetchProjectDocsPage()
   }, [query])
   if (loading) return <p>Loading...</p>
 
-  return (
-    <div>
-      <RichText content={docs?.content} />
-    </div>
-  )
+  return <div className='py-5'>    
+    {
+      docs?.map((doc)=>{
+        return  <RichText key={doc.id} content={doc?.content} />
+      })
+    }   
+  </div>
 }
 
-export default ProjectDocs
+export default ProjectDocsPage

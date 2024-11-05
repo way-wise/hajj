@@ -42,6 +42,7 @@ import Services from './collections/Services'
 import Features from './collections/Features'
 import ProjectQuery from './collections/PorjectQuery'
 import ProjectDocumentations from './collections/ProjectDocumentations'
+import EmailTemplate from './collections/emailTemplate'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -174,6 +175,7 @@ export default buildConfig({
     Projects,
     ProjectQuery,
     ProjectDocumentations,
+    EmailTemplate,
   ],
   cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
   csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
