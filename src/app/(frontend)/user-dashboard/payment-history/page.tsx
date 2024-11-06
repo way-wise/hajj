@@ -1,4 +1,5 @@
 'use client'
+
 import React, { FC } from 'react'
 import qs from 'qs'
 import { useAuth } from '@/providers/Auth'
@@ -56,7 +57,7 @@ const PaymentHistory: FC<PaymentHistoryProps> = () => {
   const printHandler = (id: string) => {
     const element = document.getElementById(id)
 
-    if (element) {
+    if (element && window !== undefined) {
       element.classList.add('printable')
       window.print()
       element.classList.remove('printable')
@@ -175,7 +176,7 @@ const PaymentHistory: FC<PaymentHistoryProps> = () => {
               </div>
 
               <div className="text-end mt-4">
-                <Link href={`${window.location.origin}/invoices/${invoice.slug}`}>
+                <Link href={`/invoices/${invoice.slug}`}>
                   <button className="bg-primary text-white w-24 py-1 rounded border-none me-3 text-sm">
                     View
                   </button>
