@@ -1,13 +1,15 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Metadata } from 'next'
 import { ResetPasswordForm } from './ResetPasswordForm'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 export default async function ResetPassword() {
   return (
-    <div className='max-w-md w-full mx-auto bg-white p-8 rounded-lg shadow-md space-y-6  my-16'>
-      <h1 className='text-center text-4xl'>Reset Password</h1>
-      <ResetPasswordForm />
+    <div className="max-w-md w-full mx-auto bg-white p-8 rounded-lg shadow-md space-y-6  my-16">
+      <h1 className="text-center text-4xl">Reset Password</h1>
+      <Suspense>
+        <ResetPasswordForm />
+      </Suspense>
     </div>
   )
 }
