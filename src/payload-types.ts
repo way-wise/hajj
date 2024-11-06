@@ -2345,7 +2345,10 @@ export interface Header {
   id: string;
   theme?: ('theme01' | 'theme02') | null;
   logo: string | Media;
+  logo_dark?: (string | null) | Media;
   callback?: string | null;
+  sticky?: boolean | null;
+  scrolLSticky?: boolean | null;
   navItems?:
     | {
         link: {
@@ -2437,7 +2440,10 @@ export interface Footer {
 export interface HeaderSelect<T extends boolean = true> {
   theme?: T;
   logo?: T;
+  logo_dark?: T;
   callback?: T;
+  sticky?: T;
+  scrolLSticky?: T;
   navItems?:
     | T
     | {

@@ -198,7 +198,6 @@ html[data-theme='light'] {
   position: relative;
   width: 100%;
   margin: 0 auto;
-  height: 93vh;
 }
 
 .sliderImageContainer {
@@ -241,7 +240,7 @@ html[data-theme='light'] {
   aspect-ratio: 1;
   border-radius: 50%;
   padding: 3px;
-  background: 
+  background:
     radial-gradient(farthest-side,#EF5221 95%,#0000) 50% 0/12px 12px no-repeat,
     radial-gradient(farthest-side,#0000 calc(100% - 5px),#EF5221 calc(100% - 4px)) content-box;
   animation: l6 2s infinite ;
@@ -251,14 +250,14 @@ html[data-theme='light'] {
 /* HTML: <div class="loader"></div> */
 .loader-loading {
   --s: 25px;
-  --g :5px;  
-  
+  --g :5px;
+
   width: calc(3*(1.353*var(--s) + var(--g)));
   aspect-ratio: 3;
   background:
     linear-gradient(#EF5221 0 0) left/33% 100% no-repeat,
     conic-gradient(from -90deg at var(--s) calc(0.353*var(--s)),
-      #fff 135deg,#666 0 270deg,#aaa 0); 
+      #fff 135deg,#666 0 270deg,#aaa 0);
   background-blend-mode: multiply;
   --_m:
     linear-gradient(to bottom right,

@@ -69,7 +69,7 @@ function KenBurnsSlider({ timing = 5000, images, zoomEffect = false }) {
 
   return (
     <div
-      className="sliderContainer h-full"
+      className="sliderContainer h-screen"
       style={
         {
           '--timing': timing,

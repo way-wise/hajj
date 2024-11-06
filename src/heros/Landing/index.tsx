@@ -20,7 +20,7 @@ export const LandingHero: React.FC<Page['hero']> = ({ links, media, backgrounds,
     <>
       <section
         id="home"
-        className="relative z-10 overflow-hidden bg-white dark:bg-black"
+        className="relative z-10 -mt-[7rem] overflow-hidden bg-white dark:bg-black"
       >
         <div className="h-full w-full -z-10">
           <KenBurnsSlider images={slides} timing={7000} zoomEffect={false} />
@@ -58,7 +58,7 @@ export const LandingHero: React.FC<Page['hero']> = ({ links, media, backgrounds,
                     )}
                   </div>
                 </div>
-                <div className="col-span-4 lg:col-span-5 justify-end items-center hidden sm:flex">
+                <div className="col-span-4 lg:col-span-5 justify-end items-center hidden md:flex">
                   {media && typeof media === 'object' && (
                     <div
                       className="relative w-10/12 translate-y-0"
