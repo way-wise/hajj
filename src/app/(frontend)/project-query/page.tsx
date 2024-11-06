@@ -1,7 +1,12 @@
 import ProjectQuery from '@/components/projects/PorjectQuery'
+import { Suspense } from 'react'
 
 const ProjectQueryPage = async () => {
-  return <ProjectQuery />
+  return (
+    <Suspense>
+      <ProjectQuery />
+    </Suspense>
+  )
 }
 
 export default ProjectQueryPage

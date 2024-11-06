@@ -4,8 +4,8 @@ import React, { FC } from 'react'
 import qs from 'qs'
 import { useAuth } from '@/providers/Auth'
 import './page.css'
-import html2pdf from 'html2pdf.js'
 import Link from 'next/link'
+import canUseDom from '@/utilities/can-use-dom'
 
 interface PaymentHistoryProps {}
 
@@ -43,6 +43,7 @@ const PaymentHistory: FC<PaymentHistoryProps> = () => {
     if (user?.id) {
       fetchData()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user])
 
   const formatDate = (dateString: string) => {
@@ -55,27 +56,34 @@ const PaymentHistory: FC<PaymentHistoryProps> = () => {
   }
 
   const printHandler = (id: string) => {
-    const element = document.getElementById(id)
+    if (canUseDom) {
+      const element = document.getElementById(id)
 
-    if (element && window !== undefined) {
-      element.classList.add('printable')
-      window.print()
-      element.classList.remove('printable')
+      if (element) {
+        element.classList.add('printable')
+        if (typeof window !== 'undefined') {
+          window.print()
+        }
+        element.classList.remove('printable')
+      }
     }
   }
 
-  const downloadHandler = (id: string) => {
-    const element = document.getElementById(id)
-    const opt = {
-      margin: 1,
-      filename: 'myfile.pdf',
-      image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+  const downloadHandler = async (id: string) => {
+    if (canUseDom) {
+      const element = document.getElementById(id)
+      const opt = {
+        margin: 1,
+        filename: 'myfile.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
+      }
+      const html2pdf = (await import('html2pdf.js')).default()
+      // @ts-ignore
+      html2pdf(element, opt)
     }
-    html2pdf(element, opt)
   }
-
 
   return (
     <div className="flex flex-col lg:h-[700px] min-h-max w-full">
