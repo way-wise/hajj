@@ -283,7 +283,6 @@ const ProjectQuery = () => {
                   setDocsUploadError(`File ${files[i].name} exceeds the maximum size of 5MB.`)
                   break // Break on the first error
                 } else {
-                  setServiceInfo((prev: any) => ({ ...prev, docs: [...prev.docs, files[i]] }))
                   setDocsUploadError('')
                 }
               }
