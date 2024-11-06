@@ -4,13 +4,8 @@ import React, { FC, useEffect, useState } from 'react'
 import qs from 'qs'
 import { useAuth } from '@/providers/Auth'
 import Link from 'next/link'
-import { Project } from '@/payload-types'
 
-interface ProjectsProps {
-  projects: Project
-}
-
-const Projects: FC<ProjectsProps> = () => {
+const Projects: FC = () => {
   const { user } = useAuth()
   const [projects, setProjects] = useState([])
 

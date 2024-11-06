@@ -12,6 +12,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { X as RemoveIcon, Check } from "lucide-react";
 import React, {
   KeyboardEvent,
+  RefObject,
   createContext,
   forwardRef,
   useCallback,
@@ -200,7 +201,7 @@ const MultiSelector = ({
         setInputValue,
         activeIndex,
         setActiveIndex,
-        ref: inputRef,
+        ref: inputRef as RefObject<HTMLInputElement>,
         handleSelect,
       }}
     >

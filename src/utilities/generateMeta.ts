@@ -14,7 +14,7 @@ export const generateMeta = async (args: { doc: Page | Post }): Promise<Metadata
     `${process.env.NEXT_PUBLIC_SERVER_URL}${doc.meta.image.url}`
 
   const title = doc?.meta?.title
-    ? doc?.meta?.title + ' | Way-Wise Tech'
+    ? doc?.meta?.title
     : 'Way-Wise Tech'
 
   const keywords = doc?.meta?.keywords

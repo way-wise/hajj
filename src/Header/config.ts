@@ -33,9 +33,25 @@ export const Header: GlobalConfig = {
       required: true,
     },
     {
+      name: 'logo_dark',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+    },
+    {
       name: 'callback',
       type: 'text',
       required: false,
+    },
+    {
+      name: 'sticky',
+      type: 'checkbox',
+      defaultValue: false,
+    },
+    {
+      name: 'scrolLSticky',
+      type: 'checkbox',
+      defaultValue: false,
     },
     {
       name: 'navItems',

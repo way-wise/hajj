@@ -7,9 +7,9 @@ const layout = async ({
   params,
 }: {
   children: React.ReactNode
-  params: { id: string }
+  params: Promise<{ id: string }>
 }) => {
-  const projectId = params.id
+  const projectId = (await params).id
 
   const project: any = await getCollections({
     collection: 'projects',

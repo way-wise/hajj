@@ -21,7 +21,7 @@ export interface Config {
     features: Feature;
     inboxes: Inbox;
     projects: Project;
-    'project-query': ProjectQuery;
+    'project-queries': ProjectQuery;
     'project-documentations': ProjectDocumentation;
     'email-template': EmailTemplate;
     redirects: Redirect;
@@ -42,7 +42,7 @@ export interface Config {
     features: FeaturesSelect<false> | FeaturesSelect<true>;
     inboxes: InboxesSelect<false> | InboxesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
-    'project-query': ProjectQuerySelect<false> | ProjectQuerySelect<true>;
+    'project-queries': ProjectQueriesSelect<false> | ProjectQueriesSelect<true>;
     'project-documentations': ProjectDocumentationsSelect<false> | ProjectDocumentationsSelect<true>;
     'email-template': EmailTemplateSelect<false> | EmailTemplateSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -1188,7 +1188,7 @@ export interface Inbox {
  */
 export interface Project {
   id: string;
-  title?: string | null;
+  title: string;
   status?: ('pending' | 'approved' | 'decline' | 'ongoing' | 'complete') | null;
   description?: string | null;
   deadline?: string | null;
@@ -1198,7 +1198,7 @@ export interface Project {
   payable_amount?: number | null;
   paid_amount?: number | null;
   due_amount?: number | null;
-  clients?: (string | null) | User;
+  client?: (string | null) | User;
   progress?: number | null;
   projectFeatures?:
     | {
@@ -1213,12 +1213,14 @@ export interface Project {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "project-query".
+ * via the `definition` "project-queries".
  */
 export interface ProjectQuery {
   id: string;
-  title?: string | null;
-  services?: (string | null) | Service;
+  date: string;
+  project: string | Project;
+  services: (string | Service)[];
+  features: (string | Feature)[];
   description?: string | null;
   docsLinks?:
     | {
@@ -1228,7 +1230,6 @@ export interface ProjectQuery {
     | null;
   minPrice?: number | null;
   maxPrice?: number | null;
-  isActive?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1378,7 +1379,7 @@ export interface PayloadLockedDocument {
         value: string | Project;
       } | null)
     | ({
-        relationTo: 'project-query';
+        relationTo: 'project-queries';
         value: string | ProjectQuery;
       } | null)
     | ({
@@ -2078,7 +2079,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   payable_amount?: T;
   paid_amount?: T;
   due_amount?: T;
-  clients?: T;
+  client?: T;
   progress?: T;
   projectFeatures?:
     | T
@@ -2093,11 +2094,13 @@ export interface ProjectsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "project-query_select".
+ * via the `definition` "project-queries_select".
  */
-export interface ProjectQuerySelect<T extends boolean = true> {
-  title?: T;
+export interface ProjectQueriesSelect<T extends boolean = true> {
+  date?: T;
+  project?: T;
   services?: T;
+  features?: T;
   description?: T;
   docsLinks?:
     | T
@@ -2107,7 +2110,6 @@ export interface ProjectQuerySelect<T extends boolean = true> {
       };
   minPrice?: T;
   maxPrice?: T;
-  isActive?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2343,7 +2345,10 @@ export interface Header {
   id: string;
   theme?: ('theme01' | 'theme02') | null;
   logo: string | Media;
+  logo_dark?: (string | null) | Media;
   callback?: string | null;
+  sticky?: boolean | null;
+  scrolLSticky?: boolean | null;
   navItems?:
     | {
         link: {
@@ -2435,7 +2440,10 @@ export interface Footer {
 export interface HeaderSelect<T extends boolean = true> {
   theme?: T;
   logo?: T;
+  logo_dark?: T;
   callback?: T;
+  sticky?: T;
+  scrolLSticky?: T;
   navItems?:
     | T
     | {
