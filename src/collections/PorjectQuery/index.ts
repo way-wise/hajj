@@ -3,8 +3,8 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
 
-const ProjectQuery: CollectionConfig = {
-  slug: 'project-query',
+const ProjectQueries: CollectionConfig = {
+  slug: 'project-queries',
   access: {
     create: anyone,
     delete: authenticated,
@@ -12,18 +12,34 @@ const ProjectQuery: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    useAsTitle: 'title',
+    useAsTitle: 'date',
   },
   fields: [
     {
-      name: 'title',
-      type: 'text',
+      name: 'date',
+      type: 'date',
+      required: true,
+    },
+    {
+      name: 'project',
+      type: 'relationship',
+      relationTo: 'projects',
+      hasMany: false,
+      required: true,
     },
     {
       name: 'services',
       type: 'relationship',
       relationTo: 'services',
-      required: false,
+      hasMany: true,
+      required: true,
+    },
+    {
+      name: 'features',
+      type: 'relationship',
+      relationTo: 'features',
+      hasMany: true,
+      required: true,
     },
     {
       name: 'description',
@@ -48,13 +64,7 @@ const ProjectQuery: CollectionConfig = {
       name: 'maxPrice',
       type: 'number',
     },
-    {
-      name: 'isActive',
-      label: 'Is Active',
-      type: 'checkbox',
-      defaultValue: true,
-    },
   ],
 }
 
-export default ProjectQuery
+export default ProjectQueries

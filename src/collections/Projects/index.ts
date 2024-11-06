@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { submitProjectQueries } from './endpoints/submitProjectQueries'
 
 const Projects: CollectionConfig = {
   slug: 'projects',
@@ -11,7 +12,16 @@ const Projects: CollectionConfig = {
       'paid_amount',
       'due_amount',
     ],
+    useAsTitle: 'title',
   },
+  endpoints: [
+    {
+      path: '/projectQueries',
+      method: 'post',
+      handler: submitProjectQueries,
+    },
+  ],
+
   fields: [
     {
       type: 'row',
@@ -20,6 +30,7 @@ const Projects: CollectionConfig = {
           label: 'Project Title',
           name: 'title',
           type: 'text',
+          required: true,
           admin: {
             width: '75%',
           },
@@ -105,13 +116,45 @@ const Projects: CollectionConfig = {
       ],
     },
     {
-      name: 'clients',
+      name: 'client',
       type: 'relationship',
       relationTo: 'users',
       admin: {
         position: 'sidebar',
       },
     },
+    {
+      name: 'progress',
+      type: 'number',
+      defaultValue:0,
+      min: 0,
+      max: 100,
+    },
+    {
+      type: 'array',
+      name: 'projectFeatures',
+      fields:[
+        {
+          type: 'row',
+          fields: [
+            {
+              name: 'featureName',
+              type: 'text',
+              required: true
+            },
+            {
+              name: 'featureProgress',
+              type: 'number',
+            },
+            {
+              name: 'isComplete',
+              type: 'checkbox',
+              defaultValue: false
+            }
+          ]
+        }
+      ]
+    }
   ],
   timestamps: true,
 }

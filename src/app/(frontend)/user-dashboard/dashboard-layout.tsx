@@ -9,7 +9,7 @@ interface DashboardLayoutProps {
 
 const DashboardLayout: FC<DashboardLayoutProps> = ({ children }: { children: ReactNode }) => {
     return (
-        <div className='w-full h-screen'>
+        <div className='w-full'>
             <div className="container">
                 <div className='py-12 flex gap-12 items-start'>
                     <Sidebar />

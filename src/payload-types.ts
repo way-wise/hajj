@@ -21,6 +21,9 @@ export interface Config {
     features: Feature;
     inboxes: Inbox;
     projects: Project;
+    'project-queries': ProjectQuery;
+    'project-documentations': ProjectDocumentation;
+    'email-template': EmailTemplate;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -39,6 +42,9 @@ export interface Config {
     features: FeaturesSelect<false> | FeaturesSelect<true>;
     inboxes: InboxesSelect<false> | InboxesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    'project-queries': ProjectQueriesSelect<false> | ProjectQueriesSelect<true>;
+    'project-documentations': ProjectDocumentationsSelect<false> | ProjectDocumentationsSelect<true>;
+    'email-template': EmailTemplateSelect<false> | EmailTemplateSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1167,11 +1173,12 @@ export interface Feature {
  */
 export interface Inbox {
   id: string;
-  subject?: string | null;
-  message?: string | null;
-  attachments?: (string | null) | Media;
-  clients?: (string | null) | User;
+  subject: string;
+  message: string;
+  receiver: string | User;
   projects?: (string | null) | Project;
+  attachments?: (string | null) | Media;
+  isRead?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1181,7 +1188,7 @@ export interface Inbox {
  */
 export interface Project {
   id: string;
-  title?: string | null;
+  title: string;
   status?: ('pending' | 'approved' | 'decline' | 'ongoing' | 'complete') | null;
   description?: string | null;
   deadline?: string | null;
@@ -1191,7 +1198,96 @@ export interface Project {
   payable_amount?: number | null;
   paid_amount?: number | null;
   due_amount?: number | null;
-  clients?: (string | null) | User;
+  client?: (string | null) | User;
+  progress?: number | null;
+  projectFeatures?:
+    | {
+        featureName: string;
+        featureProgress?: number | null;
+        isComplete?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-queries".
+ */
+export interface ProjectQuery {
+  id: string;
+  date: string;
+  project: string | Project;
+  services: (string | Service)[];
+  features: (string | Feature)[];
+  description?: string | null;
+  docsLinks?:
+    | {
+        link?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  minPrice?: number | null;
+  maxPrice?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-documentations".
+ */
+export interface ProjectDocumentation {
+  id: string;
+  title: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  project: string | Project;
+  user: string | User;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-template".
+ */
+export interface EmailTemplate {
+  id: string;
+  name: string;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  variables?:
+    | {
+        variable?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1281,6 +1377,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'projects';
         value: string | Project;
+      } | null)
+    | ({
+        relationTo: 'project-queries';
+        value: string | ProjectQuery;
+      } | null)
+    | ({
+        relationTo: 'project-documentations';
+        value: string | ProjectDocumentation;
+      } | null)
+    | ({
+        relationTo: 'email-template';
+        value: string | EmailTemplate;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1949,9 +2057,10 @@ export interface FeaturesSelect<T extends boolean = true> {
 export interface InboxesSelect<T extends boolean = true> {
   subject?: T;
   message?: T;
-  attachments?: T;
-  clients?: T;
+  receiver?: T;
   projects?: T;
+  attachments?: T;
+  isRead?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -1970,7 +2079,65 @@ export interface ProjectsSelect<T extends boolean = true> {
   payable_amount?: T;
   paid_amount?: T;
   due_amount?: T;
-  clients?: T;
+  client?: T;
+  progress?: T;
+  projectFeatures?:
+    | T
+    | {
+        featureName?: T;
+        featureProgress?: T;
+        isComplete?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-queries_select".
+ */
+export interface ProjectQueriesSelect<T extends boolean = true> {
+  date?: T;
+  project?: T;
+  services?: T;
+  features?: T;
+  description?: T;
+  docsLinks?:
+    | T
+    | {
+        link?: T;
+        id?: T;
+      };
+  minPrice?: T;
+  maxPrice?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-documentations_select".
+ */
+export interface ProjectDocumentationsSelect<T extends boolean = true> {
+  title?: T;
+  content?: T;
+  project?: T;
+  user?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-template_select".
+ */
+export interface EmailTemplateSelect<T extends boolean = true> {
+  name?: T;
+  content?: T;
+  variables?:
+    | T
+    | {
+        variable?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2178,7 +2345,10 @@ export interface Header {
   id: string;
   theme?: ('theme01' | 'theme02') | null;
   logo: string | Media;
+  logo_dark?: (string | null) | Media;
   callback?: string | null;
+  sticky?: boolean | null;
+  scrolLSticky?: boolean | null;
   navItems?:
     | {
         link: {
@@ -2270,7 +2440,10 @@ export interface Footer {
 export interface HeaderSelect<T extends boolean = true> {
   theme?: T;
   logo?: T;
+  logo_dark?: T;
   callback?: T;
+  sticky?: T;
+  scrolLSticky?: T;
   navItems?:
     | T
     | {

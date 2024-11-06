@@ -7,11 +7,8 @@ const stripe = new Stripe(stripe_key, {
 });
 
 export const paymentHandler: PayloadHandler = async (req): Promise<Response> => {
-  const { payload, user } = req
+  const { payload } = req
 
-  if (!user) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
   if (req.method === 'POST') {
     try {
 
