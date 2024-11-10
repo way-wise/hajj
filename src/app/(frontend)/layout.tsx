@@ -29,6 +29,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <InitTheme />
           <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
           <link rel="icon" type="image/png" href="/favicon.png" />
+          <link rel="preconnect" href="https://www.googletagmanager.com" />
+          <link rel="preconnect" href="https://www.google-analytics.com" />
           <GoogleAnalytics />
         </head>
         <body className={`${inter.className} min-h-screen`}>
