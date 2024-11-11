@@ -43,6 +43,7 @@ import Features from './collections/Features'
 import ProjectDocumentations from './collections/ProjectDocumentations'
 import EmailTemplate from './collections/emailTemplate'
 import ProjectQueries from './collections/PorjectQuery'
+import HajjQuery from './collections/HajjQuery'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -127,6 +128,7 @@ export default buildConfig({
     skipVerify: process.env.SMTP_EMAIL_SERVICE === 'false' ? true : false,
   }),
   // This config helps us configure global or default features that the other editors can inherit
+  // @ts-expect-error
   editor: lexicalEditor({
     features: () => {
       return [
@@ -174,6 +176,7 @@ export default buildConfig({
     Inboxes,
     Projects,
     ProjectQueries,
+    HajjQuery,
     ProjectDocumentations,
     EmailTemplate,
   ],
@@ -229,6 +232,7 @@ export default buildConfig({
         payment: false,
       },
       formOverrides: {
+        // @ts-expect-error
         fields: ({ defaultFields }) => {
           return defaultFields.map((field) => {
             if ('name' in field && field.name === 'confirmationMessage') {
