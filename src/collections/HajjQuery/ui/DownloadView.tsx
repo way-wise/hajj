@@ -4,7 +4,7 @@ import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { Gutter } from '@payloadcms/ui'
 import React from 'react'
-import FinalDownload from './FInalDownload'
+import FinalDownload from './DownloadClient'
 
 const DownloadView: React.FC<ServerSideEditViewProps> = async (props) => {
   const {

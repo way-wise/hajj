@@ -4,19 +4,19 @@ import { Button } from '@payloadcms/ui'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
-const FinalDownload = ({ data }: { data: any }) => {
-  console.log(data)
+const DownloadClient = ({ data }: { data: any }) => {
+
   return (
     <>
       <div id="hajjQueryView" className="package-container">
         <div className="header">
           <div className="logo-container">
-            <img src="/makka.png" alt="Way Wise" className="logo" />
+            <img src="/assets/waywise-islam-logo.png" alt="Way Wise" className="logo" />
             <div className="company-info">
               <span className="company-name">Way Wise Islam & Al Muqaddas</span>
               <p className="subtitle">An American and Bangladeshi Joint Venture</p>
             </div>
-            <img src="/mukaddas.png" alt="Muqaddas" className="logo" />
+            <img src="/assets/mukaddas-logo.png" alt="Muqaddas" className="logo" />
           </div>
           <h1 className="main-title">Customized Umrah Package</h1>
         </div>
@@ -105,14 +105,14 @@ const FinalDownload = ({ data }: { data: any }) => {
           <div className="validity">This estimated package will be valid for 24 hours.</div>
           <div className="contact-info">
             <span>
-              <i className="home-icon"></i> House: B/148(5th Floor), <br /> Road: 22, Mohakhali,
+            <img src="/assets/home.png" className="icon" /> House: B/148(5th Floor), <br /> Road: 22, Mohakhali,
               Dhaka- 1212
             </span>
             <span>
-              <i className="phone-icon"></i> +880 1748 771945
+            <img src="/assets/phone.png"  className="icon" /> +880 1748 771945
             </span>
             <span>
-              <i className="web-icon"></i> www.waywiseislam.com
+            <img src="/assets/glob.png"  className="icon" /> www.waywiseislam.com
             </span>
           </div>
         </div>
@@ -141,4 +141,4 @@ const FinalDownload = ({ data }: { data: any }) => {
   )
 }
 
-export default FinalDownload
+export default DownloadClient
