@@ -32,7 +32,8 @@ export interface Config {
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
-  collectionsSelect?: {
+  collectionsJoins: {};
+  collectionsSelect: {
     pages: PagesSelect<false> | PagesSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
     invoices: InvoicesSelect<false> | InvoicesSelect<true>;
@@ -61,7 +62,7 @@ export interface Config {
     header: Header;
     footer: Footer;
   };
-  globalsSelect?: {
+  globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
   };
@@ -217,7 +218,7 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
-    card?: {
+    square?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -225,7 +226,31 @@ export interface Media {
       filesize?: number | null;
       filename?: string | null;
     };
-    tablet?: {
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    xlarge?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -438,7 +463,7 @@ export interface Post {
 export interface User {
   id: string;
   name?: string | null;
-  roles?: ('admin' | 'customer')[] | null;
+  roles?: ('admin' | 'operation' | 'customer')[] | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -1245,12 +1270,12 @@ export interface HajJquery {
   is_food_included?: boolean | null;
   package_name?: string | null;
   proposed_date: string;
-  total_cost_of_package: number;
   proposed_time: string;
-  waywise_service_fee: number;
   makka_duration: number;
   madina_duration: number;
-  grand_total: number;
+  total_cost_of_package: number;
+  waywise_service_fee: number;
+  grand_total?: number | null;
   flight_reference: string;
   occupancy_type: string;
   makka_hotel_type: string;
@@ -1997,7 +2022,7 @@ export interface MediaSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        card?:
+        square?:
           | T
           | {
               url?: T;
@@ -2007,7 +2032,37 @@ export interface MediaSelect<T extends boolean = true> {
               filesize?: T;
               filename?: T;
             };
-        tablet?:
+        small?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        medium?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        large?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        xlarge?:
           | T
           | {
               url?: T;
@@ -2152,11 +2207,11 @@ export interface HajJquerySelect<T extends boolean = true> {
   is_food_included?: T;
   package_name?: T;
   proposed_date?: T;
-  total_cost_of_package?: T;
   proposed_time?: T;
-  waywise_service_fee?: T;
   makka_duration?: T;
   madina_duration?: T;
+  total_cost_of_package?: T;
+  waywise_service_fee?: T;
   grand_total?: T;
   flight_reference?: T;
   occupancy_type?: T;

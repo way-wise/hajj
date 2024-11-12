@@ -1,29 +1,19 @@
-.field-type__wrap {
-  z-index: 1;
-}
-.react-select {
-  &:focus-within {
-    z-index: 3;
-  }
-}
-
 // HajjQuery view css
 // Colors
 $primary-black: #000;
-$secondary-black: #2D2D2D;
+$secondary-black: #2d2d2d;
 $primary-white: #fff;
 $primary-gold: #ffb519;
 $secondary-gold: #ffd700;
 $primary-red: #bb303b;
 $primary-blue: #007bff;
 
-.red-heading{
+.red-heading {
   color: $primary-red;
   font-weight: bold;
   font-size: 16px;
   margin-bottom: 5px;
 }
-
 
 .package-container {
   font-family: 'Inter', sans-serif;
@@ -49,7 +39,6 @@ $primary-blue: #007bff;
       justify-content: space-between;
 
       .company-info {
-        
         .company-name {
           color: $primary-gold;
           font-size: 24px;
@@ -59,12 +48,14 @@ $primary-blue: #007bff;
 
         .subtitle {
           text-align: center;
-         line-height: 22px;
+          line-height: 30px;
+          padding-bottom: 12px;
           background: $primary-red;
           color: white;
           border-radius: 6px;
           font-size: 14px;
           margin-top: 12px;
+          display: block;
         }
       }
       .logo {
@@ -84,17 +75,22 @@ $primary-blue: #007bff;
   }
 
   .package-content {
-    background: rgb(187,255,244);
-    background: linear-gradient(171deg, rgba(187,255,244,1) 0%, rgba(220,239,255,1) 43%, rgba(214,223,255,1) 100%);
+    background: rgb(187, 255, 244);
+    background: linear-gradient(
+      171deg,
+      rgba(187, 255, 244, 1) 0%,
+      rgba(220, 239, 255, 1) 43%,
+      rgba(214, 223, 255, 1) 100%
+    );
     padding: 24px 30px;
 
-     height: 100%;
-    
+    height: 100%;
+
     .greeting {
       margin: 24px 0;
 
-      p {        
-        font-size: 14px;       
+      p {
+        font-size: 14px;
       }
     }
 
@@ -103,7 +99,6 @@ $primary-blue: #007bff;
       grid-template-columns: 1fr 1fr;
       gap: 60px;
       .left-section {
-        
         .info-list {
           display: flex;
           flex-direction: column;
@@ -111,11 +106,11 @@ $primary-blue: #007bff;
         }
       }
       .right-section {
-       .pricing-list {
-        display: flex;
-        flex-direction: column;
-        gap: 14px;
-       }
+        .pricing-list {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
       }
 
       .info-item,
@@ -127,7 +122,7 @@ $primary-blue: #007bff;
         gap: 2px;
 
         .label {
-          font-weight: semibold;          
+          font-weight: semibold;
           color: $secondary-black;
         }
         .value {
@@ -144,10 +139,9 @@ $primary-blue: #007bff;
           font-weight: bold;
           color: $primary-black;
         }
-        
       }
 
-      .grand-total {       
+      .grand-total {
         margin: 24px 0;
       }
     }
@@ -183,10 +177,12 @@ $primary-blue: #007bff;
     .validity {
       background: #dc3545;
       color: white;
-      text-align: center;      
+      text-align: center;
       font-size: 16px;
       font-weight: bolder;
       line-height: 40px;
+      padding-bottom: 5px;
+      display: block;
     }
 
     .contact-info {
@@ -194,7 +190,7 @@ $primary-blue: #007bff;
       color: white;
       padding: 14px;
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
 
       span {
@@ -212,7 +208,6 @@ $primary-blue: #007bff;
 
 .download-button {
   text-align: center;
-  margin: 20px 0;
 
   button {
     background: #007bff;

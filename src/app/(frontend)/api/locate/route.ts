@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 
 const gdprCountryCodes = [
   // -----[ EU 28 ]-----
@@ -86,9 +86,23 @@ const gdprCountryCodes = [
 const locate = (countryCode: string | null = null): boolean =>
   countryCode ? gdprCountryCodes.indexOf(countryCode) > -1 : true
 
-export async function GET(req: Request): Promise<NextResponse> {
-  const country =
-    typeof req.headers['x-vercel-ip-country'] === 'string' ? req.headers['x-vercel-ip-country'] : ''
+export async function GET(req: NextRequest): Promise<NextResponse> {
+  const country = req.cookies.get('country')?.value ?? ''
+  const res = NextResponse.next()
+
+  if (!country) {
+    try {
+      const ipResponse = await fetch(`https://api.country.is`)
+      const data = await ipResponse.json()
+      // const response = await fetch(`https://ipapi.co/${userIP || '0.0.0.0'}/country/`)
+      const country = data && data.country ? data.country : ''
+      console.log('country', data)
+      if (country) {
+        res.cookies.set('country', country)
+      }
+    } catch (error) {}
+  }
+  // const country = typeof req.headers['x-vercel-ip-country'] === 'string' ? req.headers['x-vercel-ip-country'] : ''
 
   return NextResponse.json({ isGDPR: locate(country), country })
 }
