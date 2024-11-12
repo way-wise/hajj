@@ -2,14 +2,16 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { checkRole } from '../Users/checkRole'
+import { admins } from '@/access/admins'
 
 const HajjQuery: CollectionConfig = {
   slug: 'haj-jquery',
   access: {
-    create: anyone,
-    delete: authenticated,
-    read: anyone,
-    update: authenticated,
+    create: ({ req: { user } }) => checkRole(['admin', 'operation'], user),
+    read: ({ req: { user } }) => checkRole(['admin', 'operation'], user),
+    update: ({ req: { user } }) => checkRole(['admin', 'operation'], user),
+    delete: admins,
   },
   admin: {
     useAsTitle: 'package_type',
@@ -34,8 +36,9 @@ const HajjQuery: CollectionConfig = {
       fields: [
         {
           name: 'package_type',
-          type: 'select',
+          type: 'radio',
           required: true,
+          defaultValue: 'Hajj',
           options: ['Hajj', 'Umrah'],
         },
       ],
@@ -114,7 +117,7 @@ const HajjQuery: CollectionConfig = {
       name: 'transport_service',
       type: 'text',
       required: true,
-    },    
+    },
   ],
 }
 

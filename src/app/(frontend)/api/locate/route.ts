@@ -92,12 +92,11 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   if (!country) {
     try {
-      const ipResponse = await fetch(`https://api.ipify.org?format=json`)
+      const ipResponse = await fetch(`https://api.country.is`)
       const data = await ipResponse.json()
-      const userIP = data.ip
-      const response = await fetch(`https://ipapi.co/${userIP || '0.0.0.0'}/country/`)
-      const country = await response.text()
-      console.log('country', country)
+      // const response = await fetch(`https://ipapi.co/${userIP || '0.0.0.0'}/country/`)
+      const country = data && data.country ? data.country : ''
+      console.log('country', data)
       if (country) {
         res.cookies.set('country', country)
       }

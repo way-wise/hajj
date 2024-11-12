@@ -40,10 +40,10 @@ const setLocaleStorage = (accepted: boolean, rejected: boolean, country: string)
 
 const getGDPR = async (): Promise<LocateResponse> => {
   const res = await locate()
-  console.log('cookieConsentres', res);
 
   if (res.status === 200) {
     const result: LocateResponse = await res.json()
+    console.log('cookieConsentres', result);
     return result
   }
   return { isGDPR: true }
