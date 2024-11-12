@@ -1241,8 +1241,19 @@ export interface ProjectQuery {
  */
 export interface HajJquery {
   id: string;
-  title: string;
-  description?: string | null;
+  package_type: 'Hajj' | 'Umrah';
+  proposed_date: string;
+  total_cost_of_package: number;
+  proposed_time: string;
+  waywise_service_fee: number;
+  makka_duration: number;
+  madina_duration: number;
+  grand_total: number;
+  flight_reference: string;
+  occupancy_type: string;
+  makka_hotel_type: string;
+  madina_hotel_type: string;
+  transport_service: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -2135,8 +2146,19 @@ export interface ProjectQueriesSelect<T extends boolean = true> {
  * via the `definition` "haj-jquery_select".
  */
 export interface HajJquerySelect<T extends boolean = true> {
-  title?: T;
-  description?: T;
+  package_type?: T;
+  proposed_date?: T;
+  total_cost_of_package?: T;
+  proposed_time?: T;
+  waywise_service_fee?: T;
+  makka_duration?: T;
+  madina_duration?: T;
+  grand_total?: T;
+  flight_reference?: T;
+  occupancy_type?: T;
+  makka_hotel_type?: T;
+  madina_hotel_type?: T;
+  transport_service?: T;
   updatedAt?: T;
   createdAt?: T;
 }

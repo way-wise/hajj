@@ -7,6 +7,223 @@
   }
 }
 
-#hajjQueryView {
-  color: #ff0000;
+// HajjQuery view css
+// Colors
+$primary-black: #000;
+$secondary-black: #2D2D2D;
+$primary-white: #fff;
+$primary-gold: #ffb519;
+$secondary-gold: #ffd700;
+$primary-red: #bb303b;
+$primary-blue: #007bff;
+
+.red-heading{
+  color: $primary-red;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+
+.package-container {
+  font-family: 'Inter', sans-serif;
+  width: 210mm;
+  height: 297mm;
+  margin: 0 auto;
+  background: $primary-white;
+  color: $primary-black;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    height: 194px;
+    background: $primary-black;
+    color: $primary-white;
+    padding: 28px;
+    text-align: center;
+    border-bottom: 3px solid $primary-gold;
+
+    .logo-container {
+      display: flex;
+      justify-content: space-between;
+
+      .company-info {
+        
+        .company-name {
+          color: $primary-gold;
+          font-size: 24px;
+          margin-top: 3px;
+          font-weight: bold;
+        }
+
+        .subtitle {
+          text-align: center;
+         line-height: 22px;
+          background: $primary-red;
+          color: white;
+          border-radius: 6px;
+          font-size: 14px;
+          margin-top: 12px;
+        }
+      }
+      .logo {
+        width: 70px;
+        height: 70px;
+      }
+    }
+
+    .main-title {
+      color: $primary-gold;
+      text-align: center;
+      font-size: 38px;
+      font-weight: semibold;
+      margin-top: 28px;
+      font-family: 'Inter', sans-serif !important;
+    }
+  }
+
+  .package-content {
+    background: rgb(187,255,244);
+    background: linear-gradient(171deg, rgba(187,255,244,1) 0%, rgba(220,239,255,1) 43%, rgba(214,223,255,1) 100%);
+    padding: 24px 30px;
+
+     height: 100%;
+    
+    .greeting {
+      margin: 24px 0;
+
+      p {        
+        font-size: 14px;       
+      }
+    }
+
+    .package-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      .left-section {
+        
+        .info-list {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+        }
+      }
+      .right-section {
+       .pricing-list {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+       }
+      }
+
+      .info-item,
+      .price-item {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 14px;
+        gap: 2px;
+
+        .label {
+          font-weight: semibold;          
+          color: $secondary-black;
+        }
+        .value {
+          font-weight: bold;
+          color: $primary-black;
+        }
+        .amount {
+          font-size: 16px;
+          font-weight: bold;
+          color: $primary-black;
+        }
+        .amount-big {
+          font-size: 32px;
+          font-weight: bold;
+          color: $primary-black;
+        }
+        
+      }
+
+      .grand-total {       
+        margin: 24px 0;
+      }
+    }
+
+    .package-notes {
+      margin-top: 20px;
+
+      ul {
+        list-style: none;
+        padding-left: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        li {
+          font-size: 14px;
+          &:before {
+            content: '★';
+            color: $primary-red;
+            font-size: 10px;
+            margin-right: 8px;
+            margin-bottom: 2px;
+          }
+        }
+      }
+    }
+  }
+
+  .footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    .validity {
+      background: #dc3545;
+      color: white;
+      text-align: center;      
+      font-size: 16px;
+      font-weight: bolder;
+      line-height: 40px;
+    }
+
+    .contact-info {
+      background: #000;
+      color: white;
+      padding: 14px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex: 1 1 0;
+        width: 0;
+        font-size: 14px;
+        font-weight: bolder;
+      }
+    }
+  }
+}
+
+.download-button {
+  text-align: center;
+  margin: 20px 0;
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background: #0056b3;
+    }
+  }
 }

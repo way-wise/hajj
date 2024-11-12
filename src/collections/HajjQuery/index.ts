@@ -12,7 +12,7 @@ const HajjQuery: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    useAsTitle: 'title',
+    useAsTitle: 'package_type',
     components: {
       views: {
         edit: {
@@ -30,17 +30,91 @@ const HajjQuery: CollectionConfig = {
   },
   fields: [
     {
-      name: 'title',
+      type: 'row',
+      fields: [
+        {
+          name: 'package_type',
+          type: 'select',
+          required: true,
+          options: ['Hajj', 'Umrah'],
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'proposed_date',
+          type: 'date',
+          required: true,
+        },
+        {
+          name: 'total_cost_of_package',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'proposed_time',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'waywise_service_fee',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'makka_duration',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'madina_duration',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'grand_total',
+          type: 'number',
+          required: true,
+        },
+      ],
+    },
+    {
+      name: 'flight_reference',
       type: 'text',
       required: true,
     },
-      
     {
-      name: 'description',
-      type: 'textarea',
-      required: false,
+      name: 'occupancy_type',
+      type: 'text',
+      required: true,
     },
-    
+    {
+      name: 'makka_hotel_type',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'madina_hotel_type',
+      type: 'text',
+      required: true,
+    },
+    {
+      name: 'transport_service',
+      type: 'text',
+      required: true,
+    },    
   ],
 }
 
