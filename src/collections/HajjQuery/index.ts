@@ -1,15 +1,15 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone } from '@/access/anyone'
-import { authenticated } from '@/access/authenticated'
+import { checkRole } from '../Users/checkRole'
+import { admins } from '@/access/admins'
 
 const HajjQuery: CollectionConfig = {
   slug: 'haj-jquery',
   access: {
-    create: anyone,
-    delete: authenticated,
-    read: anyone,
-    update: authenticated,
+    create: ({ req: { user } }) => checkRole(['admin', 'operation'], user),
+    read: ({ req: { user } }) => checkRole(['admin', 'operation'], user),
+    update: ({ req: { user } }) => checkRole(['admin', 'operation'], user),
+    delete: admins,
   },
   admin: {
     useAsTitle: 'package_type',
@@ -37,12 +37,13 @@ const HajjQuery: CollectionConfig = {
           name: 'package_type',
           type: 'radio',
           required: true,
+          defaultValue: 'Hajj',
           options: ['Hajj', 'Umrah'],
         },
         {
           label: 'Is Food Included',
-          name: 'is_food_included', 
-          type: 'checkbox',          
+          name: 'is_food_included',
+          type: 'checkbox',
           admin: {
             condition: (data, siblingData, { user }) => {
               return siblingData.package_type === 'Hajj'
@@ -51,15 +52,15 @@ const HajjQuery: CollectionConfig = {
         },
         {
           label: 'Name of the Package',
-          name: 'package_name', 
-          type: 'text',          
+          name: 'package_name',
+          type: 'text',
           admin: {
             condition: (data, siblingData, { user }) => {
               return siblingData.package_type === 'Hajj'
             },
           },
         },
-        
+
       ],
     },
     {
@@ -72,26 +73,9 @@ const HajjQuery: CollectionConfig = {
           required: true,
         },
         {
-          label: 'Total estimated cost of Package',
-          name: 'total_cost_of_package',
-          type: 'number',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
-        {
           label: 'Proposed Time of Umrah',
           name: 'proposed_time',
           type: 'text',
-          required: true,
-        },
-        {
-          label: 'Waywise service charge',
-          name: 'waywise_service_fee',
-          type: 'number',
           required: true,
         },
       ],
@@ -111,14 +95,38 @@ const HajjQuery: CollectionConfig = {
           type: 'number',
           required: true,
         },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          label: 'Total estimated cost of Package',
+          name: 'total_cost_of_package',
+          type: 'number',
+          required: true,
+        },
+        {
+          label: 'Waywise service charge',
+          name: 'waywise_service_fee',
+          type: 'number',
+          required: true,
+        },
         {
           label: 'Grand Total',
           name: 'grand_total',
           type: 'number',
-          required: true,
+          min: 0,
+          admin: {
+            readOnly: true,
+            components: {
+              Field: '@/collections/HajjQuery/ui/TotalAmountField',
+            },
+          },
         },
       ],
     },
+
     {
       label: 'Flight Reference',
       name: 'flight_reference',
@@ -148,7 +156,7 @@ const HajjQuery: CollectionConfig = {
       name: 'transport_service',
       type: 'text',
       required: true,
-    },    
+    },
   ],
 }
 

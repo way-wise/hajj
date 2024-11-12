@@ -1,7 +1,7 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
-import { payloadCloudPlugin } from '@payloadcms/plugin-cloud'
+import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
 import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
@@ -14,6 +14,7 @@ import {
   HeadingFeature,
   ItalicFeature,
   LinkFeature,
+  ParagraphFeature,
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 import sharp from 'sharp' // editor-import
@@ -128,10 +129,10 @@ export default buildConfig({
     skipVerify: process.env.SMTP_EMAIL_SERVICE === 'false' ? true : false,
   }),
   // This config helps us configure global or default features that the other editors can inherit
-  // @ts-expect-error
   editor: lexicalEditor({
     features: () => {
       return [
+        ParagraphFeature(),
         UnderlineFeature(),
         BoldFeature(),
         ItalicFeature(),
@@ -232,7 +233,6 @@ export default buildConfig({
         payment: false,
       },
       formOverrides: {
-        // @ts-expect-error
         fields: ({ defaultFields }) => {
           return defaultFields.map((field) => {
             if ('name' in field && field.name === 'confirmationMessage') {

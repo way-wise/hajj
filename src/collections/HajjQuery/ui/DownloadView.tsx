@@ -7,15 +7,13 @@ import React from 'react'
 import DownloadClient from './DownloadClient'
 
 const DownloadView: React.FC<ServerSideEditViewProps> = async (props) => {
-  const {
-    initPageResult: { docID },
-  } = props
+  const { initPageResult } = props
 
   const payload = await getPayloadHMR({ config: configPromise })
 
   const result = await payload.findByID({
     collection: 'haj-jquery',
-    id: docID as string,
+    id: initPageResult?.docID as string,
     depth: 2,
   })
 

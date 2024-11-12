@@ -9,7 +9,7 @@ import { themeLocalStorageKey } from './types'
 
 export const ThemeSelector: React.FC = () => {
   const { setTheme } = useTheme()
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState('light')
 
   const onThemeChange = (themeToSet: Theme) => {
     setTheme(themeToSet)
