@@ -18,10 +18,6 @@ const nextConfig = {
       }),
     ],
   },
-  env: {
-    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
-    NEXT_PUBLIC_FACEBOOK_PIXEL_ID: process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID,
-  },
   reactStrictMode: true,
   redirects,
 }

@@ -47,7 +47,7 @@ export const Pages: CollectionConfig = {
     livePreview: {
       url: ({ data }) => {
         const path = generatePreviewPath({
-          slug: `/page-preview/${typeof data?.slug === 'string' ? data.slug : ''}`,
+          slug: typeof data?.slug === 'string' ? data.slug : '',
           collection: 'pages',
         })
 
@@ -155,10 +155,9 @@ export const Pages: CollectionConfig = {
   },
   versions: {
     drafts: {
-      autosave: false,
-      // autosave: {
-      //   interval: 100, // We set this interval for optimal live preview
-      // },
+      autosave: {
+        interval: 100, // We set this interval for optimal live preview
+      },
     },
     maxPerDoc: 50,
   },
