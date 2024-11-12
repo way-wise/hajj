@@ -4,7 +4,7 @@ import configPromise from '@payload-config'
 import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { Gutter } from '@payloadcms/ui'
 import React from 'react'
-import FinalDownload from './DownloadClient'
+import DownloadClient from './DownloadClient'
 
 const DownloadView: React.FC<ServerSideEditViewProps> = async (props) => {
   const { initPageResult } = props
@@ -19,7 +19,7 @@ const DownloadView: React.FC<ServerSideEditViewProps> = async (props) => {
 
   return (
     <Gutter>
-      <FinalDownload data={result} />
+      <DownloadClient data={result} />
     </Gutter>
   )
 }

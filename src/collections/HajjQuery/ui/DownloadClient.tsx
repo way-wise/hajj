@@ -114,7 +114,7 @@ const DownloadClient = ({ data }: { data: any }) => {
                     <li>Qualified tour guide/Muallem included</li>
                     <li>Visa & all type of registration cost included</li>
                     <li>Taif and Jeddah visit not included</li>
-                    <li>Food not included</li>
+                    {data?.is_food_included && <li>Food not included</li>}
                   </ul>
                 </div>
               </div>
