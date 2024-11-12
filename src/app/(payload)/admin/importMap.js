@@ -25,6 +25,7 @@ import { default as default_9a9bbcf7d2582676982e5db002081f62 } from '@/collectio
 import { default as default_d73a65ebc877bc85a4915d7c40dfd8d1 } from '@/collections/Invoices/ui/TotalField'
 import { default as default_7083957b75b1a00432da6a8abf4b4a92 } from '@/collections/Invoices/ui/SubTotalAmountField'
 import { default as default_45f7dc9a7f66da8e59cd723cf1cf1b5b } from '@/collections/Invoices/ui/TotalAmountField'
+import { default as default_5647b48d11b82fc68926053e14f20586 } from '@/collections/HajjQuery/ui/DownloadView'
 import { default as default_3ff15b814cdf190575ac4e737da964e4 } from '@/components/Logo/Icon'
 import { default as default_a0bd5f2fa532ef2166f77171a2b9828a } from '@/components/Logo/Logo'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
@@ -58,6 +59,7 @@ export const importMap = {
   "@/collections/Invoices/ui/TotalField#default": default_d73a65ebc877bc85a4915d7c40dfd8d1,
   "@/collections/Invoices/ui/SubTotalAmountField#default": default_7083957b75b1a00432da6a8abf4b4a92,
   "@/collections/Invoices/ui/TotalAmountField#default": default_45f7dc9a7f66da8e59cd723cf1cf1b5b,
+  "@/collections/HajjQuery/ui/DownloadView#default": default_5647b48d11b82fc68926053e14f20586,
   "@/components/Logo/Icon#default": default_3ff15b814cdf190575ac4e737da964e4,
   "@/components/Logo/Logo#default": default_a0bd5f2fa532ef2166f77171a2b9828a,
   "@/components/BeforeDashboard#default": default_1a7510af427896d367a49dbf838d2de6,

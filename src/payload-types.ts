@@ -22,6 +22,7 @@ export interface Config {
     inboxes: Inbox;
     projects: Project;
     'project-queries': ProjectQuery;
+    'haj-jquery': HajJquery;
     'project-documentations': ProjectDocumentation;
     'email-template': EmailTemplate;
     redirects: Redirect;
@@ -43,6 +44,7 @@ export interface Config {
     inboxes: InboxesSelect<false> | InboxesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'project-queries': ProjectQueriesSelect<false> | ProjectQueriesSelect<true>;
+    'haj-jquery': HajJquerySelect<false> | HajJquerySelect<true>;
     'project-documentations': ProjectDocumentationsSelect<false> | ProjectDocumentationsSelect<true>;
     'email-template': EmailTemplateSelect<false> | EmailTemplateSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -1235,6 +1237,30 @@ export interface ProjectQuery {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "haj-jquery".
+ */
+export interface HajJquery {
+  id: string;
+  package_type: 'Hajj' | 'Umrah';
+  is_food_included?: boolean | null;
+  package_name?: string | null;
+  proposed_date: string;
+  total_cost_of_package: number;
+  proposed_time: string;
+  waywise_service_fee: number;
+  makka_duration: number;
+  madina_duration: number;
+  grand_total: number;
+  flight_reference: string;
+  occupancy_type: string;
+  makka_hotel_type: string;
+  madina_hotel_type: string;
+  transport_service: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "project-documentations".
  */
 export interface ProjectDocumentation {
@@ -1381,6 +1407,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'project-queries';
         value: string | ProjectQuery;
+      } | null)
+    | ({
+        relationTo: 'haj-jquery';
+        value: string | HajJquery;
       } | null)
     | ({
         relationTo: 'project-documentations';
@@ -2110,6 +2140,29 @@ export interface ProjectQueriesSelect<T extends boolean = true> {
       };
   minPrice?: T;
   maxPrice?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "haj-jquery_select".
+ */
+export interface HajJquerySelect<T extends boolean = true> {
+  package_type?: T;
+  is_food_included?: T;
+  package_name?: T;
+  proposed_date?: T;
+  total_cost_of_package?: T;
+  proposed_time?: T;
+  waywise_service_fee?: T;
+  makka_duration?: T;
+  madina_duration?: T;
+  grand_total?: T;
+  flight_reference?: T;
+  occupancy_type?: T;
+  makka_hotel_type?: T;
+  madina_hotel_type?: T;
+  transport_service?: T;
   updatedAt?: T;
   createdAt?: T;
 }
