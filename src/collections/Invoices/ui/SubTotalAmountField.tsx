@@ -4,7 +4,7 @@ import { useAllFormFields, useField } from '@payloadcms/ui'
 import { getSiblingData } from 'payload/shared'
 import { useEffect, useState } from 'react'
 
-const TotalAmountField: React.FC = () => {
+const SubTotalAmountField: React.FC = () => {
   const { value, setValue } = useField({})
   const [fields, dispatchFields] = useAllFormFields()
   const invoiceItems = getSiblingData(fields, 'invoiceItems.items')
@@ -36,4 +36,4 @@ const TotalAmountField: React.FC = () => {
   )
 }
 
-export default TotalAmountField
+export default SubTotalAmountField

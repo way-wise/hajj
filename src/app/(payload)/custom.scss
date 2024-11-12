@@ -48,12 +48,14 @@ $primary-blue: #007bff;
 
         .subtitle {
           text-align: center;
-          line-height: 22px;
+          line-height: 30px;
+          padding-bottom: 12px;
           background: $primary-red;
           color: white;
           border-radius: 6px;
           font-size: 14px;
           margin-top: 12px;
+          display: block;
         }
       }
       .logo {
@@ -179,6 +181,8 @@ $primary-blue: #007bff;
       font-size: 16px;
       font-weight: bolder;
       line-height: 40px;
+      padding-bottom: 5px;
+      display: block;
     }
 
     .contact-info {
@@ -186,7 +190,7 @@ $primary-blue: #007bff;
       color: white;
       padding: 14px;
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       align-items: center;
 
       span {
@@ -204,7 +208,6 @@ $primary-blue: #007bff;
 
 .download-button {
   text-align: center;
-  margin: 20px 0;
 
   button {
     background: #007bff;

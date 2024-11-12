@@ -1,7 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-import { anyone } from '@/access/anyone'
-import { authenticated } from '@/access/authenticated'
 import { checkRole } from '../Users/checkRole'
 import { admins } from '@/access/admins'
 
@@ -52,23 +50,8 @@ const HajjQuery: CollectionConfig = {
           required: true,
         },
         {
-          name: 'total_cost_of_package',
-          type: 'number',
-          required: true,
-        },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
-        {
           name: 'proposed_time',
           type: 'text',
-          required: true,
-        },
-        {
-          name: 'waywise_service_fee',
-          type: 'number',
           required: true,
         },
       ],
@@ -86,13 +69,35 @@ const HajjQuery: CollectionConfig = {
           type: 'number',
           required: true,
         },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
         {
-          name: 'grand_total',
+          name: 'total_cost_of_package',
           type: 'number',
           required: true,
         },
+        {
+          name: 'waywise_service_fee',
+          type: 'number',
+          required: true,
+        },
+        {
+          name: 'grand_total',
+          type: 'number',
+          min: 0,
+          admin: {
+            readOnly: true,
+            components: {
+              Field: '@/collections/HajjQuery/ui/TotalAmountField',
+            },
+          },
+        },
       ],
     },
+
     {
       name: 'flight_reference',
       type: 'text',
