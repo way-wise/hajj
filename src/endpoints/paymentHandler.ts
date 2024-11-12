@@ -3,7 +3,7 @@ import Stripe from 'stripe';
 
 const stripe_key = process.env.STRIPE_SECRET_KEY || ''
 const stripe = new Stripe(stripe_key, {
-  apiVersion: '2024-09-30.acacia',
+  apiVersion: '2024-10-28.acacia',
 });
 
 export const paymentHandler: PayloadHandler = async (req): Promise<Response> => {
