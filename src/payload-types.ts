@@ -1242,6 +1242,8 @@ export interface ProjectQuery {
 export interface HajJquery {
   id: string;
   package_type: 'Hajj' | 'Umrah';
+  is_food_included?: boolean | null;
+  package_name?: string | null;
   proposed_date: string;
   total_cost_of_package: number;
   proposed_time: string;
@@ -2147,6 +2149,8 @@ export interface ProjectQueriesSelect<T extends boolean = true> {
  */
 export interface HajJquerySelect<T extends boolean = true> {
   package_type?: T;
+  is_food_included?: T;
+  package_name?: T;
   proposed_date?: T;
   total_cost_of_package?: T;
   proposed_time?: T;
