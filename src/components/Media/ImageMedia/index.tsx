@@ -45,7 +45,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
     height = fullHeight!
     alt = altFromResource
 
-    src = `${process.env.NEXT_PUBLIC_SERVER_URL}${url}`
+    src = `${process.env.NEXT_PUBLIC_SERVER_URL}${url || '/assets/placeholder.png'}`
   }
 
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
@@ -61,7 +61,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
       title={alt || ''}
       className={cn(imgClassName)}
       fill={fill}
-      height={!fill ? height : undefined}
+      height={!fill ? height || 200 : undefined}
       onClick={onClick}
       onLoad={() => {
         setIsLoading(false)
@@ -73,7 +73,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
       quality={90}
       sizes={sizes}
       src={src}
-      width={!fill ? width : undefined}
+      width={!fill ? width || 300 : undefined}
     />
   )
 }

@@ -80,12 +80,12 @@ export const MediaSection: React.FC<Props> = (props) => {
       <div className="absolute left-0 top-0 w-full h-full">
         <div className="container h-full">
           <div className="p-4 flex flex-col gap-8 justify-center items-center h-full">
-            <div className="max-w-[48rem] flex items-center text-white text-shadow shadow-gray-900">
+            <div className="max-w-[48rem] flex items-center text-white">
               {richText && <RichText className="mb-0" content={richText} enableGutter={false} />}
             </div>
             <div className="flex flex-col gap-8">
               {(links || []).map(({ link }, i) => {
-                return <CMSLink className='rounded' key={i} size="lg" {...link} />
+                return <CMSLink className='px-12 py-4 h-14 text-lg font-semibold duration-300 ease-in-out rounded' key={i} {...link} />
               })}
             </div>
           </div>

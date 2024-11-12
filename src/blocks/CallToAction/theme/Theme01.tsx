@@ -25,7 +25,7 @@ export const CTATheme01: React.FC<
                 </div>
                 <div className="flex flex-col gap-8">
                     {(links || []).map(({ link }, i) => {
-                        return <CMSLink key={i} size="lg" {...link} />
+                        return <CMSLink key={i} className='px-12 py-4 h-14 text-lg font-semibold duration-300 ease-in-out rounded' {...link} />
                     })}
                 </div>
             </div>
