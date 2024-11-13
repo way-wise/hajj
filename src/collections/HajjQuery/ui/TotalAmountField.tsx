@@ -22,7 +22,7 @@ const TotalAmountField: React.FC = () => {
   }, [amount, charge])
 
   return (
-    <div className="field-type number" style={{ width: '40%' }}>
+    <div className="field-type number" style={{ width: '33%' }}>
       <label className="field-label">Grand Total</label>
       <div className="field-type__wrap">
         <input value={(total as number) || 0} readOnly={true} />
