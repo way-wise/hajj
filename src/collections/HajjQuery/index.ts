@@ -33,22 +33,48 @@ const HajjQuery: CollectionConfig = {
       type: 'row',
       fields: [
         {
+          label: 'Salutation',
+          name: 'salutation',
+          type: 'radio',
+          required: true,
+          defaultValue: 'Mr',
+          options: ['Mr', 'Mrs'],
+          admin:{
+            width: '10%'
+          }
+        },
+        {
+          label: 'Name of Candidate',
+          name: 'name',
+          type: 'text',
+          required: true,
+          admin:{
+            width: '45%'
+          }
+        },
+        {
+          label: 'Address',
+          name: 'address',
+          type: 'text',
+          admin:{
+            width: '44%'
+          }
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
           label: 'Package Type',
           name: 'package_type',
           type: 'radio',
           required: true,
           defaultValue: 'Hajj',
           options: ['Hajj', 'Umrah'],
-        },
-        {
-          label: 'Is Food Included',
-          name: 'is_food_included',
-          type: 'checkbox',
-          admin: {
-            condition: (data, siblingData, { user }) => {
-              return siblingData.package_type === 'Hajj'
-            },
-          },
+          admin:{
+            width: '10%'
+          }
         },
         {
           label: 'Name of the Package',
@@ -58,9 +84,20 @@ const HajjQuery: CollectionConfig = {
             condition: (data, siblingData, { user }) => {
               return siblingData.package_type === 'Hajj'
             },
+            width: '45%'
           },
         },
-
+        {
+          label: 'Is Food Included',
+          name: 'is_food_included',
+          type: 'checkbox',
+          admin: {
+            condition: (data, siblingData, { user }) => {
+              return siblingData.package_type === 'Hajj'
+            },
+            width: '44%',
+          },
+        },
       ],
     },
     {
@@ -78,19 +115,14 @@ const HajjQuery: CollectionConfig = {
           type: 'text',
           required: true,
         },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
         {
-          label: 'Duration in Makkah',
+          label: 'Duration in Makkah (Days)',
           name: 'makka_duration',
           type: 'number',
           required: true,
         },
         {
-          label: 'Duration in Madina',
+          label: 'Duration in Madina (Days)',
           name: 'madina_duration',
           type: 'number',
           required: true,
@@ -105,12 +137,18 @@ const HajjQuery: CollectionConfig = {
           name: 'total_cost_of_package',
           type: 'number',
           required: true,
+          admin:{
+            width: '33%'
+          }
         },
         {
           label: 'Waywise service charge',
           name: 'waywise_service_fee',
           type: 'number',
           required: true,
+          admin:{
+            width: '33%'
+          }
         },
         {
           label: 'Grand Total',
@@ -126,36 +164,54 @@ const HajjQuery: CollectionConfig = {
         },
       ],
     },
-
     {
-      label: 'Flight Reference',
-      name: 'flight_reference',
-      type: 'text',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          label: 'Flight Reference',
+          name: 'flight_reference',
+          type: 'text',
+          required: true,
+          admin:{
+            width: '33%'
+          }
+        },
+        {
+          label: 'Occupancy type in hotel room',
+          name: 'occupancy_type',
+          type: 'text',
+          required: true,
+          admin:{
+            width: '33%'
+          }
+        },
+        {
+          label: 'Transport Service',
+          name: 'transport_service',
+          type: 'text',
+          required: true,
+          admin:{
+            width: '34%'
+          }
+        },
+      ]
     },
     {
-      label: 'Occupancy type in hotel room',
-      name: 'occupancy_type',
-      type: 'text',
-      required: true,
-    },
-    {
-      label: 'Hotel Type & distance from Makkah',
-      name: 'makka_hotel_type',
-      type: 'text',
-      required: true,
-    },
-    {
-      label: 'Hotel Type & distance from Madina',
-      name: 'madina_hotel_type',
-      type: 'text',
-      required: true,
-    },
-    {
-      label: 'Transport Service',
-      name: 'transport_service',
-      type: 'text',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          label: 'Hotel Type & distance from Makkah',
+          name: 'makka_hotel_type',
+          type: 'text',
+          required: true,
+        },
+        {
+          label: 'Hotel Type & distance from Madina',
+          name: 'madina_hotel_type',
+          type: 'text',
+          required: true,
+        },
+      ]
     },
   ],
 }
