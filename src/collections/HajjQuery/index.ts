@@ -108,6 +108,11 @@ const HajjQuery: CollectionConfig = {
           name: 'proposed_date',
           type: 'date',
           required: true,
+          admin:{
+            date:{
+              pickerAppearance: 'dayAndTime'
+            }
+          }
         },
         {
           label: 'Proposed Time of Umrah',
