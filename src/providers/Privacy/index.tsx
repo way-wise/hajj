@@ -39,7 +39,11 @@ const setLocaleStorage = (accepted: boolean, rejected: boolean, country: string)
 }
 
 const getGDPR = async (): Promise<LocateResponse> => {
-  const res = await locate()
+  const res = await fetch('/api/locate', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 
   if (res.status === 200) {
     const result: LocateResponse = await res.json()
