@@ -87,7 +87,7 @@ const DownloadClient = ({ data }: { data: any }) => {
               </div>
               <img src="/assets/mukaddas-logo.png" alt="Muqaddas" className="logo" />
             </div>
-            <h1 className="main-title">Customized Umrah Package</h1>
+            <h1 className="main-title">Customized {data?.package_type} Package</h1>
           </div>
 
           <div className="package-content">
