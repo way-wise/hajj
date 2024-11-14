@@ -109,37 +109,6 @@ const HajjQuery: CollectionConfig = {
       type: 'number',
       required: true,
     },
-
-    {
-      label: 'Total estimated cost of Package',
-      name: 'total_cost_of_package',
-      type: 'number',
-      required: true,
-    },
-    {
-      label: 'Waywise service charge',
-      name: 'waywise_service_fee',
-      type: 'number',
-      required: true,
-    },
-    {
-      label: 'Discount',
-      name: 'discount',
-      type: 'number',
-      required: false,
-    },
-    {
-      label: 'Grand Total',
-      name: 'grand_total',
-      type: 'number',
-      min: 0,
-      admin: {
-        readOnly: true,
-        components: {
-          Field: '@/collections/HajjQueries/ui/TotalAmountField',
-        },
-      },
-    },
     {
       label: 'Flight Reference',
       name: 'flight_reference',
@@ -171,6 +140,36 @@ const HajjQuery: CollectionConfig = {
       required: true,
     },
 
+    {
+      label: 'Total estimated cost of Package',
+      name: 'total_cost_of_package',
+      type: 'number',
+      required: true,
+    },
+    {
+      label: 'Waywise service charge',
+      name: 'waywise_service_fee',
+      type: 'number',
+      required: true,
+    },
+    {
+      label: 'Discount',
+      name: 'discount',
+      type: 'number',
+      required: false,
+    },
+    {
+      label: 'Grand Total',
+      name: 'grand_total',
+      type: 'number',
+      min: 0,
+      admin: {
+        readOnly: true,
+        components: {
+          Field: '@/collections/HajjQueries/ui/TotalAmountField',
+        },
+      },
+    },
   ],
 }
 
