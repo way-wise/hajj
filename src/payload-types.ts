@@ -22,7 +22,7 @@ export interface Config {
     inboxes: Inbox;
     projects: Project;
     'project-queries': ProjectQuery;
-    'haj-jquery': HajJquery;
+    'hajj-queries': HajjQuery;
     'project-documentations': ProjectDocumentation;
     'email-template': EmailTemplate;
     redirects: Redirect;
@@ -45,7 +45,7 @@ export interface Config {
     inboxes: InboxesSelect<false> | InboxesSelect<true>;
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     'project-queries': ProjectQueriesSelect<false> | ProjectQueriesSelect<true>;
-    'haj-jquery': HajJquerySelect<false> | HajJquerySelect<true>;
+    'hajj-queries': HajjQueriesSelect<false> | HajjQueriesSelect<true>;
     'project-documentations': ProjectDocumentationsSelect<false> | ProjectDocumentationsSelect<true>;
     'email-template': EmailTemplateSelect<false> | EmailTemplateSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -1262,12 +1262,13 @@ export interface ProjectQuery {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "haj-jquery".
+ * via the `definition` "hajj-queries".
  */
-export interface HajJquery {
+export interface HajjQuery {
   id: string;
   salutation: 'Mr' | 'Mrs';
   name: string;
+  mobile: string;
   address?: string | null;
   package_type: 'Hajj' | 'Umrah';
   package_name?: string | null;
@@ -1278,12 +1279,13 @@ export interface HajJquery {
   madina_duration: number;
   total_cost_of_package: number;
   waywise_service_fee: number;
+  discount?: number | null;
   grand_total?: number | null;
   flight_reference: string;
   occupancy_type: string;
-  transport_service: string;
   makka_hotel_type: string;
   madina_hotel_type: string;
+  transport_service: string;
   updatedAt: string;
   createdAt: string;
 }
@@ -1437,8 +1439,8 @@ export interface PayloadLockedDocument {
         value: string | ProjectQuery;
       } | null)
     | ({
-        relationTo: 'haj-jquery';
-        value: string | HajJquery;
+        relationTo: 'hajj-queries';
+        value: string | HajjQuery;
       } | null)
     | ({
         relationTo: 'project-documentations';
@@ -2203,11 +2205,12 @@ export interface ProjectQueriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "haj-jquery_select".
+ * via the `definition` "hajj-queries_select".
  */
-export interface HajJquerySelect<T extends boolean = true> {
+export interface HajjQueriesSelect<T extends boolean = true> {
   salutation?: T;
   name?: T;
+  mobile?: T;
   address?: T;
   package_type?: T;
   package_name?: T;
@@ -2218,12 +2221,13 @@ export interface HajJquerySelect<T extends boolean = true> {
   madina_duration?: T;
   total_cost_of_package?: T;
   waywise_service_fee?: T;
+  discount?: T;
   grand_total?: T;
   flight_reference?: T;
   occupancy_type?: T;
-  transport_service?: T;
   makka_hotel_type?: T;
   madina_hotel_type?: T;
+  transport_service?: T;
   updatedAt?: T;
   createdAt?: T;
 }
