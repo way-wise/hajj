@@ -91,22 +91,21 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
               <img src="/assets/mukaddas-logo.png" alt="Muqaddas" className="logo" />
             </div>
             <h1 className="main-title">Customized {data?.package_type} Package</h1>
-          </div>
-
-          <div className="package-content">
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'space-between',
+                justifyContent: 'center',
                 alignItems: 'center',
-                marginBottom: '18px',
-                paddingBottom: '7px',
-                borderBottom: '1px solid #dddddd'
+                marginTop: '8px',
+                gap: '15px'
               }}
             >
               <div>Client Name : {data?.name}</div>
               <div>Client Mobile : {data?.mobile}</div>
             </div>
+          </div>
+
+          <div className="package-content">
             <div className="greeting">
               <p className="red-heading">
                 Dear {data?.salutation} {data?.name},
