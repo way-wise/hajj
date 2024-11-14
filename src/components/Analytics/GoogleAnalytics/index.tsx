@@ -13,8 +13,6 @@ export const GoogleAnalytics = () => {
 
   const { cookieConsent } = usePrivacy()
 
-  console.log("cookieConsent:",cookieConsent)
-
   React.useEffect(() => {
     if (!gaMeasurementID || !window?.location?.href) return
 

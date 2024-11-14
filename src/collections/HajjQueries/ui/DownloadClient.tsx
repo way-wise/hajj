@@ -5,16 +5,17 @@ import { Button } from '@payloadcms/ui'
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
-const DownloadClient = ({ data }: { data: any }) => {
+const DownloadClient = ({ data, showButton = true }: { data: any; showButton: boolean }) => {
   function getFileName() {
     const package_type = data?.package_type || 'Hajj'
     let str = data?.name || 'user'
-    str = str.replace(/^\s+|\s+$/g, ''); // trim leading/trailing white space
-    str = str.toLowerCase(); // convert string to lowercase
-    str = str.replace(/[^a-z0-9 -]/g, '') // remove any non-alphanumeric characters
-             .replace(/\s+/g, '-') // replace spaces with hyphens
-             .replace(/-+/g, '-'); // remove consecutive hyphens
-    return `${str}_${package_type}`;
+    str = str.replace(/^\s+|\s+$/g, '') // trim leading/trailing white space
+    str = str.toLowerCase() // convert string to lowercase
+    str = str
+      .replace(/[^a-z0-9 -]/g, '') // remove any non-alphanumeric characters
+      .replace(/\s+/g, '-') // replace spaces with hyphens
+      .replace(/-+/g, '-') // remove consecutive hyphens
+    return `${str}_${package_type}`
   }
   return (
     <div
@@ -27,53 +28,55 @@ const DownloadClient = ({ data }: { data: any }) => {
         justifyContent: 'center',
       }}
     >
-      <div className="download-button">
-        <Button
-          className="btn1"
-          onClick={() => {
-            const capture = document.getElementById('hajjQueryView')
-            if (capture) {
-              html2canvas(capture as HTMLElement).then((canvas) => {
-                let uri = canvas.toDataURL()
-                let filename = `${getFileName()}.png`
-                var link = document.createElement('a')
-                if (typeof link.download === 'string') {
-                  link.href = uri
-                  link.download = filename
-                  //Firefox requires the link to be in the body
-                  document.body.appendChild(link)
-                  //simulate click
-                  link.click()
-                  //remove the link when done
-                  document.body.removeChild(link)
-                } else {
-                  window.open(uri)
-                }
-              })
-            }
-          }}
-        >
-          Download Image
-        </Button>
-        <Button
-          className="btn2"
-          onClick={() => {
-            const capture = document.getElementById('hajjQueryView')
-            if (capture) {
-              html2canvas(capture as HTMLElement).then((canvas) => {
-                const imgData = canvas.toDataURL('img/png')
-                const doc = new jsPDF('p', 'mm', 'a4')
-                const componentWidth = doc.internal.pageSize.getWidth()
-                const componentHeight = doc.internal.pageSize.getHeight()
-                doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight)
-                doc.save(`${getFileName()}.pdf`)
-              })
-            }
-          }}
-        >
-          Download PDF
-        </Button>
-      </div>
+      {showButton && (
+        <div className="download-button">
+          <Button
+            className="btn1"
+            onClick={() => {
+              const capture = document.getElementById('hajjQueryView')
+              if (capture) {
+                html2canvas(capture as HTMLElement).then((canvas) => {
+                  let uri = canvas.toDataURL()
+                  let filename = `${getFileName()}.png`
+                  var link = document.createElement('a')
+                  if (typeof link.download === 'string') {
+                    link.href = uri
+                    link.download = filename
+                    //Firefox requires the link to be in the body
+                    document.body.appendChild(link)
+                    //simulate click
+                    link.click()
+                    //remove the link when done
+                    document.body.removeChild(link)
+                  } else {
+                    window.open(uri)
+                  }
+                })
+              }
+            }}
+          >
+            Download Image
+          </Button>
+          <Button
+            className="btn2"
+            onClick={() => {
+              const capture = document.getElementById('hajjQueryView')
+              if (capture) {
+                html2canvas(capture as HTMLElement).then((canvas) => {
+                  const imgData = canvas.toDataURL('img/png')
+                  const doc = new jsPDF('p', 'mm', 'a4')
+                  const componentWidth = doc.internal.pageSize.getWidth()
+                  const componentHeight = doc.internal.pageSize.getHeight()
+                  doc.addImage(imgData, 'PNG', 0, 0, componentWidth, componentHeight)
+                  doc.save(`${getFileName()}.pdf`)
+                })
+              }
+            }}
+          >
+            Download PDF
+          </Button>
+        </div>
+      )}
       <div style={{ height: 'calc(100vh - 190px)', overflowY: 'auto', flexBasis: '1' }}>
         <div id="hajjQueryView" className="package-container">
           <div className="header">
@@ -91,6 +94,17 @@ const DownloadClient = ({ data }: { data: any }) => {
           </div>
 
           <div className="package-content">
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                marginBottom: '15px',
+              }}
+            >
+              <div>Client Name : {data?.name}</div>
+              <div>Client Mobile : {data?.mobile}</div>
+            </div>
             <div className="greeting">
               <p className="red-heading">
                 Dear {data?.salutation} {data?.name},
@@ -117,7 +131,7 @@ const DownloadClient = ({ data }: { data: any }) => {
               <div className="left-section">
                 <div className="info-list">
                   <div className="info-item">
-                    <span className="label">Package proposed date:</span>
+                    <span className="label">Departure Date from Dhaka:</span>
                     <span className="value">
                       {data?.proposed_date
                         ? new Date(data?.proposed_date).toLocaleString('en-GB', {
@@ -125,19 +139,16 @@ const DownloadClient = ({ data }: { data: any }) => {
                             year: 'numeric',
                             month: 'short',
                             day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            hour12: true,
                           })
                         : ''}
                     </span>
                   </div>
                   <div className="info-item">
-                    <span className="label">Proposed time of Umrah:</span>
+                    <span className="label">Proposed time of {data?.package_type}:</span>
                     <span className="value">{data?.proposed_time}</span>
                   </div>
                   <div className="info-item">
-                    <span className="label">Umrah duration:</span>
+                    <span className="label">{data?.package_type} duration by City:</span>
                     <span className="value">
                       Makkah {data?.makka_duration} days, Madina {data?.madina_duration} days
                     </span>
@@ -194,6 +205,12 @@ const DownloadClient = ({ data }: { data: any }) => {
                       <span className="label">Waywise service charge:</span>
                       <span className="amount">{data?.waywise_service_fee}</span>
                     </div>
+                    {data?.discount && (
+                      <div className="price-item">
+                        <span className="label">Discount:</span>
+                        <span className="amount">- {data?.discount}</span>
+                      </div>
+                    )}
                     <div
                       className="price-item grand-total"
                       style={{
@@ -224,7 +241,34 @@ const DownloadClient = ({ data }: { data: any }) => {
           </div>
 
           <div className="footer">
-            <div className="validity">This estimated package will be valid for 24 hours.</div>
+            <div
+              className="validity"
+              style={{
+                height: '80px',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
+            >
+              <span style={{ fontSize: '24px', fontWeight: '700' }}>
+                This estimated package will be valid for 24 hours.
+              </span>
+              <span style={{ fontSize: '16px' }}>
+                Generate Date:{' '}
+                {data?.updatedAt
+                  ? new Date(data?.updatedAt).toLocaleString('en-GB', {
+                      weekday: 'short',
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      hour12: true,
+                    })
+                  : ''}
+              </span>
+            </div>
             <div className="contact-info">
               <span style={{ width: '40%', flexBasis: 'min-content' }}>
                 <img src="/assets/home.png" className="icon" alt="homeIcon" /> House: B/148(5th
