@@ -83,19 +83,19 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
             <div className="logo-container">
               <img src="/assets/waywise-islam-logo.png" alt="Way Wise" className="logo" />
               <div className="company-info">
-                <h1 className="company-name">Way Wise Islam & Al Muqaddas</h1>
+                <span className="company-name">Way Wise Islam & Al Muqaddas</span>
                 <div className="subtitle">
                   <span>An American and Bangladeshi Joint Venture</span>
                 </div>
               </div>
               <img src="/assets/mukaddas-logo.png" alt="Muqaddas" className="logo" />
             </div>
-            <h1 className="main-title">Customized {data?.package_type} Package</h1>
+            <span className="main-title">Customized {data?.package_type} Package</span>
             <div
               style={{
                 display: 'block',
                 textAlign: 'center',
-                marginTop: '8px',
+                marginTop: '5px'
               }}
             >
               <span>Client Name : {data?.name}</span>
@@ -110,23 +110,24 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 Dear {data?.salutation} {data?.name},
               </p>
               <p style={{ lineHeight: '24px' }}>
-                Thanks for your Interest. We recieved your information and prepared a customised
+                Thank you for your Interest. We recieved your information and prepared a customised
                 <br />
                 <span className="red-heading">{data?.package_type}</span> Package for you.
               </p>
             </div>
 
-            <h3
+            <span
               className="main-title"
               style={{
-                marginBottom: '35px',
+                marginBottom: '25px',
                 fontSize: '28px',
                 fontWeight: 'bold',
                 textAlign: 'center',
+                display: 'block'
               }}
             >
               Your <span style={{ color: '#bb303b' }}>{data?.package_name}</span> Package Includes:
-            </h3>
+            </span>
             <div className="package-grid">
               <div className="left-section">
                 <div className="info-list">
@@ -180,22 +181,23 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 <div
                   style={{
                     background: '#ffe0e0',
-                    padding: '20px 15px 30px 15px',
+                    padding: '20px 15px 20px 15px',
                     borderRadius: '10px',
                   }}
                 >
-                  <h3
+                  <span
                     style={{
                       color: '#222222',
-                      marginBottom: '30px',
+                      marginBottom: '20px',
                       fontSize: '24px',
                       fontWeight: 'bold',
                       textAlign: 'center',
+                      display: 'block',
                       textTransform: 'uppercase',
                     }}
                   >
                     Pricing
-                  </h3>
+                  </span>
                   <div className="pricing-list">
                     <div className="price-item">
                       <span className="label">Total estimated cost:</span>
@@ -205,11 +207,13 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                       <span className="label">Waywise service charge:</span>
                       <span className="amount">{data?.waywise_service_fee}</span>
                     </div>
-                    {data?.discount && (
+                    {data?.discount && data?.discount > 0 ? (
                       <div className="price-item">
                         <span className="label">Discount:</span>
                         <span className="amount">- {data?.discount}</span>
                       </div>
+                    ) : (
+                      ''
                     )}
                     <div
                       className="price-item grand-total"
@@ -222,7 +226,10 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                       <span className="label" style={{ fontSize: '20px', fontWeight: '900' }}>
                         Grand Total:
                       </span>
-                      <span className="amount-big">{data?.grand_total}</span>
+                      <span style={{display:'flex', flexDirection: 'column', alignItems: 'end', gap: '5px'}}>
+                        <span className="amount-big">{data?.grand_total}</span>
+                        <span style={{fontSize: '15px'}}>(Per Person)</span>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -235,6 +242,53 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                     <li>Taif and Jeddah visit not included</li>
                     <li>Food {data?.is_food_included ? '' : 'not'} included</li>
                   </ul>
+                </div>
+                <div
+                  style={{
+                    background: '#003CFF',
+                    marginTop: '20px',
+                    borderRadius: '15px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <div style={{ background: '#FFB519', padding: '10px 0', textAlign: 'center' }}>
+                    <span style={{ fontSize: '23px', fontWeight: 'bold', display: 'block' }}>Our other Businesses</span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      padding: '10px 15px',
+                      color: '#ffffff',
+                      fontWeight: '500',
+                      fontSize: '16px',
+                    }}
+                  >
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
+                      <span style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+                        <span style={{ fontSize: '20px', fontWeight: 'bold' }}>•</span>Digital
+                        Marketing
+                      </span>
+                      <span style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+                        <span style={{ fontSize: '20px', fontWeight: 'bold' }}>•</span>Residential
+                        Construction
+                      </span>
+                      <span style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+                        <span style={{ fontSize: '20px', fontWeight: 'bold' }}>•</span>Export -
+                        Import & Marketplace
+                      </span>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '7px' }}>
+                      <span style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+                        <span style={{ fontSize: '20px', fontWeight: 'bold' }}>•</span>Software & IT
+                        Solutions
+                      </span>
+                      <span style={{ display: 'flex', flexDirection: 'row', gap: '5px' }}>
+                        <span style={{ fontSize: '20px', fontWeight: 'bold' }}>•</span>International
+                        Jobs Recruitment
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -255,16 +309,13 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 This estimated package will be valid for 24 hours.
               </span>
               <span style={{ fontSize: '16px' }}>
-                Generate Date:{' '}
+                Generated Date:{' '}
                 {data?.updatedAt
                   ? new Date(data?.updatedAt).toLocaleString('en-GB', {
                       weekday: 'short',
                       year: 'numeric',
                       month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      hour12: true,
+                      day: 'numeric'
                     })
                   : ''}
               </span>
@@ -279,6 +330,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
               </span>
               <span style={{ width: '30%' }}>
                 <img src="/assets/glob.png" className="icon" alt="globIcon" /> www.waywiseislam.com
+                <br /> www.waywiseglobal.com
               </span>
             </div>
           </div>
