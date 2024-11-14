@@ -99,7 +99,9 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '15px',
+                marginBottom: '18px',
+                paddingBottom: '7px',
+                borderBottom: '1px solid #dddddd'
               }}
             >
               <div>Client Name : {data?.name}</div>
