@@ -1277,15 +1277,15 @@ export interface HajjQuery {
   proposed_time: string;
   makka_duration: number;
   madina_duration: number;
-  total_cost_of_package: number;
-  waywise_service_fee: number;
-  discount?: number | null;
-  grand_total?: number | null;
   flight_reference: string;
   occupancy_type: string;
   makka_hotel_type: string;
   madina_hotel_type: string;
   transport_service: string;
+  total_cost_of_package: number;
+  waywise_service_fee: number;
+  discount?: number | null;
+  grand_total?: number | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2219,15 +2219,15 @@ export interface HajjQueriesSelect<T extends boolean = true> {
   proposed_time?: T;
   makka_duration?: T;
   madina_duration?: T;
-  total_cost_of_package?: T;
-  waywise_service_fee?: T;
-  discount?: T;
-  grand_total?: T;
   flight_reference?: T;
   occupancy_type?: T;
   makka_hotel_type?: T;
   madina_hotel_type?: T;
   transport_service?: T;
+  total_cost_of_package?: T;
+  waywise_service_fee?: T;
+  discount?: T;
+  grand_total?: T;
   updatedAt?: T;
   createdAt?: T;
 }
