@@ -47,7 +47,6 @@ const getGDPR = async (): Promise<LocateResponse> => {
 
   if (res.status === 200) {
     const result: LocateResponse = await res.json()
-    console.log('cookieConsentres', result);
     return result
   }
   return { isGDPR: true }

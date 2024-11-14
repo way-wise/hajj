@@ -44,7 +44,7 @@ import Features from './collections/Features'
 import ProjectDocumentations from './collections/ProjectDocumentations'
 import EmailTemplate from './collections/emailTemplate'
 import ProjectQueries from './collections/PorjectQuery'
-import HajjQuery from './collections/HajjQuery'
+import HajjQuery from './collections/HajjQueries'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

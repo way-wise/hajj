@@ -13,7 +13,7 @@ const DownloadView: React.FC<ServerSideEditViewProps> = async (props) => {
   let data = {}
   if (initPageResult && initPageResult?.docID) {
     const result = await payload.findByID({
-      collection: 'haj-jquery',
+      collection: 'hajj-queries',
       id: initPageResult?.docID as string,
       depth: 0,
     })
@@ -24,7 +24,7 @@ const DownloadView: React.FC<ServerSideEditViewProps> = async (props) => {
 
   return (
     <Gutter>
-      <DownloadClient data={data} />
+      <DownloadClient data={data} showButton={true} />
     </Gutter>
   )
 }
