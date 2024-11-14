@@ -93,15 +93,14 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
             <h1 className="main-title">Customized {data?.package_type} Package</h1>
             <div
               style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
+                display: 'block',
+                textAlign: 'center',
                 marginTop: '8px',
-                gap: '15px'
               }}
             >
-              <div>Client Name : {data?.name}</div>
-              <div>Client Mobile : {data?.mobile}</div>
+              <span>Client Name : {data?.name}</span>
+              &nbsp; &nbsp; &nbsp;
+              <span>Client Mobile : {data?.mobile}</span>
             </div>
           </div>
 
@@ -245,7 +244,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
             <div
               className="validity"
               style={{
-                height: '80px',
+                height: '75px',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
