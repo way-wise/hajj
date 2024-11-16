@@ -60,7 +60,7 @@ const HeaderTheme02: React.FC<HeaderTheme02Props> = ({ header }) => {
 
   const navItems = header?.navItems || []
 
-  if (pathname.includes('invoice')) {
+  if (pathname.includes('invoice') || pathname.includes('hajj-query')) {
     return
   }
 

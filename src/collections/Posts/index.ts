@@ -26,6 +26,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { slugField } from '@/fields/slug'
+import { checkRole } from '../Users/checkRole'
 
 export const Posts: CollectionConfig = {
   slug: 'posts',
@@ -57,6 +58,7 @@ export const Posts: CollectionConfig = {
       return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
     },
     useAsTitle: 'title',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   fields: [
     {

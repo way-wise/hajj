@@ -10,6 +10,7 @@ import path from 'path'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { checkRole } from './Users/checkRole'
 
 // const filename = fileURLToPath(import.meta.url)
 // const dirname = path.dirname(filename)
@@ -24,6 +25,7 @@ export const Media: CollectionConfig = {
   },
   admin: {
     group: 'content',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   fields: [
     {

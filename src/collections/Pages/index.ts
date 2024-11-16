@@ -32,6 +32,7 @@ import { TeamBlock } from '@/blocks/TeamBlock/config'
 import { TestimonialBlock } from '@/blocks/TestimonialBlock/config'
 import { HeadingBlock } from '@/blocks/HeadingBlock/config'
 import { SpacerBlock } from '@/blocks/SpacerBlock/config'
+import { checkRole } from '../Users/checkRole'
 
 export const Pages: CollectionConfig = {
   slug: 'pages',
@@ -63,6 +64,7 @@ export const Pages: CollectionConfig = {
       return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
     },
     useAsTitle: 'title',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   fields: [
     {

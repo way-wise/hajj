@@ -25,6 +25,7 @@ const ProjectDocumentations: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    hidden: true
   },
   fields: [
     {

@@ -11,7 +11,7 @@ import { usePathname } from 'next/navigation'
 const Theme01: React.FC<{ footer: FooterType | null | undefined }> = ({ footer }) => {
   const pathname = usePathname()
 
-  if (pathname.includes('invoice')) {
+  if (pathname.includes('invoice') || pathname.includes('hajj-query')) {
     return
   }
   const navItems = footer?.footerNavItems || []
