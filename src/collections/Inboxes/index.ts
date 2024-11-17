@@ -1,10 +1,12 @@
 import type { CollectionConfig } from 'payload'
+import { checkRole } from '../Users/checkRole'
 
 const Inboxes: CollectionConfig = {
   slug: 'inboxes',
   admin: {
     defaultColumns: ['subject', 'clients', 'projects', 'createdAt'],
     useAsTitle: 'subject',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   access: {
     read: () => true,

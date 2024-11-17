@@ -110,7 +110,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 Dear {data?.salutation} {data?.name},
               </p>
               <p style={{ lineHeight: '24px' }}>
-                Thank you for your Interest. We recieved your information and prepared a customised
+                Thank you for your Interest. We recieved your information and prepared a customized
                 <br />
                 <span className="red-heading">{data?.package_type}</span> Package for you.
               </p>
@@ -309,7 +309,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 This estimated package will be valid for 24 hours.
               </span>
               <span style={{ fontSize: '16px' }}>
-                Generated Date:{' '}
+                Date of Creation:{' '}
                 {data?.updatedAt
                   ? new Date(data?.updatedAt).toLocaleString('en-GB', {
                       weekday: 'short',

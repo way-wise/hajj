@@ -3,12 +3,16 @@ import type { GlobalConfig } from 'payload'
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
 import { admins } from '@/access/admins'
+import { checkRole } from '@/collections/Users/checkRole'
 
 export const Header: GlobalConfig = {
   slug: 'header',
   access: {
     read: () => true,
     update: admins,
+  },
+  admin: {
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   fields: [
     {
@@ -23,7 +27,7 @@ export const Header: GlobalConfig = {
         {
           label: 'Theme02',
           value: 'theme02',
-        }
+        },
       ],
     },
     {

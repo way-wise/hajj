@@ -15,6 +15,9 @@ const HajjQuery: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'package_type',
+    livePreview: {
+      url: ({ data }) => `${process.env.NEXT_PUBLIC_SERVER_URL}/hajj-query/${data.id}`,
+    },
     components: {
       views: {
         edit: {
@@ -29,6 +32,8 @@ const HajjQuery: CollectionConfig = {
         },
       },
     },
+    hideAPIURL: true,
+    hidden: ({ user }) => !checkRole(['admin', 'operation'], user as any),
   },
   fields: [
     {
@@ -37,7 +42,7 @@ const HajjQuery: CollectionConfig = {
       type: 'radio',
       required: true,
       defaultValue: 'Mr',
-      options: ['Mr', 'Mrs'],
+      options: ['Mr', 'Mrs', 'Miss'],
     },
     {
       label: 'Name of Candidate',

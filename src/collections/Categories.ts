@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { checkRole } from './Users/checkRole'
 
 const Categories: CollectionConfig = {
   slug: 'categories',
@@ -13,6 +14,7 @@ const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   fields: [
     {

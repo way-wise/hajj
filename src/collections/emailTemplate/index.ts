@@ -14,6 +14,7 @@ import {
 import { Banner } from '@/blocks/Banner/config'
 import { Code } from '@/blocks/Code/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
+import { checkRole } from '../Users/checkRole'
 
 const EmailTemplate: CollectionConfig = {
   slug: 'email-template',
@@ -25,6 +26,7 @@ const EmailTemplate: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'name',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   fields: [
     {
