@@ -3,21 +3,11 @@
 import { useLivePreview } from '@payloadcms/live-preview-react'
 
 import { HajjQuery } from '@/payload-types'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/providers/Auth'
 import DownloadClient from '@/collections/HajjQueries/ui/DownloadClient'
+require('./hajj-query.css')
 
 export const HajjTemplate: React.FC<{ hajj: HajjQuery | null | undefined }> = ({ hajj }) => {
-  const router = useRouter()
-  const { user } = useAuth()
 
-  if (!user) {
-    router.push('/')
-  }
-
-  if (user && !user?.roles?.includes('admin')) {
-    router.push('/')
-  }
 
   const { data } = useLivePreview({
     serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000',

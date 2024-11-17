@@ -1266,7 +1266,7 @@ export interface ProjectQuery {
  */
 export interface HajjQuery {
   id: string;
-  salutation: 'Mr' | 'Mrs';
+  salutation: 'Mr' | 'Mrs' | 'Miss';
   name: string;
   mobile: string;
   address?: string | null;

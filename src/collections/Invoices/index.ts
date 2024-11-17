@@ -1,10 +1,12 @@
-import type { CollectionConfig } from 'payload'
+import type { ClientUser, CollectionConfig } from 'payload'
 
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
+import { checkRole } from '../Users/checkRole'
+import { User } from '@/payload-types'
 
 export const Invoices: CollectionConfig = {
   slug: 'invoices',
@@ -17,16 +19,10 @@ export const Invoices: CollectionConfig = {
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
     livePreview: {
-      url: ({ data }) => {
-        const path = generatePreviewPath({
-          slug: typeof data?.slug === 'string' ? data.slug : '',
-          collection: 'invoices',
-        })
-
-        return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
-      },
+      url: ({ data }) => `${process.env.NEXT_PUBLIC_SERVER_URL}/invoices/${data.slug}`,
     },
     useAsTitle: 'title',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   fields: [
     {

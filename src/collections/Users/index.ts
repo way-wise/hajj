@@ -22,6 +22,7 @@ const Users: CollectionConfig = {
   admin: {
     defaultColumns: ['name', 'email'],
     useAsTitle: 'name',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   auth: {
     // cookies: {

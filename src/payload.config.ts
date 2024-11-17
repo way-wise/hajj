@@ -45,6 +45,7 @@ import ProjectDocumentations from './collections/ProjectDocumentations'
 import EmailTemplate from './collections/emailTemplate'
 import ProjectQueries from './collections/PorjectQuery'
 import HajjQuery from './collections/HajjQueries'
+import { checkRole } from './collections/Users/checkRole'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -233,6 +234,9 @@ export default buildConfig({
         payment: false,
       },
       formOverrides: {
+        admin:{
+          hidden: ({ user }) => !checkRole(['admin'], user as any),
+        },
         fields: ({ defaultFields }) => {
           return defaultFields.map((field) => {
             if ('name' in field && field.name === 'confirmationMessage') {
@@ -253,6 +257,11 @@ export default buildConfig({
           })
         },
       },
+      formSubmissionOverrides:{
+        admin:{
+          hidden: ({ user }) => !checkRole(['admin'], user as any),
+        },
+      }
     }),
     payloadCloudPlugin(), // storage-adapter-placeholder
     s3Storage({

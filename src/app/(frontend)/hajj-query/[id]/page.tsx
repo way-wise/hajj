@@ -15,7 +15,6 @@ type Args = {
 export default async function PagePreview({ params: paramsPromise }: Args) {
   const { id } = await paramsPromise
   const url = '/'
-  console.log(id)
 
   let hajj: HajjQuery | null = null
 
@@ -28,13 +27,5 @@ export default async function PagePreview({ params: paramsPromise }: Args) {
     })
   }
 
-  if (!hajj) {
-    return <PayloadRedirects url={url} />
-  }
-
-  return (
-    <article className="">
-      <HajjTemplate hajj={hajj} />
-    </article>
-  )
+  return <article className="">{hajj && <HajjTemplate hajj={hajj} />}</article>
 }

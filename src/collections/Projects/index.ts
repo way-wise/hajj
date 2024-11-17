@@ -1,5 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { submitProjectQueries } from './endpoints/submitProjectQueries'
+import { checkRole } from '../Users/checkRole'
 
 const Projects: CollectionConfig = {
   slug: 'projects',
@@ -13,6 +14,7 @@ const Projects: CollectionConfig = {
       'due_amount',
     ],
     useAsTitle: 'title',
+    hidden: ({ user }) => !checkRole(['admin'], user as any),
   },
   endpoints: [
     {

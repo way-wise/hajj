@@ -13,6 +13,7 @@ const ProjectQueries: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'date',
+    hidden: true
   },
   fields: [
     {
