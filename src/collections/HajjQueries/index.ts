@@ -73,21 +73,11 @@ const HajjQuery: CollectionConfig = {
       label: 'Name of the Package',
       name: 'package_name',
       type: 'text',
-      admin: {
-        condition: (data, siblingData, { user }) => {
-          return siblingData.package_type === 'Hajj'
-        },
-      },
     },
     {
       label: 'Is Food Included',
       name: 'is_food_included',
       type: 'checkbox',
-      admin: {
-        condition: (data, siblingData, { user }) => {
-          return siblingData.package_type === 'Hajj'
-        },
-      },
     },
 
     {
