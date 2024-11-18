@@ -1,11 +1,12 @@
 'use client'
 
 import { useAllFormFields, useField } from '@payloadcms/ui'
+import { TextFieldClientComponent } from 'payload'
 import { getSiblingData } from 'payload/shared'
 import { useEffect, useState } from 'react'
 
-const SubTotalAmountField: React.FC = () => {
-  const { value, setValue } = useField({})
+const SubTotalAmountField: TextFieldClientComponent = ({path}) => {
+  const { value, setValue } = useField({path})
   const [fields, dispatchFields] = useAllFormFields()
   const invoiceItems = getSiblingData(fields, 'invoiceItems.items')
   const [items, setItems] = useState()

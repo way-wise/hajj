@@ -1,13 +1,14 @@
 'use client'
 
 import { useAllFormFields, useField } from '@payloadcms/ui'
+import { TextFieldClientComponent } from 'payload'
 import { getSiblingData } from 'payload/shared'
 import { useEffect, useState } from 'react'
 
-const TotalField: React.FC = () => {
+const TotalField: TextFieldClientComponent = ({ path }) => {
   const [rate, setRate] = useState<number | null>()
   const [quantity, setQuantity] = useState<number | null>()
-  const { value, setValue, path } = useField({})
+  const { value, setValue } = useField({ path })
   const [fields, dispatchFields] = useAllFormFields()
   const invoiceItems = getSiblingData(fields, 'invoiceItems.items')
 

@@ -1282,6 +1282,8 @@ export interface HajjQuery {
   makka_hotel_type: string;
   madina_hotel_type: string;
   transport_service: string;
+  is_additional_phone?: boolean | null;
+  additional_phone?: string | null;
   total_cost_of_package: number;
   waywise_service_fee: number;
   discount?: number | null;
@@ -2224,6 +2226,8 @@ export interface HajjQueriesSelect<T extends boolean = true> {
   makka_hotel_type?: T;
   madina_hotel_type?: T;
   transport_service?: T;
+  is_additional_phone?: T;
+  additional_phone?: T;
   total_cost_of_package?: T;
   waywise_service_fee?: T;
   discount?: T;

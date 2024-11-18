@@ -166,6 +166,7 @@ export default function InboxPage() {
       const interval = setInterval(fetchMessages, 30000)
       return () => clearInterval(interval)
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, projectId])
 
   useEffect(() => {

@@ -95,7 +95,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
               style={{
                 display: 'block',
                 textAlign: 'center',
-                marginTop: '5px'
+                marginTop: '5px',
               }}
             >
               <span>Client Name : {data?.name}</span>
@@ -123,7 +123,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 fontSize: '28px',
                 fontWeight: 'bold',
                 textAlign: 'center',
-                display: 'block'
+                display: 'block',
               }}
             >
               Your <span style={{ color: '#bb303b' }}>{data?.package_name}</span> Package Includes:
@@ -226,9 +226,16 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                       <span className="label" style={{ fontSize: '20px', fontWeight: '900' }}>
                         Grand Total:
                       </span>
-                      <span style={{display:'flex', flexDirection: 'column', alignItems: 'end', gap: '5px'}}>
+                      <span
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'end',
+                          gap: '5px',
+                        }}
+                      >
                         <span className="amount-big">{data?.grand_total}</span>
-                        <span style={{fontSize: '15px'}}>(Per Person)</span>
+                        <span style={{ fontSize: '15px' }}>(Per Person)</span>
                       </span>
                     </div>
                   </div>
@@ -252,7 +259,9 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                   }}
                 >
                   <div style={{ background: '#FFB519', padding: '10px 0', textAlign: 'center' }}>
-                    <span style={{ fontSize: '23px', fontWeight: 'bold', display: 'block' }}>Our other Businesses</span>
+                    <span style={{ fontSize: '23px', fontWeight: 'bold', display: 'block' }}>
+                      Our other Businesses
+                    </span>
                   </div>
                   <div
                     style={{
@@ -315,7 +324,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                       weekday: 'short',
                       year: 'numeric',
                       month: 'short',
-                      day: 'numeric'
+                      day: 'numeric',
                     })
                   : ''}
               </span>
@@ -325,8 +334,17 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 <img src="/assets/home.png" className="icon" alt="homeIcon" /> House: B/148(5th
                 Floor), <br /> Road: 22, Mohakhali, Dhaka- 1212
               </span>
-              <span style={{ width: '30%' }}>
-                <img src="/assets/phone.png" className="icon" alt="phoneIcon" /> +880 1748 771945
+              <span style={{ width: '30%', fontSize: '17px' }}>
+                <img src="/assets/phone.png" className="icon" alt="phoneIcon" />{' '}
+                {data?.is_additional_phone && data?.additional_phone ? (
+                  <>
+                    +880 {data?.additional_phone}
+                    <br />
+                  </>
+                ) : (
+                  ''
+                )}
+                +880 1748 771945
               </span>
               <span style={{ width: '30%' }}>
                 <img src="/assets/glob.png" className="icon" alt="globIcon" /> www.waywiseislam.com

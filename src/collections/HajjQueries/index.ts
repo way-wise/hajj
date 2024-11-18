@@ -144,7 +144,21 @@ const HajjQuery: CollectionConfig = {
       type: 'text',
       required: true,
     },
-
+    {
+      label: 'Additional Phone No',
+      name: 'is_additional_phone',
+      type: 'checkbox',
+    },
+    {
+      label: 'Phone No (+880)',
+      name: 'additional_phone',
+      type: 'text',
+      admin: {
+        condition: (data, siblingData, { user }) => {
+          return siblingData.is_additional_phone
+        },
+      },
+    },
     {
       label: 'Total estimated cost of Package',
       name: 'total_cost_of_package',
