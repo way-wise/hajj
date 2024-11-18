@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useAuth } from '@/providers/Auth'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -52,6 +52,7 @@ export const ResetPasswordForm: React.FC = () => {
         setError('There was a problem while resetting your password. Please try again later.')
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   )
 

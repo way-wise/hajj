@@ -52,6 +52,7 @@ const Projects: FC<ProjectsProps> = () => {
         };
 
         fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -79,7 +80,7 @@ const Projects: FC<ProjectsProps> = () => {
                                     <div className="flex justify-between items-center">
                                         <h2 className="text-xl">{project.title}</h2>
                                         <span
-                                            className={`text-xs px-2 py-1 rounded border inline-flex 
+                                            className={`text-xs px-2 py-1 rounded border inline-flex
                                         ${project.status === 'approved'
                                                     ? 'bg-green-300 border-green-500'
                                                     : project.status === 'decline'

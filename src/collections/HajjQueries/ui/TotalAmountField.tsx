@@ -1,10 +1,11 @@
 'use client'
 
 import { useField, useFormFields } from '@payloadcms/ui'
+import { TextFieldClientComponent } from 'payload'
 import { useEffect, useState } from 'react'
 
-const TotalAmountField: React.FC = () => {
-  const { value, setValue } = useField({})
+const TotalAmountField: TextFieldClientComponent = ({path}) => {
+  const { value, setValue } = useField({ path })
   const [total, setTotal] = useState<number>(0)
   const amount:any = useFormFields(([fields]) => fields.total_cost_of_package)
   const charge:any = useFormFields(([fields]) => fields.waywise_service_fee)

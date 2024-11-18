@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
 import React from 'react'
@@ -32,7 +33,7 @@ export const TeamTheme01: React.FC<
             return (
               <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4" key={index}>
                 {image && typeof image === 'object' && (
-                  <img src={(image as Media)?.url || ''} className='size-20 rounded-lg' />
+                  <img src={(image as Media)?.url || ''} className='size-20 rounded-lg' alt='image' />
                 )}
 
                 <div className="grow">

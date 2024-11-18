@@ -1,13 +1,14 @@
 'use client'
 
 import { useAllFormFields, useField } from '@payloadcms/ui'
+import { TextFieldClientComponent } from 'payload'
 import { getSiblingData } from 'payload/shared'
 import { useEffect, useState } from 'react'
 
-const TotalAmountField: React.FC = () => {
-  const { value, setValue } = useField({})
+const TotalAmountField: TextFieldClientComponent = ({ path }) => {
+  const { value, setValue } = useField({ path })
   const [fields, dispatchFields] = useAllFormFields()
-  const invoiceSummary = getSiblingData(fields,  'invoiceSummary.invoicePaymentSummary')
+  const invoiceSummary = getSiblingData(fields, 'invoiceSummary.invoicePaymentSummary')
   const [subTotal, setSubTotal] = useState<number>(0)
   const [discount, setDiscount] = useState<number>(0)
   const [tax, setTax] = useState<number>(0)
@@ -22,37 +23,36 @@ const TotalAmountField: React.FC = () => {
     const taxData = invoiceData?.tax
     const isTaxData = invoiceData?.isTax
 
-    if(subTotal !== subTotalData) {
+    if (subTotal !== subTotalData) {
       setSubTotal(subTotalData)
     }
-    if(discount !== discountData) {
+    if (discount !== discountData) {
       setDiscount(discountData)
     }
-    if(isDiscount !== isDiscountData) {
+    if (isDiscount !== isDiscountData) {
       setIsDiscount(isDiscountData)
     }
-    if(tax !== taxData) {
+    if (tax !== taxData) {
       setTax(taxData)
     }
-    if(isTax !== isTaxData) {
+    if (isTax !== isTaxData) {
       setIsTax(isTaxData)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [invoiceSummary])
 
   useEffect(() => {
-    let total: number = subTotal || 0;
-
+    let total: number = subTotal || 0
 
     if (isDiscount && discount) {
       total = total - discount
     }
     if (isTax && tax) {
-      const percent =  Math.round((tax / 100) * total)
+      const percent = Math.round((tax / 100) * total)
       total = total - percent
     }
     setValue(total)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [subTotal, discount, isDiscount, isTax, tax])
 
   return (
