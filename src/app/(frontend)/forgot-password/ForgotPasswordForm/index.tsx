@@ -14,7 +14,7 @@ type FormData = {
 export const ForgotPasswordForm: React.FC = () => {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
-  const { user, forgotPassword } = useAuth()
+  const { forgotPassword } = useAuth()
 
   const {
     register,
@@ -23,22 +23,22 @@ export const ForgotPasswordForm: React.FC = () => {
   } = useForm<FormData>()
 
   const onSubmit = useCallback(async (data: FormData) => {
-
     try {
       await forgotPassword(data)
       setSuccess(true)
     } catch (e) {
       throw new Error('An error occurred while attempting to login.')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
-    <div className='max-w-md w-full mx-auto bg-white p-4 rounded-lg space-y-6'>
+    <div className="max-w-md w-full mx-auto bg-white p-4 rounded-lg space-y-6">
       {!success && (
         <React.Fragment>
           <h1 className="text-2xl font-bold">Recover Password</h1>
           <div className="w-[66.66%] md:w-full">
-            <p className='pb-4'>
+            <p className="pb-4">
               {`Please enter your email below. You will receive an email message with instructions on
               how to reset your password. `}
               <Link href="/signin" className="text-primary hover:underline">
@@ -46,7 +46,6 @@ export const ForgotPasswordForm: React.FC = () => {
               </Link>
             </p>
             <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-
               {error && (
                 <div className="mb-6 p-4 text-red-700 bg-red-100 border border-red-400 rounded-lg">
                   <p>{error}</p>
@@ -63,16 +62,14 @@ export const ForgotPasswordForm: React.FC = () => {
                 <Input
                   type="text"
                   placeholder="Email"
-                  {...register("email", { required: "Email is required" })}
+                  {...register('email', { required: 'Email is required' })}
                 />
                 {errors.email && (
                   <p className="text-pink-500 text-sm mt-1">{errors.email.message}</p>
                 )}
               </div>
 
-              <Button
-                type="submit"
-              >Recover Password</Button>
+              <Button type="submit">Recover Password</Button>
             </form>
           </div>
         </React.Fragment>
