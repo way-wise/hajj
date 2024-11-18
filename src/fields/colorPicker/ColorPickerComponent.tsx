@@ -14,17 +14,11 @@ import {
 } from 'react-colorful'
 import { Config } from '.'
 import './index.scss'
-import { FieldDescription, FieldLabel, useField, useFieldProps } from '@payloadcms/ui'
+import { FieldDescription, FieldLabel, useField } from '@payloadcms/ui'
 
 extend([namesPlugin])
 const defaultColor = '#9A9A9A'
 
-type Props = {
-  path: string
-  placeholder?: string
-  className?: string
-  custom: Config
-} & TextFieldClientProps
 
 const ColourComponents: Record<Config['type'], any> = {
   hex: HexColorPicker,
@@ -35,15 +29,13 @@ const ColourComponents: Record<Config['type'], any> = {
   rgbA: RgbaStringColorPicker,
 }
 
-const ColourPickerComponent: React.FC<Props> = props => {
+const ColourPickerComponent = props => {
   const { field, custom } = props
 
-  const { label, admin } = field
-  const { path, readOnly: readOnlyFromProps } = useFieldProps()
+  const { label, admin:{description, beforeInput, afterInput, readOnly } } = field
+  const { path, readOnly: readOnlyFromProps } = props
 
-  const beforeInput = admin?.components?.beforeInput
-  const afterInput = admin?.components?.afterInput
-  const isReadonly = Boolean(admin?.readOnly)
+  const isReadonly = Boolean(readOnly)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const colorPickerRef = useRef<HTMLDivElement>(null)
@@ -113,7 +105,6 @@ const ColourPickerComponent: React.FC<Props> = props => {
       <FieldLabel
         htmlFor={`bfColourPickerField-${path.replace(/\./gi, '__')}`}
         label={label}
-        field={field}
       />
       {(isExpanded || isAdding) && (
         <div ref={colorPickerRef}>
@@ -183,7 +174,8 @@ const ColourPickerComponent: React.FC<Props> = props => {
       )}
       <FieldDescription
         className={`field-description-${path.replace(/\./g, '__')}`}
-        field={field}
+        description={description}
+        path={path}
       />
       {Array.isArray(afterInput) && afterInput.map((Component:any, i) => <Component key={i} />)}
     </div>
