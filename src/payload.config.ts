@@ -46,6 +46,7 @@ import EmailTemplate from './collections/emailTemplate'
 import ProjectQueries from './collections/PorjectQuery'
 import HajjQuery from './collections/HajjQueries'
 import { checkRole } from './collections/Users/checkRole'
+import warding, { convention } from './packages/payload-warding/src'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -279,6 +280,11 @@ export default buildConfig({
         // ... Other S3 configuration
       },
     }),
+    warding(
+      convention.opts({
+        root: { email: process.env.YOUR_ROOT_EMAIL!, password: process.env.YOUR_ROOT_PASSWORD! },
+      }),
+    ),
   ],
   secret: process.env.PAYLOAD_SECRET!,
   sharp,
