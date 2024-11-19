@@ -4,7 +4,7 @@ import React from 'react'
 import configPromise from '@payload-config'
 import { HajjTemplate } from './page.client'
 import { HajjQuery } from '@/payload-types'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 
 type Args = {
   params: Promise<{
@@ -18,7 +18,7 @@ export default async function PagePreview({ params: paramsPromise }: Args) {
 
   let hajj: HajjQuery | null = null
 
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
 
   if (id) {
     hajj = await payload.findByID({

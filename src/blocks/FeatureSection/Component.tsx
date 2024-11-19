@@ -1,12 +1,12 @@
 import React from 'react'
 import RichText from '@/components/RichText'
 
-import type { Page } from '@/payload-types'
+import type { FeatureSection as FeatureSectionProps } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
 
-export type Props = Extract<Page['layout'][0], { blockType: 'featureSection' }> & {
+export type Props = FeatureSectionProps & {
   hideBackground?: boolean
 }
 export const FeatureSection: React.FC<Props> = (props) => {
@@ -22,12 +22,13 @@ export const FeatureSection: React.FC<Props> = (props) => {
     enableLink,
     link,
   } = props
-  const backgroundImage =  background && typeof background === 'object' ? background.url : ''
-   const isFixed = fixedBackground ? 'fixed' : 'scroll'
+  const backgroundImage = background && typeof background === 'object' ? background.url : ''
+  const isFixed = fixedBackground ? 'fixed' : 'scroll'
   return (
     <section
-     style={{ backgroundImage: `url('${backgroundImage}')`, backgroundAttachment: isFixed }}
-      className="bg-no-repeat bg-cover bg-left md:bg-center py-12 md:py-20 lg:py-[120px] relative">
+      style={{ backgroundImage: `url('${backgroundImage}')`, backgroundAttachment: isFixed }}
+      className="bg-no-repeat bg-cover bg-left md:bg-center py-12 md:py-20 lg:py-[120px] relative"
+    >
       <div className="container">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-[92px] lg:gap-10 2xl:gap-[92px] items-center">
           <div
@@ -77,8 +78,8 @@ export const FeatureSection: React.FC<Props> = (props) => {
           </div>
           <div className="relative">
             <div className="flex flex-col gap-5">
-              <div className='text-white text-shadow shadow-gray-900'>
-              {richText && <RichText content={richText} enableGutter={false} />}
+              <div className="text-white text-shadow shadow-gray-900">
+                {richText && <RichText content={richText} enableGutter={false} />}
               </div>
               {enableLink && link && (
                 <div className="w-full mt-4 block md:mt-8">

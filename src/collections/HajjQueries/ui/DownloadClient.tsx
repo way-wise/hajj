@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { Button } from '@payloadcms/ui'
+import { Button } from '@/components/ui/button';
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
@@ -126,7 +126,8 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                 display: 'block',
               }}
             >
-              Your <span style={{ color: '#bb303b' }}>{data?.package_name}</span> Package Includes:
+              Your Package Includes: <br/>
+              <span style={{ color: '#bb303b' }}>{data?.package_name}</span>
             </span>
             <div className="package-grid">
               <div className="left-section">

@@ -1,12 +1,12 @@
 import React from 'react'
 import RichText from '@/components/RichText'
 
-import type { Page } from '@/payload-types'
+import type { MediaContentSection as MediaContentSectionProps } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
 
-export type Props = Extract<Page['layout'][0], { blockType: 'mediaContentSection' }> & {
+export type Props = MediaContentSectionProps & {
   hideBackground?: boolean
 }
 export const MediaContentSection: React.FC<Props> = (props) => {

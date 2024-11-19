@@ -1,7 +1,7 @@
 import type { Config } from 'src/payload-types'
 import configPromise from '@payload-config'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { unstable_cache } from 'next/cache'
+import { getPayload } from 'payload'
 
 type Collection = keyof Config['collections']
 
@@ -13,7 +13,7 @@ interface GetDocArgs {
 }
 
 async function getDocument({ collection, where = {}, depth = 0, isOne = false }: GetDocArgs) {
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
 
   const query: any = { collection, depth }
 

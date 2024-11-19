@@ -2,7 +2,7 @@
 
 import React from 'react'
 
-import type { Page } from '@/payload-types'
+import type { ArchiveBlock as ArchiveBlockProps } from '@/payload-types'
 import { BlogTheme01 } from './theme/Theme01'
 import { BlogTheme02 } from './theme/Theme02'
 import { BlogTheme03 } from './theme/Theme03'
@@ -17,12 +17,10 @@ const blogs = {
   theme05: BlogTheme05
 }
 
-type Props = Extract<Page['layout'][0], { blockType: 'archive' }>
-
 export const ArchiveBlock: React.FC<
-  Props & {
-    id?: string
-  }
+ArchiveBlockProps & {
+  id?: string
+}
 > = (props) => {
 
   const {
