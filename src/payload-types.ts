@@ -1276,6 +1276,7 @@ export interface HajjQuery {
   package_name?: string | null;
   is_food_included?: boolean | null;
   proposed_date: string;
+  is_appox_date?: boolean | null;
   proposed_time: string;
   makka_duration: number;
   madina_duration: number;
@@ -2252,6 +2253,7 @@ export interface HajjQueriesSelect<T extends boolean = true> {
   package_name?: T;
   is_food_included?: T;
   proposed_date?: T;
+  is_appox_date?: T;
   proposed_time?: T;
   makka_duration?: T;
   madina_duration?: T;
