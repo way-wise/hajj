@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 
 import { checkRole } from '../Users/checkRole'
 import { admins } from '@/access/admins'
-import { generatePreviewPath } from '@/utilities/generatePreviewPath'
 import { anyone } from '@/access/anyone'
 
 const HajjQuery: CollectionConfig = {
@@ -85,6 +84,12 @@ const HajjQuery: CollectionConfig = {
       name: 'proposed_date',
       type: 'date',
       required: true,
+    },
+    {
+      label: 'Is Appoximate Date',
+      name: 'is_appox_date',
+      type: 'checkbox',
+      defaultValue: true
     },
     {
       label: 'Proposed Time of Umrah/Hajj',

@@ -1,15 +1,15 @@
 import type { ServerSideEditViewProps } from 'payload'
 
 import configPromise from '@payload-config'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
 import { Gutter } from '@payloadcms/ui'
 import React from 'react'
 import DownloadClient from './DownloadClient'
+import { getPayload } from 'payload'
 
 const DownloadView: React.FC<ServerSideEditViewProps> = async (props) => {
   const { initPageResult } = props
 
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
   let data = {}
   if (initPageResult && initPageResult?.docID) {
     const result = await payload.findByID({
