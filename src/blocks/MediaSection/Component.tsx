@@ -4,12 +4,12 @@ import { cn } from 'src/utilities/cn'
 import React from 'react'
 import RichText from '@/components/RichText'
 
-import type { Page } from '@/payload-types'
+import type { MediaSection as MediaSectionProps } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
 
-type Props = Extract<Page['layout'][0], { blockType: 'mediaSection' }> & {
+type Props = MediaSectionProps & {
   breakout?: boolean
   captionClassName?: string
   className?: string
@@ -49,7 +49,10 @@ export const MediaSection: React.FC<Props> = (props) => {
       )}
     >
       {background === 'color' && (
-        <div className="w-full min-h-56 md:min-h-80" style={{ backgroundColor: bgColor as string }}></div>
+        <div
+          className="w-full min-h-56 md:min-h-80"
+          style={{ backgroundColor: bgColor as string }}
+        ></div>
       )}
       {background === 'gradient' && (
         <div
@@ -85,7 +88,13 @@ export const MediaSection: React.FC<Props> = (props) => {
             </div>
             <div className="flex flex-col gap-8">
               {(links || []).map(({ link }, i) => {
-                return <CMSLink className='px-12 py-4 h-14 text-lg font-semibold duration-300 ease-in-out rounded' key={i} {...link} />
+                return (
+                  <CMSLink
+                    className="px-12 py-4 h-14 text-lg font-semibold duration-300 ease-in-out rounded"
+                    key={i}
+                    {...link}
+                  />
+                )
               })}
             </div>
           </div>

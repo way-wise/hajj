@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { Button } from '@payloadcms/ui'
+import { Button } from '@/components/ui/button';
 import html2canvas from 'html2canvas'
 import jsPDF from 'jspdf'
 
@@ -119,14 +119,16 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
             <span
               className="main-title"
               style={{
-                marginBottom: '25px',
+                marginBottom: '20px',
                 fontSize: '28px',
                 fontWeight: 'bold',
                 textAlign: 'center',
                 display: 'block',
+                lineHeight: '28px'
               }}
             >
-              Your <span style={{ color: '#bb303b' }}>{data?.package_name}</span> Package Includes:
+              Your Package Includes: <br/>
+              <span style={{ color: '#bb303b' }}>{data?.package_name}</span>
             </span>
             <div className="package-grid">
               <div className="left-section">
@@ -142,6 +144,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                             day: 'numeric',
                           })
                         : ''}
+                        <br /> <small style={{color:'#666666', fontSize: '15px', fontWeight: '400'}}>{data?.is_appox_date ? '(approximately) Flight date may vary' : ''}</small>
                     </span>
                   </div>
                   <div className="info-item">
@@ -219,7 +222,7 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
                       className="price-item grand-total"
                       style={{
                         paddingTop: '20px',
-                        marginTop: '3px',
+                        marginTop: '5px',
                         borderTop: '1px solid #999999',
                       }}
                     >

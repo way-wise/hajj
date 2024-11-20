@@ -3,7 +3,7 @@ import React from 'react'
 import configPromise from '@payload-config'
 import type { Invoice as InvoiceType } from '@/payload-types'
 import { InvoiceTemplate } from './page.client'
-import { getPayloadHMR } from '@payloadcms/next/utilities'
+import { getPayload } from 'payload'
 
 type Args = {
   params: Promise<{
@@ -17,7 +17,7 @@ export default async function InvoicePreview({ params: paramsPromise }: Args) {
 
   let invoice: InvoiceType | null
 
-  const payload = await getPayloadHMR({ config: configPromise })
+  const payload = await getPayload({ config: configPromise })
   const invoiceRes = await payload.find({
     collection: 'invoices',
     draft: false,

@@ -1,24 +1,7 @@
 // storage-adapter-import-placeholder
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 
-import { payloadCloudPlugin } from '@payloadcms/payload-cloud'
-import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
-import { nestedDocsPlugin } from '@payloadcms/plugin-nested-docs'
-import { redirectsPlugin } from '@payloadcms/plugin-redirects'
-import { seoPlugin } from '@payloadcms/plugin-seo'
-import { s3Storage } from '@payloadcms/storage-s3'
-import {
-  AlignFeature,
-  BoldFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  ItalicFeature,
-  LinkFeature,
-  ParagraphFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
 import sharp from 'sharp' // editor-import
-import { UnderlineFeature } from '@payloadcms/richtext-lexical'
 import { nodemailerAdapter } from '@payloadcms/email-nodemailer'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -31,9 +14,6 @@ import { Posts } from './collections/Posts'
 import Users from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
-import { revalidateRedirects } from './hooks/revalidateRedirects'
-import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
-import { Page, Post } from 'src/payload-types'
 import { Invoices } from './collections/Invoices'
 import Inboxes from './collections/Inboxes'
 import Projects from './collections/Projects'
@@ -45,20 +25,11 @@ import ProjectDocumentations from './collections/ProjectDocumentations'
 import EmailTemplate from './collections/emailTemplate'
 import ProjectQueries from './collections/PorjectQuery'
 import HajjQuery from './collections/HajjQueries'
-import { checkRole } from './collections/Users/checkRole'
+import { plugins } from './plugins'
+import { defaultLexical } from '@/fields/defaultLexical'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
-
-const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
-  return doc?.title ? `${doc.title} | Way-Wise Tech` : 'Way-Wise Tech'
-}
-
-const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
-  return doc?.slug
-    ? `${process.env.NEXT_PUBLIC_SERVER_URL!}/${doc.slug}`
-    : process.env.NEXT_PUBLIC_SERVER_URL!
-}
 
 export default buildConfig({
   admin: {
@@ -130,39 +101,7 @@ export default buildConfig({
     skipVerify: process.env.SMTP_EMAIL_SERVICE === 'false' ? true : false,
   }),
   // This config helps us configure global or default features that the other editors can inherit
-  editor: lexicalEditor({
-    features: () => {
-      return [
-        ParagraphFeature(),
-        UnderlineFeature(),
-        BoldFeature(),
-        ItalicFeature(),
-        AlignFeature(),
-        LinkFeature({
-          enabledCollections: ['pages', 'posts'],
-          fields: ({ defaultFields }) => {
-            const defaultFieldsWithoutUrl = defaultFields.filter((field) => {
-              if ('name' in field && field.name === 'url') return false
-              return true
-            })
-
-            return [
-              ...defaultFieldsWithoutUrl,
-              {
-                name: 'url',
-                type: 'text',
-                admin: {
-                  condition: ({ linkType }) => linkType !== 'internal',
-                },
-                label: ({ t }) => t('fields:enterURL'),
-                required: true,
-              },
-            ]
-          },
-        }),
-      ]
-    },
-  }),
+  editor: defaultLexical,
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || '',
   }),
@@ -200,87 +139,9 @@ export default buildConfig({
   ],
   globals: [Header, Footer],
   plugins: [
-    redirectsPlugin({
-      collections: ['pages', 'posts'],
-      overrides: {
-        // @ts-expect-error
-        fields: ({ defaultFields }) => {
-          return defaultFields.map((field) => {
-            if ('name' in field && field.name === 'from') {
-              return {
-                ...field,
-                admin: {
-                  description: 'You will need to rebuild the website when changing this field.',
-                },
-              }
-            }
-            return field
-          })
-        },
-        hooks: {
-          afterChange: [revalidateRedirects],
-        },
-      },
-    }),
-    nestedDocsPlugin({
-      collections: ['categories'],
-    }),
-    seoPlugin({
-      generateTitle,
-      generateURL,
-    }),
-    formBuilderPlugin({
-      fields: {
-        payment: false,
-      },
-      formOverrides: {
-        admin:{
-          hidden: ({ user }) => !checkRole(['admin'], user as any),
-        },
-        fields: ({ defaultFields }) => {
-          return defaultFields.map((field) => {
-            if ('name' in field && field.name === 'confirmationMessage') {
-              return {
-                ...field,
-                editor: lexicalEditor({
-                  features: ({ rootFeatures }) => {
-                    return [
-                      ...rootFeatures,
-                      FixedToolbarFeature(),
-                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                    ]
-                  },
-                }),
-              }
-            }
-            return field
-          })
-        },
-      },
-      formSubmissionOverrides:{
-        admin:{
-          hidden: ({ user }) => !checkRole(['admin'], user as any),
-        },
-      }
-    }),
-    payloadCloudPlugin(), // storage-adapter-placeholder
-    s3Storage({
-      collections: {
-        ['media']: true,
-      },
-      bucket: process.env.S3_BUCKET!,
-      config: {
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID!,
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY!,
-        },
-        endpoint: process.env.S3_ENDPOINT,
-        region: process.env.S3_REGION!,
-        // ... Other S3 configuration
-      },
-    }),
+    ...plugins,
   ],
-  secret: process.env.PAYLOAD_SECRET!,
+  secret: process.env.PAYLOAD_SECRET,
   sharp,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),

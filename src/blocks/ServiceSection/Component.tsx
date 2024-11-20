@@ -1,12 +1,12 @@
 import React from 'react'
 import RichText from '@/components/RichText'
 
-import type { Page } from '@/payload-types'
+import type { ServiceSection as ServiceSectionProps } from '@/payload-types'
 
 import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
 
-export type Props = Extract<Page['layout'][0], { blockType: 'serviceSection' }> & {
+export type Props = ServiceSectionProps & {
   hideBackground?: boolean
 }
 export const ServiceSection: React.FC<Props> = (props) => {
@@ -61,7 +61,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
                   )}
                   {service?.enableLink && service?.link && (
                     <div className="w-full mt-4 block md:mt-8">
-                      <CMSLink className='rounded-lg' {...service?.link} />
+                      <CMSLink className="rounded-lg" {...service?.link} />
                     </div>
                   )}
                 </div>
