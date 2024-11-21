@@ -1,6 +1,6 @@
 import React from 'react'
 
-import type { Page } from '@/payload-types'
+import type { BreadcrumbBlock as BreadcrumbBlockProps } from '@/payload-types'
 import { BreadcrumbTheme01 } from './theme/Theme01'
 
 
@@ -8,10 +8,8 @@ const Breadcrumbs = {
     theme01: BreadcrumbTheme01,
 }
 
-type Props = Extract<Page['layout'][0], { blockType: 'breadcrumb' }>
-
 export const BreadcrumbBlock: React.FC<
-    Props & {
+BreadcrumbBlockProps & {
         id?: string
     }
 > = (props: any) => {
