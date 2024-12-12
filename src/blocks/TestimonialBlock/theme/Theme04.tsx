@@ -19,7 +19,7 @@ export const TestimonialTheme04: React.FC<
         <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
             {/* Title */}
             <div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
-                {introContent && <RichText className="team-theme1" content={introContent} enableGutter={false} />}
+                {introContent && <RichText className="team-theme1" data={introContent} enableGutter={false} />}
             </div>
             {/* End Title */}
 

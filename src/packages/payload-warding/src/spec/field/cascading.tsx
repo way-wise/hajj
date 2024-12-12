@@ -1,6 +1,6 @@
 import * as React from "react";
-import { SelectInput, useField, useFormFields } from "payload/components/forms";
-import type { Field, OptionObject } from "payload/types";
+import { SelectInput, useField, useFormFields } from "@payloadcms/ui";
+import type { Field, OptionObject } from "payload";
 
 import { sibling } from "../../kit/path";
 import type { Label } from "../definition/label";

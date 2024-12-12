@@ -19,7 +19,7 @@ export const CTATheme04: React.FC<
             <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
                 <div className="mx-auto flex max-w-xl flex-col items-center text-center">
 
-                    {richText && <RichText className="cta-theme4" content={richText} enableGutter={false} />}
+                    {richText && <RichText className="cta-theme4" data={richText} enableGutter={false} />}
 
                     <div className="flex w-full flex-col gap-2.5 sm:flex-row sm:justify-center">
                         {(links || []).map(({ link }, i) => {

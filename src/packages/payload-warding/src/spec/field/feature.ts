@@ -1,4 +1,4 @@
-import type { Field, SelectField } from "payload/types";
+import type { Field, SelectField } from "payload";
 
 import type { Feature } from "../definition/feat";
 import feat from "../definition/feat";

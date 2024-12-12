@@ -1,10 +1,7 @@
-import type { AccessArgs } from "payload/config";
-import { Forbidden } from "payload/errors";
-import {
-  fieldAffectsData,
-  type CollectionConfig,
-  type GlobalConfig,
-} from "payload/types";
+import type { AccessArgs } from "payload";
+import { Forbidden } from "payload";
+import { fieldAffectsData } from "payload/shared";
+import { type CollectionConfig, type GlobalConfig } from "payload";
 
 import basic from "../kit/basic";
 import type { StringLiteral } from "../kit/typing";

@@ -52,7 +52,7 @@ export const BlogTheme05: React.FC<
         <div className="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
             {introContent && (
                 <div className="container mb-16">
-                    <RichText className="mx-auto max-w-[48rem]" content={introContent} enableGutter={false} />
+                    <RichText className="mx-auto max-w-[48rem]" data={introContent} enableGutter={false} />
                 </div>
             )}
             {/* Grid */}

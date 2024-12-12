@@ -1,184 +1,37 @@
 'use client'
 
-import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react'
-import { extend } from 'colord'
-import namesPlugin from 'colord/plugins/names'
-import type { TextFieldClientProps } from 'payload'
-import {
-  HexColorPicker,
-  HexAlphaColorPicker,
-  HslaStringColorPicker,
-  HslStringColorPicker,
-  RgbaStringColorPicker,
-  RgbStringColorPicker,
-} from 'react-colorful'
-import { Config } from '.'
-import './index.scss'
-import { FieldDescription, FieldLabel, useField } from '@payloadcms/ui'
+import { useDebounce } from '@/utilities/useDebounce'
+import { useField } from '@payloadcms/ui'
+import { TextFieldClientComponent } from 'payload'
+import { useEffect, useState } from 'react'
 
-extend([namesPlugin])
-const defaultColor = '#9A9A9A'
-
-
-const ColourComponents: Record<Config['type'], any> = {
-  hex: HexColorPicker,
-  hexA: HexAlphaColorPicker,
-  hsl: HslStringColorPicker,
-  hslA: HslaStringColorPicker,
-  rgb: RgbStringColorPicker,
-  rgbA: RgbaStringColorPicker,
-}
-
-const ColourPickerComponent = props => {
-  const { field, custom } = props
-
-  const { label, admin:{description, beforeInput, afterInput, readOnly } } = field
-  const { path, readOnly: readOnlyFromProps } = props
-
-  const isReadonly = Boolean(readOnly)
-
-  const inputRef = useRef<HTMLInputElement>(null)
-  const colorPickerRef = useRef<HTMLDivElement>(null)
-
-  const { value = '', setValue } = useField<string>({
-    path,
-  })
-
-  const isExpanded = Boolean(custom.expanded)
-
-  const [color, setColor] = useState<string|undefined>(value ?? defaultColor)
-  const [isAdding, setIsAdding] = useState(isExpanded)
-
-  const Picker = useMemo(() => {
-    return ColourComponents[custom.type]
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const handleAddColorViaPicker = useCallback(
-    (val?: string) => {
-      if (val !== color && !isReadonly) {
-        setColor(val)
-        if (inputRef.current) {
-          inputRef.current.value = val ?? ''
-        }
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setIsAdding, inputRef, isReadonly],
-  )
-
-  const handleAddColor = useCallback(
-    (val?: string) => {
-      if (val !== color && !isReadonly) {
-        setColor(val)
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [setIsAdding, isReadonly],
-  )
-
+const ColorPickerComponent: TextFieldClientComponent = ({ path }) => {
+  const { setValue, value } = useField<string>({ path })
+  const [color, setColor] = useState<string>(value)
+  const debouncedValue = useDebounce(color)
   useEffect(() => {
-      if (color !== value && !isReadonly) {
-        setValue(color)
-      }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isAdding])
-
-  useEffect(() => {
-    function handleClickOutside(event) {
-      if (colorPickerRef.current && !colorPickerRef.current.contains(event.target)) {
-        setIsAdding(false)
-      }
-    }
-    // Bind the event listener
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
+    setValue(debouncedValue)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedValue])
 
   return (
-    <div className={`bfColourPickerFieldWrapper`}>
-      {Array.isArray(beforeInput) && beforeInput.map((Component:any, i) => <Component key={i} />)}
-      <FieldLabel
-        htmlFor={`bfColourPickerField-${path.replace(/\./gi, '__')}`}
-        label={label}
-      />
-      {(isExpanded || isAdding) && (
-        <div ref={colorPickerRef}>
-          <div
-            className={['colourPickerWrapper', isReadonly && 'readOnly'].filter(Boolean).join(' ')}
-            // @ts-expect-error
-            inert={isReadonly ? '' : null}
-          >
-            <Picker
-              onChange={handleAddColorViaPicker}
-              color={value}
-              onBlur={(e: FocusEvent) => {
-                if (e.relatedTarget === null) {
-                  setIsAdding(false)
-                }
-              }}
-              onKeyDown={(e: KeyboardEvent) =>
-                (e.key === 'Enter' || e.key === 'Escape') && setIsAdding(false)
-              }
-            />
-          </div>
-
-          <input
-            id={`bfColourPickerField-${path.replace(/\./gi, '__')}`}
-            ref={inputRef}
-            onChange={({ currentTarget }) => {
-              handleAddColor(currentTarget.value)
-            }}
-            defaultValue={value}
-            readOnly={isReadonly}
-            className={`manual-field-input`}
-            style={{backgroundColor: color}}
-          />
-        </div>
-      )}
-      {!isExpanded && !isAdding && (
-        <div className="buttonContainer">
-          <button
-            type="button"
-            className={`chip chip--clickable`}
-            style={{ backgroundColor: value, height: '40px', width: '40px', border: 'none', borderRadius: '3px 0 0 3px' }}
-            aria-label={color}
-            onClick={() => {
-              setIsAdding(!isAdding)
-            }}
-          />
-          {custom.showPreview && (
-            <>
-              <label
-                htmlFor={`bfColourPickerField-previewField-${path.replace(/\./gi, '__')}`}
-                className="srOnly"
-              >
-                Preview
-              </label>
-              <div className='field-type__wrap'>
-                <input
-                  id={`bfColourPickerField-previewField-${path.replace(/\./gi, '__')}`}
-                  className="previewField"
-                  disabled
-                  value={value}
-                  style={{ height: '40px', width: 'auto' }}
-                  />
-              </div>
-            </>
-          )}
-        </div>
-      )}
-      <FieldDescription
-        className={`field-description-${path.replace(/\./g, '__')}`}
-        description={description}
-        path={path}
-      />
-      {Array.isArray(afterInput) && afterInput.map((Component:any, i) => <Component key={i} />)}
+    <div className="field-type number" style={{width: '300px'}}>
+      <label className="field-label">Color Picker</label>
+      <div className="field-type__wrap" style={{display: 'flex'}}>
+      <input
+          type="text"
+          value={value}
+          onChange={(e) => setColor(e.target.value)}
+        />
+        <input
+          type="color"
+          value={value}
+          onChange={(e) => setColor(e.target.value)}
+          style={{ padding: '0', width: '50px' }}
+        />
+      </div>
     </div>
   )
 }
-export default ColourPickerComponent
+
+export default ColorPickerComponent

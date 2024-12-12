@@ -241,7 +241,7 @@ const HeaderTheme02: React.FC<HeaderTheme02Props> = ({ header }) => {
                   <Media
                     resource={header?.logo}
                     className="w-44 sm:w-52 md:w-56 lg:max-w-60 h-auto dark:brightness-200"
-                    priority
+                    priority={false} loading={'lazy'}
                   />
                 )}
               </Link>

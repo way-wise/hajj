@@ -27,6 +27,7 @@ import ProjectQueries from './collections/PorjectQuery'
 import HajjQuery from './collections/HajjQueries'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
+import { getServerSideURL } from './utilities/getURL'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -63,7 +64,6 @@ export default buildConfig({
     },
     user: Users.slug,
     livePreview: {
-      url: process.env.PAYLOAD_PUBLIC_SERVER_URL,
       breakpoints: [
         {
           label: 'Mobile',
@@ -121,8 +121,7 @@ export default buildConfig({
     ProjectDocumentations,
     EmailTemplate,
   ],
-  cors: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
-  csrf: [process.env.PAYLOAD_PUBLIC_SERVER_URL || ''].filter(Boolean),
+  cors: [getServerSideURL()].filter(Boolean),
   endpoints: [
     // The seed endpoint is used to populate the database with some example data
     // You should delete this endpoint before deploying your site to production
@@ -140,6 +139,7 @@ export default buildConfig({
   globals: [Header, Footer],
   plugins: [
     ...plugins,
+    // storage-adapter-placeholder
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,

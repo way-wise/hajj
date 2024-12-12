@@ -39,7 +39,7 @@ export const LandingHero: React.FC<Page['hero']> = ({ links, media, backgrounds,
                   <div className='bg-gray-700/60 p-6 backdrop-blur rounded-xl'>
                     <div className="text-gray-50 text-shadow-sm shadow-gray-700">
                       {richText && (
-                        <RichText className="mb-6" content={richText} enableGutter={false} />
+                        <RichText className="mb-6" data={richText} enableGutter={false} />
                       )}
                     </div>
                     {Array.isArray(links) && links.length > 0 && (
@@ -64,7 +64,7 @@ export const LandingHero: React.FC<Page['hero']> = ({ links, media, backgrounds,
                       className="relative w-10/12 translate-y-0"
                       style={{ animation: 'float 6s ease-in-out infinite' }}
                     >
-                      <Media imgClassName="rounded-full" priority resource={media} />
+                      <Media imgClassName="rounded-full" priority={false} loading={'lazy'} resource={media} />
                     </div>
                   )}
                 </div>

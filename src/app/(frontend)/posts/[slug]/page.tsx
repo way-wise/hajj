@@ -21,6 +21,10 @@ export async function generateStaticParams() {
     draft: false,
     limit: 1000,
     overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
+    },
   })
 
   const params = posts.docs.map(({ slug }) => {
@@ -56,7 +60,7 @@ export default async function Post({ params: paramsPromise }: Args) {
         <div className="container lg:mx-0 lg:grid lg:grid-cols-[1fr_48rem_1fr] grid-rows-[1fr]">
           <RichText
             className="lg:grid lg:grid-cols-subgrid col-start-1 col-span-3 grid-rows-[1fr]"
-            content={post.content}
+            data={post.content}
             enableGutter={false}
           />
         </div>
@@ -89,6 +93,7 @@ const queryPostBySlug = cache(async ({ slug }: { slug: string }) => {
     draft,
     limit: 1,
     overrideAccess: draft,
+    pagination: false,
     where: {
       slug: {
         equals: slug,

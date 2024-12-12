@@ -37,7 +37,7 @@ const Theme01: React.FC<{ footer: FooterType | null | undefined }> = ({ footer }
                   <Media
                     resource={footer?.footerLogo}
                     className="w-64 h-auto dark:brightness-200"
-                    priority
+                    priority={false} loading={'lazy'}
                   />
                 )}
               </Link>
@@ -60,7 +60,7 @@ const Theme01: React.FC<{ footer: FooterType | null | undefined }> = ({ footer }
                             <Media
                               resource={socialLink?.socialLogo}
                               className="w-8 h-8 dark:invert dark:brightness-200"
-                              priority
+                              priority={false} loading={'lazy'}
                             />
                           )}
                         </Link>

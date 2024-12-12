@@ -29,9 +29,6 @@ export const HeadingBlock: Block = {
         ...ColorPickerField({
             name: 'color',
             required: false
-        }, {
-            type: 'hex',
-            showPreview: true
         }),
         {
             name: 'fontWeight',

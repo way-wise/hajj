@@ -11,7 +11,7 @@ const Logo: React.FC = async () => {
       <Media
         resource={logo}
         className="w-48 sm:w-60 md:w-72 lg:80 h-auto dark:brightness-200"
-        priority
+        priority={false} loading={'lazy'}
       />
     )
 }

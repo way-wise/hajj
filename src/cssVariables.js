@@ -1,6 +1,6 @@
 // Keep these in sync with the CSS variables in the `_css` directory
 
-const cssVariables = {
+export const cssVariables = {
   breakpoints: {
     l: 1440,
     m: 1024,
@@ -15,5 +15,3 @@ const cssVariables = {
     error500: 'rgb(255, 111, 118)',
   },
 }
-
-export default cssVariables

@@ -150,7 +150,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                           <Media
                             resource={header?.logo}
                             className="w-44 sm:w-52 md:w-56 lg:max-w-60 h-auto dark:brightness-200"
-                            priority
+                            priority={false} loading={'lazy'}
                           />
                         )}
                       </>
@@ -160,7 +160,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                           <Media
                             resource={header?.logo_dark}
                             className="w-44 sm:w-52 md:w-56 lg:max-w-60 h-auto dark:brightness-200"
-                            priority
+                            priority={false} loading={'lazy'}
                           />
                         )}
                       </>
@@ -172,7 +172,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                       <Media
                         resource={header?.logo}
                         className="w-44 sm:w-52 md:w-56 lg:max-w-60 h-auto dark:brightness-200"
-                        priority
+                        priority={false} loading={'lazy'}
                       />
                     )}
                   </>
@@ -192,7 +192,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                             appearance="link"
                             className={`font-medium block py-2 text-base lg:mr-0 lg:px-0 lg:py-6 no-underline hover:text-primary ${
                               sticky ? 'text-dark' : 'text-white'
-                            } hover:text-primary ${pathname === menuItem?.link?.url ? 'text-primary' : ''}`}
+                            } hover:text-primary`}
                           />
                         </>
                       ) : (
@@ -500,7 +500,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
               <Media
                 resource={header?.logo}
                 className="w-44 sm:w-52 md:w-56 lg:max-w-60 h-auto dark:brightness-200"
-                priority
+                priority={false} loading={'lazy'}
               />
             )}
           </Link>

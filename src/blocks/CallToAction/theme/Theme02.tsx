@@ -21,7 +21,7 @@ export const CTATheme02: React.FC<
                 <div className="flex flex-col overflow-hidden rounded-lg bg-gray-900 sm:flex-row md:h-80">
                     {/* content - start */}
                     <div className="flex w-full flex-col p-4 sm:w-1/2 sm:p-8 lg:w-2/5">
-                        {richText && <RichText className="cta-theme2" content={richText} enableGutter={false} />}
+                        {richText && <RichText className="cta-theme2" data={richText} enableGutter={false} />}
                         <div className="mt-auto">
                             {(links || []).map(({ link }, i) => {
                                 return <CMSLink key={i} size="lg" {...link} />
@@ -34,7 +34,7 @@ export const CTATheme02: React.FC<
                     {backgroundImage && (
                         <>
                             <div className="order-first h-48 w-full bg-gray-700 sm:order-none sm:h-auto sm:w-1/2 lg:w-3/5">
-                                <Media priority resource={backgroundImage} imgClassName="h-full w-full object-cover object-center" />
+                                <Media priority={false} loading={'lazy'} resource={backgroundImage} imgClassName="h-full w-full object-cover object-center" />
                             </div>
                         </>
                     )}

@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Checkbox as PayloadCheckbox } from "payload/components/forms";
-import { RelationshipComponent } from "payload/components/fields/Relationship";
+import { CheckboxInput as PayloadCheckbox } from "@payloadcms/ui";
+import { RelationshipFieldClientComponent } from "payload";
 
 export function shy(props: any): boolean {
   if (!props.permissions) return true;
@@ -18,7 +18,7 @@ export function shy(props: any): boolean {
 }
 
 export const Relationship: React.FC<any> = props =>
-  shy(props) ? <></> : <RelationshipComponent {...props} />;
+  shy(props) ? <></> : <RelationshipFieldClientComponent {...props} />;
 
 export const Checkbox: React.FC<any> = props =>
   shy(props) ? <></> : <PayloadCheckbox {...props} />;

@@ -73,7 +73,7 @@ const InvoiceTheme2 = (data: Invoice) => {
                 <Media
                   resource={invoiceDetails?.logo}
                   className="w-36 h-24"
-                  priority
+                  priority={false} loading={'lazy'}
                   alt={`Logo of ${billingFrom?.name}`}
                 />
               )}
@@ -282,7 +282,7 @@ const InvoiceTheme2 = (data: Invoice) => {
             <Media
               resource={invoiceSummary?.invoiceInfoSummary?.signature}
               className="w-36 h-24"
-              priority
+              priority={false} loading={'lazy'}
               alt={`Signature of ${billingFrom?.name}`}
             />
           )}

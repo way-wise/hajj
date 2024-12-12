@@ -1,4 +1,4 @@
-import type { CheckboxField } from "payload/types";
+import type { CheckboxField } from "payload";
 
 import collections from "../definition/collections";
 import type { Label } from "../definition/label";

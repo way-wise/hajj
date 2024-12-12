@@ -1,5 +1,6 @@
+import { fieldAffectsData } from "payload/shared";
+
 import {
-  FieldAffectingData,
   type CollectionConfig,
   type Field,
   type GlobalConfig,
@@ -84,7 +85,7 @@ export function pick(
   field: Field,
   excludes: string[] = peripherals,
 ): NameLabelPair | false {
-  if (FieldAffectingData(field)) {
+  if (fieldAffectsData(field)) {
     if (!ward.should(field) || excludes.includes(field.name)) {
       return false;
     }

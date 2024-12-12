@@ -1,0 +1,62 @@
+@import url('https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css');
+
+.bi {
+  display: inline-block;
+  vertical-align: -0.125em;
+  fill: currentcolor;
+}
+.iconContainer {
+  position: fixed;
+  min-width: 300px;
+  max-width: 450px;
+  width: 100%;
+  z-index: 9;
+  background: var(--theme-elevation-0);
+  top: calc(50% - 200px);
+  left: calc(50% - 150px);
+  padding: 10px;
+}
+.iconHeading{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.iconWrap {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 5px;
+  padding: 10px 5px;
+  top: 40px;
+  width: 100%;
+  height: 350px;
+  overflow-y: auto;
+}
+.iconWrap span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 41px;
+  height: 41px;
+  background: rgba(255,255,255, 0.03);
+  text-align: center;
+  cursor: pointer;
+  &:hover{
+    background: rgba(255,255,255, 0.08);
+  }
+}
+
+.iconWrap i {
+  font-size: 2em;
+}
+
+.iconBtn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2.4em;
+  cursor: pointer;
+  width: 60px;
+  height: 50px;
+  border: 1px solid rgba(255,255,255, 0.15);
+}

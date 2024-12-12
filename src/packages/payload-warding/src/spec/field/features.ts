@@ -1,4 +1,4 @@
-import type { ArrayField, JSONField } from "payload/types";
+import type { ArrayField, JSONField } from "payload";
 import pluralize from "pluralize";
 
 import collections from "../definition/collections";
