@@ -30,10 +30,12 @@ export const PdfBook: React.FC<Props> = (props) => {
           <RichText data={introText} enableGutter={true} />
         </div>
       )}
-      <div className="w-full h-[80vh]">
-      {document && typeof document === 'object' && document.url !== undefined && (
-        <FlipBook document={document.url as string} height={height || 200} width={width || 300} />
-      )}
+      <div className="w-full h-auto py-12">
+        {document && typeof document === 'object' && document.url !== undefined && (
+          <>
+          <FlipBook document={document.url as string} height={height || 200} width={width || 300} />
+          </>
+        )}
       </div>
     </div>
   )

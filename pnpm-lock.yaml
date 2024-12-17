@@ -128,6 +128,9 @@ importers:
       number-to-words:
         specifier: ^1.2.4
         version: 1.2.4
+      page-flip:
+        specifier: ^2.0.7
+        version: 2.0.7
       payload:
         specifier: latest
         version: 3.5.0(graphql@16.9.0)(monaco-editor@0.52.0)(react-dom@19.0.0-rc-65a56d0e-20241020(react@19.0.0-rc-65a56d0e-20241020))(react@19.0.0-rc-65a56d0e-20241020)(typescript@5.7.2)
@@ -161,9 +164,6 @@ importers:
       react-hook-form:
         specifier: ^7.54.0
         version: 7.54.0(react@19.0.0-rc-65a56d0e-20241020)
-      react-pageflip:
-        specifier: ^2.0.3
-        version: 2.0.3
       react-pdf:
         specifier: ^9.1.1
         version: 9.1.1(@types/react@19.0.1)(react-dom@19.0.0-rc-65a56d0e-20241020(react@19.0.0-rc-65a56d0e-20241020))(react@19.0.0-rc-65a56d0e-20241020)
@@ -5460,9 +5460,6 @@ packages:
 
   react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
-
-  react-pageflip@2.0.3:
-    resolution: {integrity: sha512-k81mHhRvUM52y8jyzTCh5t4O0lepkLhp+XGSUzq2C3uD+iW99Cv0jfRlqFCjZbD5N3jKkIFr7/3giucoXKDP3Q==}
 
   react-pdf@9.1.1:
     resolution: {integrity: sha512-Cn3RTJZMqVOOCgLMRXDamLk4LPGfyB2Np3OwQAUjmHIh47EpuGW1OpAA1Z1GVDLoHx4d5duEDo/YbUkDbr4QFQ==}
@@ -13149,10 +13146,6 @@ snapshots:
       react: 19.0.0-rc-65a56d0e-20241020
 
   react-is@16.13.1: {}
-
-  react-pageflip@2.0.3:
-    dependencies:
-      page-flip: 2.0.7
 
   react-pdf@9.1.1(@types/react@19.0.1)(react-dom@19.0.0-rc-65a56d0e-20241020(react@19.0.0-rc-65a56d0e-20241020))(react@19.0.0-rc-65a56d0e-20241020):
     dependencies:
