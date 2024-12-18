@@ -115,22 +115,22 @@
     @apply bg-background text-foreground;
   }
   h1 {
-    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 mt-0 font-extrabold dark:text-white !leading-tight;
+    @apply text-3xl sm:text-4xl md:text-5xl lg:text-6xl mb-2 mt-0 font-extrabold !leading-tight;
   }
   h2 {
-    @apply text-2xl md:text-3xl lg:text-4xl mb-2 mt-0 font-extrabold dark:text-white;
+    @apply text-2xl md:text-3xl lg:text-4xl mb-2 mt-0 font-extrabold;
   }
   h3 {
-    @apply text-xl md:text-2xl lg:text-3xl mb-2 mt-0 font-extrabold dark:text-white;
+    @apply text-xl md:text-2xl lg:text-3xl mb-2 mt-0 font-extrabold;
   }
   h4 {
-    @apply text-lg md:text-xl lg:text-2xl mb-2 mt-0 font-bold dark:text-white;
+    @apply text-lg md:text-xl lg:text-2xl mb-2 mt-0 font-bold;
   }
   h5 {
-    @apply text-sm md:text-base lg:text-xl mb-2 mt-0 font-medium dark:text-white;
+    @apply text-sm md:text-base lg:text-xl mb-2 mt-0 font-medium;
   }
   h6 {
-    @apply text-xs md:text-sm lg:text-base mb-2 mt-0 font-medium dark:text-white;
+    @apply text-xs md:text-sm lg:text-base mb-2 mt-0 font-medium;
   }
   p {
     @apply text-sm md:text-base;

@@ -12,7 +12,7 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richTex
       <div className="absolute w-full h-full left-0 top-0 bg-slate-600/40 z-10 flex justify-center items-center">
         <div className='pt-28'>
           {richText && (
-            <RichText className="mb-6 text-white" content={richText} enableGutter={false} />
+            <RichText className="mb-6 text-white" data={richText} enableGutter={false} />
           )}
 
           {Array.isArray(links) && links.length > 0 && (
@@ -31,10 +31,10 @@ export const MediumImpactHero: React.FC<Page['hero']> = ({ links, media, richTex
       <div className="relative w-full h-96">
         {media && typeof media === 'object' && (
           <div>
-            <Media fill imgClassName="object-cover" priority resource={media} />
+            <Media fill imgClassName="object-cover" priority={false} loading={'lazy'} resource={media} />
             {media?.caption && (
               <div className="mt-3">
-                <RichText content={media.caption} enableGutter={false} />
+                <RichText data={media.caption} enableGutter={false} />
               </div>
             )}
           </div>

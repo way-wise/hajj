@@ -9,7 +9,7 @@ import { useAuth } from '@/providers/Auth'
 const ProjectDocsPage = () => {
     const { id:projectId } = useParams()
     const {user} = useAuth()
-    
+
   const [docs, setDocs] = useState<any>([])
   const [loading, setLoading] = useState(false)
 
@@ -52,12 +52,12 @@ const ProjectDocsPage = () => {
   }, [query])
   if (loading) return <p>Loading...</p>
 
-  return <div className='py-5'>    
+  return <div className='py-5'>
     {
       docs?.map((doc)=>{
-        return  <RichText key={doc.id} content={doc?.content} />
+        return  <RichText key={doc.id} data={doc?.content} />
       })
-    }   
+    }
   </div>
 }
 

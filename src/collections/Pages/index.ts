@@ -9,9 +9,9 @@ import { FormBlock } from '@/blocks/Form/config'
 import { MediaBlock } from '@/blocks/MediaBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from '@/fields/slug'
-import { populatePublishedAt } from '@/hooks/populatePublishedAt'
-import { generatePreviewPath } from '@/utilities/generatePreviewPath'
-import { revalidatePage } from './hooks/revalidatePage'
+import { populatePublishedAt } from '../../hooks/populatePublishedAt'
+import { generatePreviewPath } from '../../utilities/generatePreviewPath'
+import { revalidateDelete, revalidatePage } from './hooks/revalidatePage'
 
 import {
   MetaDescriptionField,
@@ -20,6 +20,7 @@ import {
   OverviewField,
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
+import { getServerSideURL } from '@/utilities/getURL'
 import { MediaContentSection } from '@/blocks/MediaContentSection/config'
 import { ServiceSection } from '@/blocks/ServiceSection/config'
 import { MediaSection } from '@/blocks/MediaSection/config'
@@ -33,14 +34,22 @@ import { TestimonialBlock } from '@/blocks/TestimonialBlock/config'
 import { HeadingBlock } from '@/blocks/HeadingBlock/config'
 import { SpacerBlock } from '@/blocks/SpacerBlock/config'
 import { checkRole } from '../Users/checkRole'
+import { PdfBook } from '@/blocks/PdfBook/config'
 
-export const Pages: CollectionConfig = {
+export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
     create: authenticated,
     delete: authenticated,
     read: authenticatedOrPublished,
     update: authenticated,
+  },
+  // This config controls what's populated by default when a page is referenced
+  // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
+  // Type safe if the collection slug generic is passed to `CollectionConfig` - `CollectionConfig<'pages'>
+  defaultPopulate: {
+    title: true,
+    slug: true,
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
@@ -52,7 +61,7 @@ export const Pages: CollectionConfig = {
           collection: 'pages',
         })
 
-        return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
+        return `${getServerSideURL()}${path}`
       },
     },
     preview: (data) => {
@@ -61,7 +70,7 @@ export const Pages: CollectionConfig = {
         collection: 'pages',
       })
 
-      return `${process.env.NEXT_PUBLIC_SERVER_URL}${path}`
+      return `${getServerSideURL()}${path}`
     },
     useAsTitle: 'title',
     hidden: ({ user }) => !checkRole(['admin'], user as any),
@@ -102,8 +111,12 @@ export const Pages: CollectionConfig = {
                 TestimonialBlock,
                 HeadingBlock,
                 SpacerBlock,
+                PdfBook
               ],
               required: true,
+              admin: {
+                initCollapsed: true,
+              },
             },
           ],
           label: 'Content',
@@ -154,6 +167,7 @@ export const Pages: CollectionConfig = {
   hooks: {
     afterChange: [revalidatePage],
     beforeChange: [populatePublishedAt],
+    beforeDelete: [revalidateDelete],
   },
   versions: {
     drafts: {

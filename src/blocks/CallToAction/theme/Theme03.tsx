@@ -22,14 +22,14 @@ export const CTATheme03: React.FC<
                     {/* image - start */}
                     <div className="order-first h-48 w-full bg-gray-300 sm:order-none sm:h-auto sm:w-1/2 lg:w-2/5">
                         {backgroundImage && (
-                            <Media priority resource={backgroundImage} imgClassName="h-full w-full object-cover object-center" />
+                            <Media priority={false} loading={'lazy'} resource={backgroundImage} imgClassName="h-full w-full object-cover object-center" />
                         )}
                     </div>
                     {/* image - end */}
 
                     {/* content - start */}
                     <div className="flex w-full flex-col p-4 sm:w-1/2 sm:p-8 lg:w-3/5">
-                        {richText && <RichText className="cta-theme3" content={richText} enableGutter={false} />}
+                        {richText && <RichText className="cta-theme3" data={richText} enableGutter={false} />}
 
                         <div className="mt-auto">
                             {(links || []).map(({ link }, i) => {

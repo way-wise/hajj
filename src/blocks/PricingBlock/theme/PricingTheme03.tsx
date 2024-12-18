@@ -17,7 +17,7 @@ export const PricingTheme03: React.FC<
       <div className="container px-5 py-24 mx-auto">
         <div className="flex flex-col text-center w-full mb-20">
           {introContent && (
-            <RichText className="pricing-theme1" content={introContent} enableGutter={false} />
+            <RichText className="pricing-theme1" data={introContent} enableGutter={false} />
           )}
         </div>
         <div className="relative xl:w-10/12 xl:mx-auto">

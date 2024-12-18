@@ -37,7 +37,7 @@ export const FaqTheme02: React.FC<
                                             {faq.question}
                                         </h3>
                                         <p className="mt-2 text-gray-600 dark:text-neutral-400">
-                                            {faq.answer && <RichText content={faq.answer} enableGutter={false} />}
+                                            {faq.answer && <RichText data={faq.answer} enableGutter={false} />}
                                         </p>
                                     </div>
                                 )

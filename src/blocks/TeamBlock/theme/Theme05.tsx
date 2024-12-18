@@ -18,7 +18,7 @@ export const TeamTheme05: React.FC<
       {/* Title */}
       <div className="max-w-2xl mx-auto text-center mb-10 lg:mb-14">
         {introContent && (
-          <RichText className="team-theme1" content={introContent} enableGutter={false} />
+          <RichText className="team-theme1" data={introContent} enableGutter={false} />
         )}
       </div>
       {/* End Title */}

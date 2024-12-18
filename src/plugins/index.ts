@@ -14,15 +14,17 @@ import { beforeSyncWithSearch } from '@/search/beforeSync'
 import { Page, Post } from '@/payload-types'
 import { checkRole } from '@/collections/Users/checkRole'
 import { s3Storage } from '@payloadcms/storage-s3'
+import { getServerSideURL } from '@/utilities/getURL'
+// import warding, { convention } from '@/packages/payload-warding'
 
 const generateTitle: GenerateTitle<Post | Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Way-Wise Tech` : 'Way-Wise Tech'
 }
 
 const generateURL: GenerateURL<Post | Page> = ({ doc }) => {
-  return doc?.slug
-    ? `${process.env.NEXT_PUBLIC_SERVER_URL!}/${doc.slug}`
-    : process.env.NEXT_PUBLIC_SERVER_URL!
+  const url = getServerSideURL()
+
+  return doc?.slug ? `${url}/${doc.slug}` : url
 }
 
 export const plugins: Plugin[] = [
@@ -60,7 +62,7 @@ export const plugins: Plugin[] = [
       payment: false,
     },
     formOverrides: {
-      admin:{
+      admin: {
         hidden: ({ user }) => !checkRole(['admin'], user as any),
       },
       fields: ({ defaultFields }) => {
@@ -83,11 +85,11 @@ export const plugins: Plugin[] = [
         })
       },
     },
-    formSubmissionOverrides:{
-      admin:{
+    formSubmissionOverrides: {
+      admin: {
         hidden: ({ user }) => !checkRole(['admin'], user as any),
       },
-    }
+    },
   }),
   searchPlugin({
     collections: ['posts'],
@@ -114,4 +116,9 @@ export const plugins: Plugin[] = [
       // ... Other S3 configuration
     },
   }),
+  // warding(
+  //   convention.opts({
+  //     root: { email: process.env.YOUR_ROOT_EMAIL!, password: process.env.YOUR_ROOT_PASSWORD! },
+  //   }),
+  // ),
 ]
