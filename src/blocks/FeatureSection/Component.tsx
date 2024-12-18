@@ -37,7 +37,7 @@ export const FeatureSection: React.FC<Props> = (props) => {
             {abstructImageTop && typeof abstructImageTop === 'object' && (
               <div className="absolute top-0 left-0">
                 <React.Fragment>
-                  <Media priority resource={abstructImageTop} imgClassName="" />
+                  <Media priority={false} loading={'lazy'} resource={abstructImageTop} imgClassName="" />
                 </React.Fragment>
               </div>
             )}
@@ -46,7 +46,7 @@ export const FeatureSection: React.FC<Props> = (props) => {
                 <React.Fragment>
                   <Media
                     fill
-                    priority
+                    priority={false} loading={'lazy'}
                     resource={featureImage1}
                     imgClassName="object-cover rounded-2xl"
                   />
@@ -58,7 +58,7 @@ export const FeatureSection: React.FC<Props> = (props) => {
                 <React.Fragment>
                   <Media
                     fill
-                    priority
+                    priority={false} loading={'lazy'}
                     resource={featureImage2}
                     imgClassName="object-cover rounded-2xl"
                   />
@@ -71,7 +71,7 @@ export const FeatureSection: React.FC<Props> = (props) => {
                 style={{ animation: 'float 6s ease-in-out infinite' }}
               >
                 <React.Fragment>
-                  <Media priority resource={abstructImageBottom} />
+                  <Media priority={false} loading={'lazy'} resource={abstructImageBottom} />
                 </React.Fragment>
               </div>
             )}
@@ -79,7 +79,7 @@ export const FeatureSection: React.FC<Props> = (props) => {
           <div className="relative">
             <div className="flex flex-col gap-5">
               <div className="text-white text-shadow shadow-gray-900">
-                {richText && <RichText content={richText} enableGutter={false} />}
+                {richText && <RichText data={richText} enableGutter={false} />}
               </div>
               {enableLink && link && (
                 <div className="w-full mt-4 block md:mt-8">

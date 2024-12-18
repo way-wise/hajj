@@ -19,7 +19,7 @@ export const CTATheme05: React.FC<
             <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
                 <div className="flex flex-col items-center justify-between gap-4 rounded-lg bg-gray-400 p-4 sm:flex-row md:p-8">
                     <div>
-                        {richText && <RichText className="cta-theme5" content={richText} enableGutter={false} />}
+                        {richText && <RichText className="cta-theme5" data={richText} enableGutter={false} />}
                     </div>
 
                     <div className='flex items-center justify-center'>

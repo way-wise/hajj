@@ -65,7 +65,7 @@ export const BlogTheme01: React.FC<
       id={`block-${id}`}>
         {introContent && (
           <div className="container mb-10 md:mb-16 text-white text-shadow shadow-gray-900">
-            <RichText className="mx-auto max-w-[48rem]" content={introContent} enableGutter={false} />
+            <RichText className="mx-auto max-w-[48rem]" data={introContent} enableGutter={false} />
           </div>
         )}
         <CollectionArchive posts={posts} />

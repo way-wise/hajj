@@ -21,7 +21,7 @@ export const CTATheme01: React.FC<
                 style={{ background: `${backgroundColor}` }}
             >
                 <div className="max-w-[48rem] flex items-center">
-                    {richText && <RichText className="cta-theme1" content={richText} enableGutter={false} />}
+                    {richText && <RichText className="cta-theme1" data={richText} enableGutter={false} />}
                 </div>
                 <div className="flex flex-col gap-8">
                     {(links || []).map(({ link }, i) => {

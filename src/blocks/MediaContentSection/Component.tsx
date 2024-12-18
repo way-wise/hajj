@@ -33,7 +33,7 @@ export const MediaContentSection: React.FC<Props> = (props) => {
                     <React.Fragment>
                       <Media
                         fill
-                        priority
+                        priority={false} loading={'lazy'}
                         resource={contentImage}
                         imgClassName="group-hover:scale-110 object-cover transition ease-in-out"
                       />
@@ -42,7 +42,7 @@ export const MediaContentSection: React.FC<Props> = (props) => {
                 )}
               </div>
               <div className="col-span-4 lg:col-span-6 h-full flex items-center">
-                {richText && <RichText content={richText} />}
+                {richText && <RichText data={richText} />}
                 {enableLink && link && (
                   <div className="w-full mt-4 block md:mt-8">
                     <CMSLink {...link} />
@@ -54,7 +54,7 @@ export const MediaContentSection: React.FC<Props> = (props) => {
             // content-media
             <React.Fragment>
               <div className="col-span-4 lg:col-span-6 flex items-center">
-                {richText && <RichText content={richText} />}
+                {richText && <RichText data={richText} />}
                 {enableLink && link && (
                   <div className="w-full mt-4 block md:mt-8">
                     <CMSLink {...link} />
@@ -70,7 +70,7 @@ export const MediaContentSection: React.FC<Props> = (props) => {
                     <React.Fragment>
                       <Media
                         fill
-                        priority
+                        priority={false} loading={'lazy'}
                         resource={contentImage}
                         imgClassName="group-hover:scale-110 object-cover transition ease-in-out"
                       />

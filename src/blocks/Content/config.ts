@@ -1,7 +1,6 @@
 import type { Block, Field } from 'payload'
 
 import {
-  AlignFeature,
   BlocksFeature,
   FixedToolbarFeature,
   HeadingFeature,
@@ -56,7 +55,7 @@ const columnFields: Field[] = [
         return [
           ...rootFeatures,
           HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
-          AlignFeature(),
+          FixedToolbarFeature(),
           InlineToolbarFeature(),
           BlocksFeature({
             blocks: [Banner, SpacerBlock, CallToAction, MediaBlock, HeadingBlock],
@@ -86,6 +85,9 @@ export const Content: Block = {
     {
       name: 'columns',
       type: 'array',
+      admin: {
+        initCollapsed: true,
+      },
       fields: columnFields,
     },
   ],

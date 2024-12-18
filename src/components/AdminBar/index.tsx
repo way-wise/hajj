@@ -8,6 +8,8 @@ import { PayloadAdminBar } from 'payload-admin-bar'
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+const baseClass = 'admin-bar'
+
 const collectionLabels = {
   pages: {
     plural: 'Pages',

@@ -19,6 +19,7 @@ import { TeamBlock } from '@/blocks/TeamBlock/Component'
 import { TestimonialBlock } from '@/blocks/TestimonialBlock/Component'
 import { HeadingBlock } from '@/blocks/HeadingBlock/Component'
 import { SpacerBlock } from '@/blocks/SpacerBlock/Component'
+import { PdfBook } from './PdfBook/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -37,7 +38,9 @@ const blockComponents = {
   team: TeamBlock,
   testimonial: TestimonialBlock,
   headingBlock: HeadingBlock,
-  SpacerBlock: SpacerBlock,
+  spacer: SpacerBlock,
+  pdfBook: PdfBook
+
 }
 
 export const RenderBlocks: React.FC<{
@@ -59,6 +62,7 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               return (
                 <div className="my-0" key={index}>
+                  {/* @ts-expect-error Server Component */}
                   <Block {...block} />
                 </div>
               )

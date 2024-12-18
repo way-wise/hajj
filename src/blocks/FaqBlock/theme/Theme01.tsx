@@ -50,7 +50,7 @@ export const FaqTheme01: React.FC<
                       {faq.question}
                     </h3>
                     <p className="mt-1 text-gray-500 dark:text-neutral-500">
-                      {faq.answer && <RichText content={faq.answer} enableGutter={false} />}
+                      {faq.answer && <RichText data={faq.answer} enableGutter={false} />}
                     </p>
                   </div>
                 </div>

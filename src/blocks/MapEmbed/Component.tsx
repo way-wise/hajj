@@ -30,7 +30,7 @@ export const MapEmbed: React.FC<Props> = (props) => {
     >
       {richText && (
         <div className="mt-12 mb-6 max-w-[56rem] mx-auto">
-          <RichText content={richText} enableGutter={true} />
+          <RichText data={richText} enableGutter={true} />
         </div>
       )}
       <div className={`w-full h-${mapHeight}`} style={{ height: mapHeight + 'px' }}>

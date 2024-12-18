@@ -1,31 +1,16 @@
 import { Field } from 'payload'
 import { TextField } from 'payload'
-import { PartialRequired } from '@/utilities/partialRequired'
 import deepMerge from '@/utilities/deepMerge'
-
-export type Config = {
-  type: 'hex' | 'hexA' | 'rgb' | 'rgbA' | 'hsl' | 'hslA'
-  expanded?: boolean
-  showPreview?: boolean
-}
+import { PartialRequired } from '@/utilities/partialRequired'
 
 type ColorPicker = (
   /**
    * Slug field overrides
    */
   overrides: PartialRequired<TextField, 'name'>,
-  config?: Config,
 ) => Field[]
 
-export const ColorPickerField: ColorPicker = (overrides, config = { type: 'hex' }) => {
-  const custom = deepMerge<Config, Partial<Config>>(
-    {
-      type: 'hex',
-      expanded: false,
-      showPreview: false,
-    },
-    config,
-  )
+export const ColorPickerField: ColorPicker = (overrides) => {
 
   const alertBoxField = deepMerge<TextField, Partial<TextField>>(
     {
@@ -35,9 +20,6 @@ export const ColorPickerField: ColorPicker = (overrides, config = { type: 'hex' 
         components: {
           Field: {
             path: '@/fields/colorPicker/ColorPickerComponent',
-            clientProps: {
-              custom,
-            },
           },
         },
       },

@@ -23,7 +23,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
       {intro && (
         <div className="container w-auto md:max-w-3xl mx-5 mb-12 md:mx-auto bg-gray-700/60 backdrop-blur rounded-2xl">
           <div className="p-8 md:p-6">
-            <RichText className="text-white" content={intro} enableGutter={false} />
+            <RichText className="text-white" data={intro} enableGutter={false} />
           </div>
         </div>
       )}
@@ -43,7 +43,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
                     <React.Fragment>
                       <Media
                         fill
-                        priority
+                        priority={false} loading={'lazy'}
                         resource={service?.contentImage}
                         imgClassName="object-cover"
                       />
@@ -55,7 +55,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
                   {service?.richText && (
                     <RichText
                       className="text-white"
-                      content={service?.richText}
+                      data={service?.richText}
                       enableGutter={false}
                     />
                   )}

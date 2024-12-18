@@ -20,6 +20,10 @@ export async function generateStaticParams() {
     draft: false,
     limit: 1000,
     overrideAccess: false,
+    pagination: false,
+    select: {
+      slug: true,
+    },
   })
 
   const params = pages.docs
@@ -85,6 +89,7 @@ const queryPageBySlug = cache(async ({ slug }: { slug: string }) => {
     collection: 'pages',
     draft,
     limit: 1,
+    pagination: false,
     overrideAccess: draft,
     where: {
       slug: {
