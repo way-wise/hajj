@@ -9,10 +9,12 @@ import type { Post, User } from '@/payload-types'
 import { Media } from '@/components/Media'
 import { formatDateTime } from '@/utilities/formatDateTime'
 
+export type CardPostData = Pick<Post, 'slug' | 'categories' | 'meta' | 'title' | 'publishedAt' | 'authors'>
+
 export const Card: React.FC<{
   alignItems?: 'center'
   className?: string
-  doc?: Post
+  doc?: CardPostData
   relationTo?: 'posts'
   showCategories?: boolean
   title?: string
@@ -44,32 +46,32 @@ export const Card: React.FC<{
         ref={link.ref}
       >
         <span className="absolute right-6 top-6 z-20 inline-flex items-center justify-center rounded-full bg-primary px-4 py-2 text-sm font-semibold capitalize text-white">
-          {showCategories && hasCategories && (
+        {showCategories && hasCategories && (
             <div className="uppercase text-sm">
-              {showCategories && hasCategories && (
-                <div>
-                  {categories?.map((category, index) => {
-                    if (typeof category === 'object') {
-                      const { title: titleFromCategory } = category
+            {showCategories && hasCategories && (
+              <div>
+                {categories?.map((category, index) => {
+                  if (typeof category === 'object') {
+                    const { title: titleFromCategory } = category
 
-                      const categoryTitle = titleFromCategory || 'Untitled category'
+                    const categoryTitle = titleFromCategory || 'Untitled category'
 
-                      const isLast = index === categories.length - 1
+                    const isLast = index === categories.length - 1
 
-                      return (
-                        <Fragment key={index}>
-                          {categoryTitle}
-                          {!isLast && <Fragment>, &nbsp;</Fragment>}
-                        </Fragment>
-                      )
-                    }
+                    return (
+                      <Fragment key={index}>
+                        {categoryTitle}
+                        {!isLast && <Fragment>, &nbsp;</Fragment>}
+                      </Fragment>
+                    )
+                  }
 
-                    return null
-                  })}
-                </div>
-              )}
-            </div>
-          )}
+                  return null
+                })}
+              </div>
+            )}
+          </div>
+        )}
         </span>
         {!metaImage && <div className="">No image</div>}
         {metaImage && typeof metaImage !== 'string' && (
@@ -82,15 +84,15 @@ export const Card: React.FC<{
       </Link>
       <div className="p-6 sm:p-8 md:px-6 md:py-8 lg:p-8 xl:px-5 xl:py-8 2xl:p-8">
         {titleToUse && (
-          <h3>
+            <h3>
             <Link
               className="mb-4 block text-xl font-bold text-black hover:text-primary dark:text-white dark:hover:text-primary sm:text-2xl"
               href={href}
               ref={link.ref}
             >
-              {titleToUse}
-            </Link>
-          </h3>
+                {titleToUse}
+              </Link>
+            </h3>
         )}
         {description && (
           <div className="mt-2">

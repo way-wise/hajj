@@ -62,6 +62,7 @@ export const RenderBlocks: React.FC<{
             if (Block) {
               return (
                 <div className="my-0" key={index}>
+                  {/* @ts-expect-error Server Component */}
                   <Block {...block} />
                 </div>
               )

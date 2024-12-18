@@ -130,11 +130,7 @@ export const MediaSection: Block = {
             admin: {
               condition: (_, { background }) => background === 'gradient',
             },
-          },
-          {
-            type: 'hex',
-            showPreview: true,
-          },
+          }
         ),
         ...ColorPickerField(
           {
@@ -143,11 +139,7 @@ export const MediaSection: Block = {
             admin: {
               condition: (_, { background }) => background === 'gradient',
             },
-          },
-          {
-            type: 'hex',
-            showPreview: true,
-          },
+          }
         ),
         {
           name: 'angle',
