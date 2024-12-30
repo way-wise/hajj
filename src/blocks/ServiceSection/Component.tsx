@@ -1,10 +1,10 @@
-import React from 'react'
 import RichText from '@/components/RichText'
+import React from 'react'
 
 import type { ServiceSection as ServiceSectionProps } from '@/payload-types'
 
-import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
 
 export type Props = ServiceSectionProps & {
   hideBackground?: boolean
@@ -29,7 +29,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
       )}
       {services && services.length > 0 && (
         <div className="container md:px-8 m-auto">
-          <div className={`grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:${columnClass}`}>
+          <div className={`grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2 lg:${columnClass}`}>
             {services.map((service, index) => (
               <div
                 key={index}
@@ -38,23 +38,24 @@ export const ServiceSection: React.FC<Props> = (props) => {
                 ${(index + 1) % 2 == 0 ? 'items-end' : 'items-start'}
                 `}
               >
-                <div className={`${column > 2 ? 'h-64' : 'h-[350px]'} w-full relative`}>
+                <div className={`${column > 2 ? 'h-44' : 'h-[350px]'} w-full relative`}>
                   {service?.contentImage && typeof service?.contentImage === 'object' && (
                     <React.Fragment>
                       <Media
                         fill
-                        priority={false} loading={'lazy'}
+                        priority={false}
+                        loading={'lazy'}
                         resource={service?.contentImage}
-                        imgClassName="object-cover"
+                        imgClassName="object-cover object-top"
                       />
                     </React.Fragment>
                   )}
                   <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-primary bg-fixed opacity-0 transition duration-300 ease-in-out group-hover:opacity-40"></div>
                 </div>
-                <div className="flex p-4 md:p-6">
+                <div className="flex p-4">
                   {service?.richText && (
                     <RichText
-                      className="text-white"
+                      className="text-white [&_p]:text-sm [&_h3]:text-xl"
                       data={service?.richText}
                       enableGutter={false}
                     />
