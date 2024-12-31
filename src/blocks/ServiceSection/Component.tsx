@@ -55,7 +55,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
                 <div className="flex p-4 pt-2">
                   {service?.richText && (
                     <RichText
-                      className="text-white [&_p]:text-[13px] [&_h3]:text-lg [&_h3]:mb-1"
+                      className="text-white [&_p]:text-sm [&_h3]:text-xl [&_h3]:mb-1"
                       data={service?.richText}
                       enableGutter={false}
                     />
