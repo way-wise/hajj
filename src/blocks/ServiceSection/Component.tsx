@@ -38,7 +38,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
                 ${(index + 1) % 2 == 0 ? 'items-end' : 'items-start'}
                 `}
               >
-                <div className={`${column > 2 ? 'h-44' : 'h-[350px]'} w-full relative`}>
+                <div className={`${column > 3 ? 'h-60' : 'h-44'} w-full relative`}>
                   {service?.contentImage && typeof service?.contentImage === 'object' && (
                     <React.Fragment>
                       <Media
@@ -46,16 +46,16 @@ export const ServiceSection: React.FC<Props> = (props) => {
                         priority={false}
                         loading={'lazy'}
                         resource={service?.contentImage}
-                        imgClassName="object-cover object-top"
+                        imgClassName="object-cover"
                       />
                     </React.Fragment>
                   )}
                   <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-primary bg-fixed opacity-0 transition duration-300 ease-in-out group-hover:opacity-40"></div>
                 </div>
-                <div className="flex p-4">
+                <div className="flex p-4 pt-2">
                   {service?.richText && (
                     <RichText
-                      className="text-white [&_p]:text-sm [&_h3]:text-xl"
+                      className="text-white [&_p]:text-[13px] [&_h3]:text-lg [&_h3]:mb-1"
                       data={service?.richText}
                       enableGutter={false}
                     />
