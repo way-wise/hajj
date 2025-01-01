@@ -1,13 +1,13 @@
 import type { StaticImageData } from 'next/image'
 
-import { cn } from 'src/utilities/cn'
-import React from 'react'
 import RichText from '@/components/RichText'
+import React from 'react'
+import { cn } from 'src/utilities/cn'
 
 import type { MediaSection as MediaSectionProps } from '@/payload-types'
 
-import { Media } from '@/components/Media'
 import { CMSLink } from '@/components/Link'
+import { Media } from '@/components/Media'
 
 type Props = MediaSectionProps & {
   breakout?: boolean
@@ -41,7 +41,7 @@ export const MediaSection: React.FC<Props> = (props) => {
   return (
     <div
       className={cn(
-        'relative min-h-56 md:min-h-80',
+        'relative min-h-80',
         {
           'container my-8': position === 'box' && enableGutter,
         },
@@ -49,14 +49,11 @@ export const MediaSection: React.FC<Props> = (props) => {
       )}
     >
       {background === 'color' && (
-        <div
-          className="w-full min-h-56 md:min-h-80"
-          style={{ backgroundColor: bgColor as string }}
-        ></div>
+        <div className="w-full min-h-80" style={{ backgroundColor: bgColor as string }}></div>
       )}
       {background === 'gradient' && (
         <div
-          className={`w-full min-h-56 md:min-h-80 ${position === 'box' && enableGutter && 'rounded-2xl'}`}
+          className={`w-full min-h-80 ${position === 'box' && enableGutter && 'rounded-2xl'}`}
           style={{
             backgroundImage: `linear-gradient(${angle}deg, ${startColor} 0%, ${endColor} 100%)`,
           }}
