@@ -244,16 +244,6 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                   </ul>
                 </nav>
 
-                <Link href="/company-profile">
-                  <Image
-                    src="/assets/way-wise-tech-profile.jpg"
-                    alt="Company Profile"
-                    height={50}
-                    width={90}
-                    className="w-[90px] h-[50px]"
-                  />
-                </Link>
-
                 <div className="flex items-center justify-end">
                   {user && user?.id ? (
                     <div className="relative group" ref={userMenuRef}>
@@ -457,6 +447,17 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                     </Link>
                   )}
                 </div>
+
+                <Link href="/company-profile">
+                  <Image
+                    src="/assets/way-wise-tech-profile.jpg"
+                    alt="Company Profile"
+                    height={72}
+                    width={128}
+                    className="sm:w-[128px] sm:h-[72px]"
+                  />
+                </Link>
+
                 {header?.callback && (
                   <div className="bg-primary py-2 pl-3 pr-4 hidden xl:flex items-center justify-center gap-3 rounded-xl">
                     <div>
