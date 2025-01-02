@@ -9,6 +9,7 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import type { Header } from '@/payload-types'
 import { useAuth } from '@/providers/Auth'
+import Image from 'next/image'
 
 interface HeaderTheme01Props {
   header: Header
@@ -242,6 +243,16 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                     ))}
                   </ul>
                 </nav>
+
+                <Link href="/company-profile">
+                  <Image
+                    src="/assets/way-wise-tech-profile.jpg"
+                    alt="Company Profile"
+                    height={50}
+                    width={90}
+                    className="w-[90px] h-[50px]"
+                  />
+                </Link>
 
                 <div className="flex items-center justify-end">
                   {user && user?.id ? (
