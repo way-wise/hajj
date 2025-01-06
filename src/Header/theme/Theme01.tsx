@@ -9,6 +9,7 @@ import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import type { Header } from '@/payload-types'
 import { useAuth } from '@/providers/Auth'
+import Image from 'next/image'
 
 interface HeaderTheme01Props {
   header: Header
@@ -446,6 +447,17 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                     </Link>
                   )}
                 </div>
+
+                <Link href="/company-profile">
+                  <Image
+                    src="/assets/way-wise-tech-profile.jpg"
+                    alt="Company Profile"
+                    height={72}
+                    width={128}
+                    className="sm:w-[128px] sm:h-[72px]"
+                  />
+                </Link>
+
                 {header?.callback && (
                   <div className="bg-primary py-2 pl-3 pr-4 hidden xl:flex items-center justify-center gap-3 rounded-xl">
                     <div>
