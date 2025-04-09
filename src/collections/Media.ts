@@ -4,6 +4,7 @@ import {
   FixedToolbarFeature,
   InlineToolbarFeature,
   lexicalEditor,
+  HeadingFeature,
 } from '@payloadcms/richtext-lexical'
 import path from 'path'
 // import { fileURLToPath } from 'url'
@@ -39,7 +40,12 @@ export const Media: CollectionConfig = {
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
-          return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
+          return [
+            ...rootFeatures,
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
+            FixedToolbarFeature(),
+            InlineToolbarFeature(),
+          ]
         },
       }),
     },
@@ -47,9 +53,9 @@ export const Media: CollectionConfig = {
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     // staticDir: path.resolve(dirname, '../../public/media'),
-    staticDir: path.join(process.cwd(), "public/media"),
+    staticDir: path.join(process.cwd(), 'public/media'),
     adminThumbnail: 'thumbnail',
-focalPoint: true,
+    focalPoint: true,
     displayPreview: true,
     imageSizes: [
       {
