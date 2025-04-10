@@ -32,7 +32,10 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
   let width: number | undefined
   let height: number | undefined
   let alt = altFromProps
-  let src: StaticImageData | string = srcFromProps || ''
+  let src: string =
+    typeof srcFromProps === 'object' && srcFromProps !== null
+      ? srcFromProps.src
+      : srcFromProps || ''
 
   if (!src && resource && typeof resource === 'object') {
     const {
@@ -61,7 +64,7 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   return (
     <picture>
-      <NextImage
+      {/* <NextImage
         alt={alt || 'Default Alt Text'}
         className={cn(imgClassName)}
         fill={fill}
@@ -74,7 +77,8 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
         sizes={sizes}
         src={src}
         width={!fill ? width : undefined}
-      />
+      /> */}
+      <img src={src || ''} alt={alt} className={cn(imgClassName)} />
     </picture>
   )
 }
