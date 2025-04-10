@@ -11,7 +11,7 @@ export default {
     './src/**/*.{ts,tsx}',
   ],
   // darkMode: ['selector', '[data-theme="dark"]'],
-  darkMode: ['selector'],
+  darkMode: false,
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
   prefix: '',
   safelist: [
