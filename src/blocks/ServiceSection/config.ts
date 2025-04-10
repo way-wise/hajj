@@ -22,7 +22,7 @@ export const ServiceSection: Block = {
         features: ({ rootFeatures }) => {
           return [
             ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
             AlignFeature(),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
@@ -40,12 +40,12 @@ export const ServiceSection: Block = {
       required: true,
       defaultValue: 3,
       min: 1,
-      max: 6
+      max: 6,
     },
     {
       name: 'fixedBackground',
       type: 'checkbox',
-      defaultValue: false
+      defaultValue: false,
     },
     {
       name: 'services',
@@ -73,7 +73,7 @@ export const ServiceSection: Block = {
             features: ({ rootFeatures }) => {
               return [
                 ...rootFeatures,
-                HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5'] }),
+                HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
                 AlignFeature(),
                 FixedToolbarFeature(),
                 InlineToolbarFeature(),

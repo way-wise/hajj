@@ -4,6 +4,7 @@ import {
   FixedToolbarFeature,
   InlineToolbarFeature,
   lexicalEditor,
+  HeadingFeature,
 } from '@payloadcms/richtext-lexical'
 import path from 'path'
 // import { fileURLToPath } from 'url'
@@ -31,15 +32,19 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      defaultValue: 'image alt',
-      required: true,
+      required: false,
     },
     {
       name: 'caption',
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
-          return [...rootFeatures, FixedToolbarFeature(), InlineToolbarFeature()]
+          return [
+            ...rootFeatures,
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
+            FixedToolbarFeature(),
+            InlineToolbarFeature(),
+          ]
         },
       }),
     },
@@ -47,14 +52,30 @@ export const Media: CollectionConfig = {
   upload: {
     // Upload to the public/media directory in Next.js making them publicly accessible even outside of Payload
     // staticDir: path.resolve(dirname, '../../public/media'),
-    staticDir: path.join(process.cwd(), "public/media"),
+    staticDir: path.join(process.cwd(), 'public/media'),
     adminThumbnail: 'thumbnail',
-focalPoint: true,
+    focalPoint: true,
     displayPreview: true,
     imageSizes: [
       {
         name: 'thumbnail',
         width: 300,
+      },
+    ],
+  },
+  hooks: {
+    beforeChange: [
+      async ({ data, req }) => {
+        if (!data.alt && req?.file?.name) {
+          const originalName = req.file.name
+          const fileName = originalName.split('.').slice(0, -1).join('.')
+          return {
+            ...data,
+            alt: fileName,
+          }
+        }
+
+        return data
       },
     ],
   },

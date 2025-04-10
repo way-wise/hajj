@@ -88,7 +88,7 @@ export const MediaSection: Block = {
         features: ({ rootFeatures }) => {
           return [
             ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }),
             FixedToolbarFeature(),
             InlineToolbarFeature(),
             BlocksFeature({
@@ -123,24 +123,20 @@ export const MediaSection: Block = {
     {
       type: 'row',
       fields: [
-        ...ColorPickerField(
-          {
-            name: 'startColor',
-            required: false,
-            admin: {
-              condition: (_, { background }) => background === 'gradient',
-            },
-          }
-        ),
-        ...ColorPickerField(
-          {
-            name: 'endColor',
-            required: false,
-            admin: {
-              condition: (_, { background }) => background === 'gradient',
-            },
-          }
-        ),
+        ...ColorPickerField({
+          name: 'startColor',
+          required: false,
+          admin: {
+            condition: (_, { background }) => background === 'gradient',
+          },
+        }),
+        ...ColorPickerField({
+          name: 'endColor',
+          required: false,
+          admin: {
+            condition: (_, { background }) => background === 'gradient',
+          },
+        }),
         {
           name: 'angle',
           type: 'number',
