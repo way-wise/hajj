@@ -32,8 +32,7 @@ export const Media: CollectionConfig = {
     {
       name: 'alt',
       type: 'text',
-      defaultValue: 'image alt',
-      required: true,
+      required: false,
     },
     {
       name: 'caption',
@@ -61,6 +60,22 @@ export const Media: CollectionConfig = {
       {
         name: 'thumbnail',
         width: 300,
+      },
+    ],
+  },
+  hooks: {
+    beforeChange: [
+      async ({ data, req }) => {
+        if (!data.alt && req?.file?.name) {
+          const originalName = req.file.name
+          const fileName = originalName.split('.').slice(0, -1).join('.')
+          return {
+            ...data,
+            alt: fileName,
+          }
+        }
+
+        return data
       },
     ],
   },
