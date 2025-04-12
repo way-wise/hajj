@@ -64,21 +64,19 @@ export const ImageMedia: React.FC<MediaProps> = (props) => {
 
   return (
     <picture>
-      {/* <NextImage
+      <img
+        src={src || ''}
         alt={alt || 'Default Alt Text'}
         className={cn(imgClassName)}
-        fill={fill}
-        height={!fill ? height : undefined}
-        placeholder="blur"
-        blurDataURL={placeholderBlur}
-        priority={priority}
-        quality={100}
-        loading={loading}
-        sizes={sizes}
-        src={src}
         width={!fill ? width : undefined}
-      /> */}
-      <img src={src || ''} alt={alt} className={cn(imgClassName)} />
+        height={!fill ? height : undefined}
+        loading={loading}
+        style={{
+          objectFit: fill ? 'cover' : undefined,
+          width: fill ? '100%' : undefined,
+          height: fill ? '100%' : undefined,
+        }}
+      />
     </picture>
   )
 }
