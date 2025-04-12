@@ -38,7 +38,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
                 ${(index + 1) % 2 == 0 ? 'items-end' : 'items-start'}
                 `}
               >
-                <div className={`${column > 3 ? 'h-60' : 'h-44'} w-full relative`}>
+                <div className={`${column > 3 ? 'h-60' : 'h-44'} w-full relative overflow-hidden`}>
                   {service?.contentImage && typeof service?.contentImage === 'object' && (
                     <React.Fragment>
                       <Media
