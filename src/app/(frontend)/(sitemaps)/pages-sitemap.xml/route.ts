@@ -46,9 +46,24 @@ const getPagesSitemap = unstable_cache(
       ? results.docs
           .filter((page) => Boolean(page?.slug))
           .map((page) => {
+            const rawSlug = page?.slug || ''
+            const slug = String(rawSlug)
+            // Priority & changefreq mapping
+            const priorityMap: Record<string, number> = {
+              home: 1.0,
+            }
+
+            const changefreqMap: Record<string, string> = {
+              home: 'daily',
+            }
+
+            const priority = priorityMap[slug] ?? 0.9
+            const changefreq = changefreqMap[slug] ?? 'Daily'
             return {
               loc: page?.slug === 'home' ? `${SITE_URL}/` : `${SITE_URL}/${page?.slug}`,
               lastmod: page.updatedAt || dateFallback,
+              changefreq,
+              priority,
             }
           })
       : []
