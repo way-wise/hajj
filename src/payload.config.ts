@@ -14,7 +14,6 @@ import { Posts } from './collections/Posts'
 import Users from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
-import Css from './css/config'
 import { Invoices } from './collections/Invoices'
 import Inboxes from './collections/Inboxes'
 import Projects from './collections/Projects'
@@ -137,7 +136,7 @@ export default buildConfig({
       path: '/checkout_sessions',
     },
   ],
-  globals: [Header, Footer, Css],
+  globals: [Header, Footer],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder
