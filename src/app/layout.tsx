@@ -1,3 +1,0 @@
-import './polyfills'
-import type { Metadata } from 'next'
-// ... existing code ... 
