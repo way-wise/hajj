@@ -1,6 +1,16 @@
+"use client"
+
+import { useAuth } from "@/providers/Auth"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 const TechSubPlatform = () => {
+    const { user } = useAuth()
+    const router = useRouter()
+    if(!user) {
+        router.push('/signin')
+    }
+    
   return (
     <div className="container py-28">
         <h1 className="text-center text-3xl font-bold">Tech Sub Platform</h1>
