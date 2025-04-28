@@ -344,7 +344,7 @@ export default function ProjectManagementPage() {
       {/* Add Project Modal */}
       {showAddProjectModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+          <div className="bg-white text-black p-6 w-full max-w-2xl">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Add New Project</h2>
               <button 
@@ -546,7 +546,7 @@ export default function ProjectManagementPage() {
       {/* Edit Project Modal */}
       {showEditModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-2xl">
+          <div className="bg-white text-black p-6 w-full max-w-2xl">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Edit Project</h2>
               <button 
