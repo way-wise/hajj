@@ -38,6 +38,7 @@ interface Project {
   isActive: boolean;
   projectType: 'ai' | 'non-ai';
   isArchived: boolean;
+  updatedAt?: string;
 }
 
 const statusColors: Record<string, string> = {
@@ -1061,6 +1062,12 @@ export default function ProjectManagementPage() {
                     <div>
                       <p className="text-gray-600 mb-1">Next Action:</p>
                       <p className="font-medium bg-white p-2 rounded border text-gray-900">{selectedProject.next}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 mb-1">Last Edited:</p>
+                      <p className="font-medium bg-white p-2 rounded border text-gray-900">
+                        {selectedProject.updatedAt ? formatDateForDisplay(selectedProject.updatedAt) : 'Not available'}
+                      </p>
                     </div>
                   </div>
                 </div>
