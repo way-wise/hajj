@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/providers/Auth'
+import { useRouter } from 'next/navigation'
 
 // Add date formatting functions
 const formatDateForDisplay = (dateString: string) => {
@@ -71,6 +72,10 @@ interface ProjectFormData {
 
 export default function ProjectManagementPage() {
   const { user } = useAuth()
+    const router = useRouter()
+    if(!user) {
+        router.push('/signin')
+    }
   const [activeTab, setActiveTab] = useState('NON AI Projects');
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
