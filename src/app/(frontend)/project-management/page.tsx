@@ -180,7 +180,7 @@ export default function ProjectManagementPage() {
     try {
       setIsLoading(true);
       setError(null);
-      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upwork-projects`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upwork-projects?limit=1000`, {
         headers: {
           'Content-Type': 'application/json',
         },
