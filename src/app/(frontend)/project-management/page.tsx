@@ -970,11 +970,11 @@ export default function ProjectManagementPage() {
                   <div className="space-y-2">
                     <p className="flex justify-between">
                       <span className="text-gray-600">Country:</span>
-                      <span className="font-medium">{selectedProject.country}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.country}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Client Name:</span>
-                      <span className="font-medium">{selectedProject.client}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.client}</span>
                     </p>
                   </div>
                 </div>
@@ -984,11 +984,11 @@ export default function ProjectManagementPage() {
                   <div className="space-y-2">
                     <p className="flex justify-between">
                       <span className="text-gray-600">Assigned To:</span>
-                      <span className="font-medium">{selectedProject.assigned}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.assigned}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Tech Stack:</span>
-                      <span className="font-medium">{selectedProject.tech}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.tech}</span>
                     </p>
                   </div>
                 </div>
@@ -998,11 +998,11 @@ export default function ProjectManagementPage() {
                   <div className="space-y-2">
                     <p className="flex justify-between">
                       <span className="text-gray-600">Budget:</span>
-                      <span className="font-medium">{selectedProject.budget}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.budget}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Milestone:</span>
-                      <span className="font-medium">{selectedProject.milestone}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.milestone}</span>
                     </p>
                   </div>
                 </div>
@@ -1032,7 +1032,7 @@ export default function ProjectManagementPage() {
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Project Type:</span>
-                      <span className="font-medium">{selectedProject.projectType === 'ai' ? 'AI' : 'NON AI'}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.projectType === 'ai' ? 'AI' : 'NON AI'}</span>
                     </p>
                   </div>
                 </div>
@@ -1042,11 +1042,11 @@ export default function ProjectManagementPage() {
                   <div className="space-y-2">
                     <p className="flex justify-between">
                       <span className="text-gray-600">Start Date:</span>
-                      <span className="font-medium">{formatDateForDisplay(selectedProject.start)}</span>
+                      <span className="font-medium text-gray-900">{formatDateForDisplay(selectedProject.start)}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">End Date:</span>
-                      <span className="font-medium">{formatDateForDisplay(selectedProject.end)}</span>
+                      <span className="font-medium text-gray-900">{formatDateForDisplay(selectedProject.end)}</span>
                     </p>
                   </div>
                 </div>
@@ -1056,11 +1056,11 @@ export default function ProjectManagementPage() {
                   <div className="space-y-3">
                     <div>
                       <p className="text-gray-600 mb-1">Remarks:</p>
-                      <p className="font-medium bg-white p-2 rounded border">{selectedProject.remarks}</p>
+                      <p className="font-medium bg-white p-2 rounded border text-gray-900">{selectedProject.remarks}</p>
                     </div>
                     <div>
                       <p className="text-gray-600 mb-1">Next Action:</p>
-                      <p className="font-medium bg-white p-2 rounded border">{selectedProject.next}</p>
+                      <p className="font-medium bg-white p-2 rounded border text-gray-900">{selectedProject.next}</p>
                     </div>
                   </div>
                 </div>
