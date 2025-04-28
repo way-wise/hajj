@@ -889,7 +889,7 @@ export default function ProjectManagementPage() {
                 getFilteredProjects().map((proj, idx) => (
                   <tr key={idx} className="border-t hover:bg-gray-50">
                     <td className="px-4 py-2 text-gray-900">{proj.country}</td>
-                    <td className="px-4 py-2 text-gray-900">{proj.client}</td>
+                    <td className="px-4 py-2 text-gray-900 uppercase">{proj.client}</td>
                     <td className="px-4 py-2 text-purple-700">{proj.name}</td>
                     <td className="px-4 py-2 text-gray-900">{proj.assigned}</td>
                     <td className="px-4 py-2 text-gray-900">{proj.tech}</td>
