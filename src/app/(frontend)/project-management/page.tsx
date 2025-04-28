@@ -36,6 +36,7 @@ interface Project {
   end: string;
   next: string;
   isActive: boolean;
+  projectType: 'ai' | 'non-ai';
 }
 
 const statusColors: Record<string, string> = {
@@ -69,11 +70,13 @@ export default function ProjectManagementPage() {
   const [showFilters, setShowFilters] = useState(false);
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc' | null>('asc');
   const [formData, setFormData] = useState<ProjectFormData>({
     country: '',
     client: '',
@@ -91,6 +94,46 @@ export default function ProjectManagementPage() {
     isActive: true,
     projectType: 'non-ai'
   });
+
+  // Add sorting function
+  const handleSort = () => {
+    if (sortOrder === 'asc') {
+      setSortOrder('desc');
+    } else if (sortOrder === 'desc') {
+      setSortOrder('asc');
+    }
+  };
+
+  // Modify getFilteredProjects to include sorting
+  const getFilteredProjects = () => {
+    if (!projects) return [];
+    
+    let filteredProjects;
+    switch (activeTab) {
+      case 'AI Projects':
+        filteredProjects = projects.filter(project => project.projectType === 'ai');
+        break;
+      case 'NON AI Projects':
+        filteredProjects = projects.filter(project => project.projectType === 'non-ai' || !project.projectType);
+        break;
+      case 'All Projects':
+        filteredProjects = projects;
+        break;
+      default:
+        filteredProjects = projects;
+    }
+
+    // Always apply sorting
+    filteredProjects = [...filteredProjects].sort((a, b) => {
+      if (sortOrder === 'asc') {
+        return a.completion - b.completion;
+      } else {
+        return b.completion - a.completion;
+      }
+    });
+
+    return filteredProjects;
+  };
 
   useEffect(() => {
     fetchProjects();
@@ -112,7 +155,7 @@ export default function ProjectManagementPage() {
 
       const data = await response.json();
       const projects = data.docs;
-      console.log(projects);
+      console.log('Raw fetched projects:', projects);
 
       // Validate each project has required fields
       const validProjects = projects.filter(project => {
@@ -128,7 +171,18 @@ export default function ProjectManagementPage() {
         return isValid;
       });
 
-      setProjects(validProjects);
+      // Normalize project type field
+      const processedProjects = validProjects.map(project => {
+        // Handle both old and new field names
+        const projectType = project.projectType || project['projectType '] || 'non-ai';
+        return {
+          ...project,
+          projectType: projectType.trim().toLowerCase()
+        };
+      });
+
+      console.log('Processed projects with normalized types:', processedProjects);
+      setProjects(processedProjects);
     } catch (err) {
       console.error('Error fetching projects:', err);
       setError(err instanceof Error ? err.message : 'An error occurred while fetching projects');
@@ -221,7 +275,7 @@ export default function ProjectManagementPage() {
       end: formatDateForInput(project.end),
       next: project.next,
       isActive: project.isActive ?? true,
-      projectType: project.status === 'ai' ? 'ai' : 'non-ai'
+      projectType: project.projectType
     });
     setShowEditModal(true);
   };
@@ -235,9 +289,6 @@ export default function ProjectManagementPage() {
 
     setIsSubmitting(true);
     try {
-      console.log('Updating project with ID:', selectedProject.id);
-      console.log('Update data:', formData);
-
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upwork-projects/${selectedProject.id}`, {
         method: 'PATCH',
         credentials: 'include',
@@ -269,6 +320,12 @@ export default function ProjectManagementPage() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Add function to handle showing project details
+  const handleShowDetails = (project: Project) => {
+    setSelectedProject(project);
+    setShowDetailsModal(true);
   };
 
   return (
@@ -708,7 +765,7 @@ export default function ProjectManagementPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded shadow p-4 mb-6">
+      {/* <div className="bg-white rounded shadow p-4 mb-6">
         <div className="flex justify-between items-center">
           <span className="font-semibold text-lg">Project Filters</span>
           <div className="flex gap-2">
@@ -722,9 +779,9 @@ export default function ProjectManagementPage() {
           </div>
         </div>
         {showFilters && (
-          <div className="mt-4 text-gray-500">{/* Add filter controls here */}No filters implemented yet.</div>
+          <div className="mt-4 text-gray-500">No filters implemented yet.</div>
         )}
-      </div>
+      </div> */}
 
       {/* Projects Overview */}
       <div>
@@ -738,48 +795,59 @@ export default function ProjectManagementPage() {
                 <th className="px-4 py-2 text-left">Project Name</th>
                 <th className="px-4 py-2 text-left">Assigned To</th>
                 <th className="px-4 py-2 text-left">Tech Stack</th>
-                <th className="px-4 py-2 text-left">Budget</th>
-                <th className="px-4 py-2 text-left">Milestone</th>
-                <th className="px-4 py-2 text-left">Status</th>
-                <th className="px-4 py-2 text-left">Completion %</th>
+                <th className="px-4 py-2 text-left">
+                  <div className="flex items-center gap-1 cursor-pointer" onClick={handleSort}>
+                    Completion %
+                    <span className="text-gray-400">
+                      {sortOrder === 'asc' ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      ) : sortOrder === 'desc' ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clipRule="evenodd" />
+                        </svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      )}
+                    </span>
+                  </div>
+                </th>
                 <th className="px-4 py-2 text-left">Remarks</th>
                 <th className="px-4 py-2 text-left">Start/End Date</th>
                 <th className="px-4 py-2 text-left">Next Action</th>
-                <th className="px-4 py-2 text-left">Action</th>
+                <th className="px-4 py-2 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan={13} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={10} className="px-4 py-8 text-center text-gray-500">
                     Loading projects...
                   </td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td colSpan={13} className="px-4 py-8 text-center text-red-500">
+                  <td colSpan={10} className="px-4 py-8 text-center text-red-500">
                     {error}
                   </td>
                 </tr>
-              ) : !Array.isArray(projects) || projects.length === 0 ? (
+              ) : !Array.isArray(projects) || getFilteredProjects().length === 0 ? (
                 <tr>
-                  <td colSpan={13} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={10} className="px-4 py-8 text-center text-gray-500">
                     No projects found
                   </td>
                 </tr>
               ) : (
-                projects.map((proj, idx) => (
+                getFilteredProjects().map((proj, idx) => (
                   <tr key={idx} className="border-t hover:bg-gray-50">
                     <td className="px-4 py-2">{proj.country}</td>
                     <td className="px-4 py-2">{proj.client}</td>
-                    <td className="px-4 py-2 text-purple-700 underline cursor-pointer">{proj.name}</td>
+                    <td className="px-4 py-2 text-purple-700">{proj.name}</td>
                     <td className="px-4 py-2">{proj.assigned}</td>
                     <td className="px-4 py-2">{proj.tech}</td>
-                    <td className="px-4 py-2">{proj.budget}</td>
-                    <td className="px-4 py-2">{proj.milestone}</td>
-                    <td className="px-4 py-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[proj.status]}`}>{proj.status}</span>
-                    </td>
                     <td className="px-4 py-2 w-40">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-gray-200 rounded h-2">
@@ -798,13 +866,27 @@ export default function ProjectManagementPage() {
                     </td>
                     <td className="px-4 py-2">{proj.next}</td>
                     <td className="px-4 py-2">
-                      <button 
-                        className="border p-1 rounded hover:bg-gray-100" 
-                        title="Edit"
-                        onClick={() => handleEditClick(proj)}
-                      >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2l-6 6m-2 2h6" /></svg>
-                      </button>
+                      <div className="flex gap-2">
+                        <button 
+                          className="border p-1 rounded hover:bg-gray-100" 
+                          title="View Details"
+                          onClick={() => handleShowDetails(proj)}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                        </button>
+                        <button 
+                          className="border p-1 rounded hover:bg-gray-100" 
+                          title="Edit"
+                          onClick={() => handleEditClick(proj)}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2l-6 6m-2 2h6" />
+                          </svg>
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
@@ -813,6 +895,150 @@ export default function ProjectManagementPage() {
           </table>
         </div>
       </div>
+
+      {/* Project Details Modal */}
+      {showDetailsModal && selectedProject && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-8 w-full max-w-4xl shadow-2xl">
+            <div className="flex justify-between items-center mb-6 border-b pb-4">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">{selectedProject.name}</h2>
+                <p className="text-gray-500 mt-1">Project Details</p>
+              </div>
+              <button 
+                onClick={() => setShowDetailsModal(false)}
+                className="text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-8">
+              <div className="space-y-6">
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Client Information</h3>
+                  <div className="space-y-2">
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Country:</span>
+                      <span className="font-medium">{selectedProject.country}</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Client Name:</span>
+                      <span className="font-medium">{selectedProject.client}</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Project Information</h3>
+                  <div className="space-y-2">
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Assigned To:</span>
+                      <span className="font-medium">{selectedProject.assigned}</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Tech Stack:</span>
+                      <span className="font-medium">{selectedProject.tech}</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Technical Details</h3>
+                  <div className="space-y-2">
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Budget:</span>
+                      <span className="font-medium">{selectedProject.budget}</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Milestone:</span>
+                      <span className="font-medium">{selectedProject.milestone}</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Project Status</h3>
+                  <div className="space-y-2">
+                    <p className="flex justify-between items-center">
+                      <span className="text-gray-600">Status:</span>
+                      <span className={`px-3 py-1 rounded-full text-sm font-semibold ${statusColors[selectedProject.status]}`}>
+                        {selectedProject.status}
+                      </span>
+                    </p>
+                    <p className="flex justify-between items-center">
+                      <span className="text-gray-600">Completion:</span>
+                      <div className="flex items-center gap-2">
+                        <div className="w-24 bg-gray-200 rounded h-2">
+                          <div
+                            className="h-2 rounded bg-purple-500"
+                            style={{ width: `${selectedProject.completion}%` }}
+                          />
+                        </div>
+                        <span className="font-medium">{selectedProject.completion}%</span>
+                      </div>
+                    </p>
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Project Type:</span>
+                      <span className="font-medium">{selectedProject.projectType === 'ai' ? 'AI' : 'NON AI'}</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Timeline</h3>
+                  <div className="space-y-2">
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Start Date:</span>
+                      <span className="font-medium">{formatDateForDisplay(selectedProject.start)}</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">End Date:</span>
+                      <span className="font-medium">{formatDateForDisplay(selectedProject.end)}</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-3">Additional Information</h3>
+                  <div className="space-y-3">
+                    <div>
+                      <p className="text-gray-600 mb-1">Remarks:</p>
+                      <p className="font-medium bg-white p-2 rounded border">{selectedProject.remarks}</p>
+                    </div>
+                    <div>
+                      <p className="text-gray-600 mb-1">Next Action:</p>
+                      <p className="font-medium bg-white p-2 rounded border">{selectedProject.next}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-8 pt-4 border-t">
+              <button
+                onClick={() => setShowDetailsModal(false)}
+                className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                Close
+              </button>
+              <button
+                onClick={() => {
+                  setShowDetailsModal(false);
+                  handleEditClick(selectedProject);
+                }}
+                className="px-6 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors"
+              >
+                Edit Project
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

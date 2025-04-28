@@ -122,7 +122,7 @@ const UpworkProjects: CollectionConfig = {
       defaultValue: true
     },
     {
-      name: 'projectType  ',
+      name: 'projectType',
       label: 'Project Type',
       type: 'select',
       options: [
