@@ -37,6 +37,7 @@ interface Project {
   next: string;
   isActive: boolean;
   projectType: 'ai' | 'non-ai';
+  isArchived: boolean;
 }
 
 const statusColors: Record<string, string> = {
@@ -104,33 +105,69 @@ export default function ProjectManagementPage() {
     }
   };
 
-  // Modify getFilteredProjects to include sorting
+  // Add function to handle archiving projects
+  const handleArchiveProject = async (project: Project) => {
+    if (!user) {
+      alert('Please log in to archive a project');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upwork-projects/${project.id}`, {
+        method: 'PATCH',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...project,
+          isArchived: true
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to archive project');
+      }
+
+      await fetchProjects(); // Refresh the projects list
+    } catch (error) {
+      console.error('Error archiving project:', error);
+      alert(`Failed to archive project: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
+  // Modify getFilteredProjects to include archive filtering
   const getFilteredProjects = () => {
     if (!projects) return [];
     
     let filteredProjects;
     switch (activeTab) {
       case 'AI Projects':
-        filteredProjects = projects.filter(project => project.projectType === 'ai');
+        filteredProjects = projects.filter(project => project.projectType === 'ai' && !project.isArchived);
         break;
       case 'NON AI Projects':
-        filteredProjects = projects.filter(project => project.projectType === 'non-ai' || !project.projectType);
+        filteredProjects = projects.filter(project => (project.projectType === 'non-ai' || !project.projectType) && !project.isArchived);
+        break;
+      case 'Archived Projects':
+        filteredProjects = projects.filter(project => project.isArchived);
         break;
       case 'All Projects':
-        filteredProjects = projects;
+        filteredProjects = projects.filter(project => !project.isArchived);
         break;
       default:
-        filteredProjects = projects;
+        filteredProjects = projects.filter(project => !project.isArchived);
     }
 
-    // Always apply sorting
-    filteredProjects = [...filteredProjects].sort((a, b) => {
-      if (sortOrder === 'asc') {
-        return a.completion - b.completion;
-      } else {
-        return b.completion - a.completion;
-      }
-    });
+    // Apply sorting if sortOrder is set
+    if (sortOrder) {
+      filteredProjects = [...filteredProjects].sort((a, b) => {
+        if (sortOrder === 'asc') {
+          return a.completion - b.completion;
+        } else {
+          return b.completion - a.completion;
+        }
+      });
+    }
 
     return filteredProjects;
   };
@@ -753,10 +790,10 @@ export default function ProjectManagementPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 mb-4">
-        {['All Projects', 'AI Projects', 'NON AI Projects'].map(tab => (
+        {['All Projects', 'AI Projects', 'NON AI Projects', 'Archived Projects'].map(tab => (
           <button
             key={tab}
-            className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white text-black font-medium'}`}
+            className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white text-black border'} font-medium`}
             onClick={() => setActiveTab(tab)}
           >
             {tab}
@@ -886,6 +923,17 @@ export default function ProjectManagementPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536M9 13l6-6m2 2l-6 6m-2 2h6" />
                           </svg>
                         </button>
+                        {proj.completion === 100 && !proj.isArchived && (
+                          <button 
+                            className="border p-1 rounded hover:bg-yellow-50 text-yellow-600 border-yellow-200" 
+                            title="Archive Project"
+                            onClick={() => handleArchiveProject(proj)}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                            </svg>
+                          </button>
+                        )}
                       </div>
                     </td>
                   </tr>
@@ -1026,6 +1074,17 @@ export default function ProjectManagementPage() {
               >
                 Close
               </button>
+              {selectedProject.completion === 100 && !selectedProject.isArchived && (
+                <button
+                  onClick={() => {
+                    handleArchiveProject(selectedProject);
+                    setShowDetailsModal(false);
+                  }}
+                  className="px-6 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors"
+                >
+                  Archive Project
+                </button>
+              )}
               <button
                 onClick={() => {
                   setShowDetailsModal(false);

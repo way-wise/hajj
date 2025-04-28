@@ -1363,6 +1363,7 @@ export interface UpworkProject {
   end: string;
   next: string;
   isActive?: boolean | null;
+  isArchived?: boolean | null;
   projectType?: ('ai' | 'non-ai') | null;
   updatedAt: string;
   createdAt: string;
@@ -2294,6 +2295,7 @@ export interface UpworkProjectsSelect<T extends boolean = true> {
   end?: T;
   next?: T;
   isActive?: T;
+  isArchived?: T;
   projectType?: T;
   updatedAt?: T;
   createdAt?: T;

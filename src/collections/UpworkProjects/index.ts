@@ -122,6 +122,12 @@ const UpworkProjects: CollectionConfig = {
       defaultValue: true
     },
     {
+      name: 'isArchived',
+      label: 'Is Archived',
+      type: 'checkbox',
+      defaultValue: false
+    },
+    {
       name: 'projectType',
       label: 'Project Type',
       type: 'select',
