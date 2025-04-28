@@ -880,11 +880,11 @@ export default function ProjectManagementPage() {
               ) : (
                 getFilteredProjects().map((proj, idx) => (
                   <tr key={idx} className="border-t hover:bg-gray-50">
-                    <td className="px-4 py-2">{proj.country}</td>
-                    <td className="px-4 py-2">{proj.client}</td>
+                    <td className="px-4 py-2 text-gray-900">{proj.country}</td>
+                    <td className="px-4 py-2 text-gray-900">{proj.client}</td>
                     <td className="px-4 py-2 text-purple-700">{proj.name}</td>
-                    <td className="px-4 py-2">{proj.assigned}</td>
-                    <td className="px-4 py-2">{proj.tech}</td>
+                    <td className="px-4 py-2 text-gray-900">{proj.assigned}</td>
+                    <td className="px-4 py-2 text-gray-900">{proj.tech}</td>
                     <td className="px-4 py-2 w-40">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-gray-200 rounded h-2">
@@ -896,16 +896,16 @@ export default function ProjectManagementPage() {
                         <span className="text-xs font-semibold">{proj.completion}%</span>
                       </div>
                     </td>
-                    <td className="px-4 py-2">{proj.remarks}</td>
-                    <td className="px-4 py-2 text-xs">
+                    <td className="px-4 py-2 text-gray-900">{proj.remarks}</td>
+                    <td className="px-4 py-2 text-xs text-gray-900">
                       <div>From: {formatDateForDisplay(proj.start)}</div>
                       <div>To: {formatDateForDisplay(proj.end)}</div>
                     </td>
-                    <td className="px-4 py-2">{proj.next}</td>
+                    <td className="px-4 py-2 text-gray-900">{proj.next}</td>
                     <td className="px-4 py-2">
                       <div className="flex gap-2">
                         <button 
-                          className="border p-1 rounded hover:bg-gray-100" 
+                          className="border p-1 rounded text-gray-900 hover:bg-gray-100" 
                           title="View Details"
                           onClick={() => handleShowDetails(proj)}
                         >
@@ -915,7 +915,7 @@ export default function ProjectManagementPage() {
                           </svg>
                         </button>
                         <button 
-                          className="border p-1 rounded hover:bg-gray-100" 
+                          className="border p-1 rounded text-gray-900 hover:bg-gray-100" 
                           title="Edit"
                           onClick={() => handleEditClick(proj)}
                         >
@@ -925,7 +925,7 @@ export default function ProjectManagementPage() {
                         </button>
                         {proj.completion === 100 && !proj.isArchived && (
                           <button 
-                            className="border p-1 rounded hover:bg-yellow-50 text-yellow-600 border-yellow-200" 
+                            className="border p-1 rounded text-gray-900 hover:bg-yellow-50 text-yellow-600 border-yellow-200" 
                             title="Archive Project"
                             onClick={() => handleArchiveProject(proj)}
                           >
