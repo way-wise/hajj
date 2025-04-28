@@ -756,7 +756,7 @@ export default function ProjectManagementPage() {
         {['All Projects', 'AI Projects', 'NON AI Projects'].map(tab => (
           <button
             key={tab}
-            className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white border'} font-medium`}
+            className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white text-black font-medium'}`}
             onClick={() => setActiveTab(tab)}
           >
             {tab}
