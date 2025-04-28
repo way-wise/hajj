@@ -25,6 +25,7 @@ import ProjectDocumentations from './collections/ProjectDocumentations'
 import EmailTemplate from './collections/emailTemplate'
 import ProjectQueries from './collections/PorjectQuery'
 import HajjQuery from './collections/HajjQueries'
+import UpworkProjects from './collections/UpworkProjects'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -120,6 +121,7 @@ export default buildConfig({
     HajjQuery,
     ProjectDocumentations,
     EmailTemplate,
+    UpworkProjects,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   endpoints: [

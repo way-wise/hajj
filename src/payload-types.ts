@@ -25,6 +25,7 @@ export interface Config {
     'hajj-queries': HajjQuery;
     'project-documentations': ProjectDocumentation;
     'email-template': EmailTemplate;
+    'upwork-projects': UpworkProject;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -49,6 +50,7 @@ export interface Config {
     'hajj-queries': HajjQueriesSelect<false> | HajjQueriesSelect<true>;
     'project-documentations': ProjectDocumentationsSelect<false> | ProjectDocumentationsSelect<true>;
     'email-template': EmailTemplateSelect<false> | EmailTemplateSelect<true>;
+    'upwork-projects': UpworkProjectsSelect<false> | UpworkProjectsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -1343,6 +1345,30 @@ export interface EmailTemplate {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "upwork-projects".
+ */
+export interface UpworkProject {
+  id: string;
+  country: string;
+  client: string;
+  name: string;
+  assigned: string;
+  tech: string;
+  budget: string;
+  milestone: string;
+  status: 'Waiting' | 'Active' | 'Completed' | 'Cancelled';
+  completion: number;
+  remarks: string;
+  start: string;
+  end: string;
+  next: string;
+  isActive?: boolean | null;
+  'projectType  '?: ('ai' | 'non-ai') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1471,6 +1497,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'email-template';
         value: string | EmailTemplate;
+      } | null)
+    | ({
+        relationTo: 'upwork-projects';
+        value: string | UpworkProject;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -2242,6 +2272,29 @@ export interface EmailTemplateSelect<T extends boolean = true> {
         variable?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "upwork-projects_select".
+ */
+export interface UpworkProjectsSelect<T extends boolean = true> {
+  country?: T;
+  client?: T;
+  name?: T;
+  assigned?: T;
+  tech?: T;
+  budget?: T;
+  milestone?: T;
+  status?: T;
+  completion?: T;
+  remarks?: T;
+  start?: T;
+  end?: T;
+  next?: T;
+  isActive?: T;
+  'projectType  '?: T;
   updatedAt?: T;
   createdAt?: T;
 }
