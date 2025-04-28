@@ -27,7 +27,7 @@ const TechSubPlatform = () => {
                 </div>
             </a>
 
-            <Link href="https://preview--project-zenflow-manager.lovable.app/" target="_blank" className="block">
+            <Link href="/project-management" target="_blank" className="block">
                 <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow duration-300">
                     <div className="flex items-center justify-center mb-4">
                         <svg className="w-12 h-12 text-gray-800 dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">

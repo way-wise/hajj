@@ -72,7 +72,6 @@ interface ProjectFormData {
 export default function ProjectManagementPage() {
   const { user } = useAuth()
   const [activeTab, setActiveTab] = useState('NON AI Projects');
-  const [showFilters, setShowFilters] = useState(false);
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
