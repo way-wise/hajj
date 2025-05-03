@@ -840,6 +840,8 @@ export default function ProjectManagementPage() {
                 <th className="px-4 py-2 text-left">Project Name</th>
                 <th className="px-4 py-2 text-left">Assigned To</th>
                 <th className="px-4 py-2 text-left">Tech Stack</th>
+                <th className="px-4 py-2 text-left">Budget</th>
+                <th className="px-4 py-2 text-left">Milestone</th>
                 <th className="px-4 py-2 text-left">
                   <div className="flex items-center gap-1 cursor-pointer" onClick={handleSort}>
                     Completion %
@@ -893,6 +895,8 @@ export default function ProjectManagementPage() {
                     <td className="px-4 py-2 text-purple-700">{proj.name}</td>
                     <td className="px-4 py-2 text-gray-900">{proj.assigned}</td>
                     <td className="px-4 py-2 text-gray-900">{proj.tech}</td>
+                    <td className="px-4 py-2 text-gray-900">{proj.budget}</td>
+                    <td className="px-4 py-2 text-gray-900">{proj.milestone}</td>
                     <td className="px-4 py-2 w-40">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-gray-200 rounded h-2">
