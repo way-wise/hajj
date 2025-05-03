@@ -61,6 +61,11 @@ const HajjQuery: CollectionConfig = {
       type: 'text',
     },
     {
+      label: 'Package for total person',
+      name: 'package_for_total_person',
+      type: 'number',
+    },
+    {
       label: 'Package Type',
       name: 'package_type',
       type: 'radio',

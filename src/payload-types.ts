@@ -1263,6 +1263,7 @@ export interface HajjQuery {
   name: string;
   mobile: string;
   address?: string | null;
+  package_for_total_person?: number | null;
   package_type: 'Hajj' | 'Umrah';
   package_name?: string | null;
   is_food_included?: boolean | null;
@@ -2226,6 +2227,7 @@ export interface HajjQueriesSelect<T extends boolean = true> {
   name?: T;
   mobile?: T;
   address?: T;
+  package_for_total_person?: T;
   package_type?: T;
   package_name?: T;
   is_food_included?: T;
