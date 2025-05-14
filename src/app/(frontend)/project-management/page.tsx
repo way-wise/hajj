@@ -151,19 +151,39 @@ export default function ProjectManagementPage() {
     let filteredProjects;
     switch (activeTab) {
       case 'AI Projects':
-        filteredProjects = projects.filter(project => project.projectType === 'ai' && !project.isArchived);
+        filteredProjects = projects.filter(project => 
+          project.projectType === 'ai' && 
+          !project.isArchived &&
+          project.status !== 'Cancelled'
+        );
         break;
       case 'NON AI Projects':
-        filteredProjects = projects.filter(project => (project.projectType === 'non-ai' || !project.projectType) && !project.isArchived);
+        filteredProjects = projects.filter(project => 
+          (project.projectType === 'non-ai' || !project.projectType) && 
+          !project.isArchived &&
+          project.status !== 'Cancelled'
+        );
         break;
       case 'Archived Projects':
         filteredProjects = projects.filter(project => project.isArchived);
         break;
+      case 'Incomplete Projects':
+        filteredProjects = projects.filter(project => 
+          project.status === 'Cancelled' && 
+          !project.isArchived
+        );
+        break;
       case 'All Projects':
-        filteredProjects = projects.filter(project => !project.isArchived);
+        filteredProjects = projects.filter(project => 
+          !project.isArchived &&
+          project.status !== 'Cancelled'
+        );
         break;
       default:
-        filteredProjects = projects.filter(project => !project.isArchived);
+        filteredProjects = projects.filter(project => 
+          !project.isArchived &&
+          project.status !== 'Cancelled'
+        );
     }
 
     // Apply sorting if sortOrder is set
@@ -798,7 +818,7 @@ export default function ProjectManagementPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 mb-4">
-        {['All Projects', 'AI Projects', 'NON AI Projects', 'Archived Projects'].map(tab => (
+        {['All Projects', 'AI Projects', 'NON AI Projects', 'Incomplete Projects', 'Archived Projects'].map(tab => (
           <button
             key={tab}
             className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white text-black border'} font-medium`}
