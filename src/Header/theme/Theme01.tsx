@@ -277,16 +277,39 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                         className={`absolute border border-gray-100 py-2 top-full right-0 bg-white rounded-lg shadow-lg min-w-max transition-all duration-300 ease-in-out ${userMenu ? 'visible opacity-100' : 'invisible opacity-0'}`}
                       >
                         <Link
-                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary dark:text-white/70 dark:hover:text-white px-3"
+                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary px-3"
+                          href={'/tech-sub-platform'}
+                        >
+                          <span className="text-base font-medium text-black hover:opacity-70 block">
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              strokeWidth="1.5"
+                              stroke="currentColor"
+                              className="size-6"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M6.429 9.75 2.25 12l4.179 2.25m0-4.5 5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0 4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0-5.571 3-5.571-3"
+                              />
+                            </svg>
+                          </span>
+                          <span>Tech Sub Platform</span>
+                        </Link>
+
+                        <Link
+                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary px-3"
                           href={'/user-dashboard/profile'}
                         >
-                          <span className="text-base font-medium text-dark hover:opacity-70 dark:text-white block">
+                          <span className="text-base font-medium text-black hover:opacity-70 block">
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="24"
                               height="24"
                               fill="currentColor"
-                              className="bi bi-person-circle fill-gray-600 dark:fill-gray-300"
+                              className="bi bi-person-circle fill-gray-600"
                               viewBox="0 0 16 16"
                             >
                               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
@@ -299,7 +322,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                           <span>My Profile</span>
                         </Link>
                         <Link
-                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary dark:text-white/70 dark:hover:text-white px-3"
+                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary px-3"
                           href={'/projects'}
                         >
                           <svg
@@ -328,7 +351,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                           <span>My Projects</span>
                         </Link>
                         <Link
-                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary dark:text-white/70 dark:hover:text-white px-3"
+                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary px-3"
                           href={'/user-dashboard/project-assets'}
                         >
                           <svg
@@ -351,7 +374,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                           Project Assets
                         </Link>
                         <Link
-                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary dark:text-white/70 dark:hover:text-white px-3"
+                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary px-3"
                           href={'/user-dashboard/payment-history'}
                         >
                           <svg
@@ -378,7 +401,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                           Payment History
                         </Link>
                         <Link
-                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary dark:text-white/70 dark:hover:text-white px-3"
+                          className="hover:bg-gray-100 flex gap-3 items-center rounded py-2.5 text-base text-dark hover:text-primary px-3"
                           href={'/user-dashboard/inbox'}
                         >
                           <svg
@@ -406,7 +429,7 @@ const HeaderTheme01: React.FC<HeaderTheme01Props> = ({ header }) => {
                           My Inbox
                         </Link>
                         <span
-                          className="hover:bg-gray-100 flex gap-2 items-center cursor-pointer rounded py-2.5 text-base text-danger hover:text-primary dark:text-white/70 dark:hover:text-white px-3"
+                          className="hover:bg-gray-100 flex gap-2 items-center cursor-pointer rounded py-2.5 text-base text-danger hover:text-primary px-3"
                           onClick={() => doLogout()}
                         >
                           <svg
