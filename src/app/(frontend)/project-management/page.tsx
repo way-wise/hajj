@@ -164,7 +164,7 @@ export default function ProjectManagementPage() {
           project.status !== 'Cancelled'
         );
         break;
-      case 'Archived Projects':
+      case 'Completed Projects':
         filteredProjects = projects.filter(project => project.isArchived);
         break;
       case 'Incomplete Projects':
@@ -818,7 +818,7 @@ export default function ProjectManagementPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 mb-4">
-        {['All Projects', 'AI Projects', 'NON AI Projects', 'Incomplete Projects', 'Archived Projects'].map(tab => (
+        {['All Projects', 'AI Projects', 'NON AI Projects', 'Incompleted Projects', 'Completed Projects'].map(tab => (
           <button
             key={tab}
             className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white text-black border'} font-medium`}
