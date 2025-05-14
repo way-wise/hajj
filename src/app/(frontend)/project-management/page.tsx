@@ -490,7 +490,7 @@ export default function ProjectManagementPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Milestone</label>
+                  <label className="block text-sm font-medium text-gray-700">Paid Amount</label>
                   <input
                     type="text"
                     name="milestone"
@@ -695,7 +695,7 @@ export default function ProjectManagementPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Milestone</label>
+                  <label className="block text-sm font-medium text-gray-700">Paid Amount</label>
                   <input
                     type="text"
                     name="milestone"
@@ -861,7 +861,7 @@ export default function ProjectManagementPage() {
                 <th className="px-4 py-2 text-left">Assigned To</th>
                 <th className="px-4 py-2 text-left">Tech Stack</th>
                 <th className="px-4 py-2 text-left">Budget</th>
-                <th className="px-4 py-2 text-left">Milestone</th>
+                <th className="px-4 py-2 text-left">Paid Amount</th>
                 <th className="px-4 py-2 text-left">
                   <div className="flex items-center gap-1 cursor-pointer" onClick={handleSort}>
                     Completion %
