@@ -29,7 +29,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
       )}
       {services && services.length > 0 && (
         <div className="container md:px-20 m-auto">
-          <div className={`grid grid-cols-1 gap-x-6 gap-y-20 md:grid-cols-2 lg:${columnClass}`}>
+          <div className={`grid grid-cols-1 gap-x-6 gap-y-28 md:grid-cols-2 lg:${columnClass}`}>
             {services.map((service, index) => (
               <div
                 key={index}
