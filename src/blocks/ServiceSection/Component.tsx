@@ -29,11 +29,11 @@ export const ServiceSection: React.FC<Props> = (props) => {
       )}
       {services && services.length > 0 && (
         <div className="container md:px-20 m-auto">
-          <div className={`grid grid-cols-1 gap-x-16 gap-y-6 md:grid-cols-2 lg:${columnClass}`}>
+          <div className={`grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2 lg:${columnClass}`}>
             {services.map((service, index) => (
               <div
                 key={index}
-                className={`h-full flex bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden group hover:bg-gray-800/90 transition duration-500 ease-in-out
+                className={`w-[300px] h-[300px] flex items-center  bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden group hover:bg-gray-800/90 transition duration-500 ease-in-out
                 ${service?.alignment === 'mediaContent' ? 'flex-col' : 'flex-col-reverse'}
                 ${(index + 1) % 2 == 0 ? 'items-end' : 'items-start'}
                 `}
