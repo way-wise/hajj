@@ -567,15 +567,14 @@ export default function ProjectManagementPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Remarks</label>
-                <textarea
-                  name="remarks"
-                  value={formData.remarks}
+                <label className="block text-sm font-medium text-gray-700">Project Estimated Time</label>
+                <input
+                  name="estimatedTime"
+                  value={formData.estimatedTime}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                  rows={3}
                   required
-                ></textarea>
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Next Action</label>
@@ -772,15 +771,15 @@ export default function ProjectManagementPage() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Remarks</label>
-                <textarea
-                  name="remarks"
-                  value={formData.remarks}
+                <label className="block text-sm font-medium text-gray-700">Project Estimated Time</label>
+                <input
+                  type="text"
+                  name="estimatedTime"
+                  value={formData.estimatedTime}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                  rows={3}
                   required
-                ></textarea>
+                />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700">Next Action</label>
