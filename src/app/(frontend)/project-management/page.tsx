@@ -819,7 +819,7 @@ export default function ProjectManagementPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 mb-4">
-        {['All Projects', 'AI Projects', 'NON AI Projects', 'Cancelled Projects', 'Completed Projects'].map(tab => (
+        {['All Projects', 'AI Projects', 'NON AI Projects', 'Future Prospects', 'Completed Projects'].map(tab => (
           <button
             key={tab}
             className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white text-black border'} font-medium`}
