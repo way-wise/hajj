@@ -143,6 +143,12 @@ const UpworkProjects: CollectionConfig = {
       ],
       defaultValue: 'non-ai',
     },
+    {
+      name: 'estimatedTime',
+      type: 'text',
+      required: false,
+      label: 'Estimated Time',
+    },
   ],
 }
 

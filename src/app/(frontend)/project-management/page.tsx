@@ -12,9 +12,6 @@ const formatDateForDisplay = (dateString: string) => {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: true
   });
 };
 
@@ -39,6 +36,7 @@ interface Project {
   start: string;
   end: string;
   next: string;
+  estimatedTime: string;
   isActive: boolean;
   projectType: 'ai' | 'non-ai';
   isArchived: boolean;
@@ -66,6 +64,7 @@ interface ProjectFormData {
   start: string;
   end: string;
   next: string;
+  estimatedTime: string;
   isActive: boolean;
   projectType: 'ai' | 'non-ai';
 }
@@ -100,6 +99,7 @@ export default function ProjectManagementPage() {
     start: '',
     end: '',
     next: '',
+    estimatedTime: '',
     isActive: true,
     projectType: 'non-ai'
   });
@@ -307,6 +307,7 @@ export default function ProjectManagementPage() {
         remarks: '',
         start: '',
         end: '',
+        estimatedTime: '',
         next: '',
         isActive: true,
         projectType: 'non-ai'
@@ -339,6 +340,7 @@ export default function ProjectManagementPage() {
       start: formatDateForInput(project.start),
       end: formatDateForInput(project.end),
       next: project.next,
+      estimatedTime: project.estimatedTime,
       isActive: project.isActive ?? true,
       projectType: project.projectType
     });
@@ -882,7 +884,6 @@ export default function ProjectManagementPage() {
                     </span>
                   </div>
                 </th>
-                <th className="px-4 py-2 text-left">Remarks</th>
                 <th className="px-4 py-2 text-left">Start/End Date</th>
                 <th className="px-4 py-2 text-left">Next Action</th>
                 <th className="px-4 py-2 text-left">Actions</th>
@@ -928,9 +929,8 @@ export default function ProjectManagementPage() {
                         <span className="text-xs font-semibold text-gray-900">{proj.completion}%</span>
                       </div>
                     </td>
-                    <td className="px-4 py-2 text-gray-900">{proj.remarks}</td>
                     <td className="px-4 py-2 text-xs text-gray-900">
-                      <div>From: {formatDateForDisplay(proj.start)}</div>
+                      <div>From: {formatDateForDisplay(proj.start)} {proj.estimatedTime ? `(${proj.estimatedTime})` : ''}</div>
                       <div>To: {formatDateForDisplay(proj.end)}</div>
                     </td>
                     <td className="px-4 py-2 text-gray-900">{proj.next}</td>
