@@ -167,7 +167,7 @@ export default function ProjectManagementPage() {
       case 'Completed Projects':
         filteredProjects = projects.filter(project => project.isArchived);
         break;
-      case 'Cancelled Projects':
+      case 'Future Prospects':
         filteredProjects = projects.filter(project => 
           project.status === 'Cancelled' && 
           !project.isArchived
