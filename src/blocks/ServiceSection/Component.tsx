@@ -21,19 +21,19 @@ export const ServiceSection: React.FC<Props> = (props) => {
       className="bg-no-repeat bg-cover bg-center py-12 md:py-20 lg:py-32"
     >
       {intro && (
-        <div className="container w-auto md:max-w-3xl mx-5 mb-12 md:mx-auto bg-gray-700/60 backdrop-blur rounded-2xl">
+        <div className="container w-auto md:max-w-3xl mx-5 mb-[100px] md:mx-auto bg-gray-700/60 backdrop-blur rounded-2xl">
           <div className="p-8 md:p-6">
             <RichText className="text-white" data={intro} enableGutter={false} />
           </div>
         </div>
       )}
       {services && services.length > 0 && (
-        <div className="container md:px-8 m-auto">
-          <div className={`grid grid-cols-1 gap-x-6 gap-y-6 md:grid-cols-2 lg:${columnClass}`}>
+        <div className="container md:px-20 m-auto">
+          <div className={`grid grid-cols-1 gap-x-6 gap-y-28 md:grid-cols-2 lg:${columnClass}`}>
             {services.map((service, index) => (
               <div
                 key={index}
-                className={`h-full flex bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden group hover:bg-gray-800/90 transition duration-500 ease-in-out
+                className={`w-[300px] h-[300px] flex items-center  bg-gray-800/70 backdrop-blur-md rounded-xl overflow-hidden group hover:bg-gray-800/90 transition duration-500 ease-in-out
                 ${service?.alignment === 'mediaContent' ? 'flex-col' : 'flex-col-reverse'}
                 ${(index + 1) % 2 == 0 ? 'items-end' : 'items-start'}
                 `}
@@ -55,7 +55,7 @@ export const ServiceSection: React.FC<Props> = (props) => {
                 <div className="flex p-4 pt-2">
                   {service?.richText && (
                     <RichText
-                      className="text-white [&_p]:text-sm [&_h3]:text-xl [&_h3]:mb-1"
+                      className="text-white [&_p]:text-sm [&_p]:line-clamp-2 [&_h3]:text-xl [&_h3]:mb-1"
                       data={service?.richText}
                       enableGutter={false}
                     />
