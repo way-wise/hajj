@@ -1365,7 +1365,7 @@ export interface UpworkProject {
   next: string;
   isActive?: boolean | null;
   isArchived?: boolean | null;
-  projectType?: ('ai' | 'non-ai') | null;
+  projectType?: ('ai' | 'non-ai' | 'ui-ux-marketing') | null;
   estimatedTime?: string | null;
   updatedAt: string;
   createdAt: string;

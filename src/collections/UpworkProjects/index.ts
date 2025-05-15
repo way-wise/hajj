@@ -140,6 +140,10 @@ const UpworkProjects: CollectionConfig = {
           label: 'NON AI',
           value: 'non-ai',
         },
+        {
+          label: 'UI/UX & Digital Marketing',
+          value: 'ui-ux-marketing',
+        },
       ],
       defaultValue: 'non-ai',
     },

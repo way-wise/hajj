@@ -38,7 +38,7 @@ interface Project {
   next: string;
   estimatedTime: string;
   isActive: boolean;
-  projectType: 'ai' | 'non-ai';
+  projectType: 'ai' | 'non-ai' | 'ui-ux-marketing';
   isArchived: boolean;
   updatedAt?: string;
 }
@@ -66,7 +66,7 @@ interface ProjectFormData {
   next: string;
   estimatedTime: string;
   isActive: boolean;
-  projectType: 'ai' | 'non-ai';
+  projectType: 'ai' | 'non-ai' | 'ui-ux-marketing';
 }
 
 export default function ProjectManagementPage() {
@@ -159,7 +159,14 @@ export default function ProjectManagementPage() {
         break;
       case 'NON AI Projects':
         filteredProjects = projects.filter(project => 
-          (project.projectType === 'non-ai' || !project.projectType) && 
+          project.projectType === 'non-ai' && 
+          !project.isArchived &&
+          project.status !== 'Cancelled'
+        );
+        break;
+      case 'UI/UX & Digital Marketing':
+        filteredProjects = projects.filter(project => 
+          project.projectType === 'ui-ux-marketing' && 
           !project.isArchived &&
           project.status !== 'Cancelled'
         );
@@ -528,6 +535,7 @@ export default function ProjectManagementPage() {
                   >
                     <option value="ai">AI</option>
                     <option value="non-ai">NON AI</option>
+                    <option value="ui-ux-marketing">UI/UX & Digital Marketing</option>
                   </select>
                 </div>
                 <div>
@@ -732,6 +740,7 @@ export default function ProjectManagementPage() {
                   >
                     <option value="ai">AI</option>
                     <option value="non-ai">NON AI</option>
+                    <option value="ui-ux-marketing">UI/UX & Digital Marketing</option>
                   </select>
                 </div>
                 <div>
@@ -819,7 +828,7 @@ export default function ProjectManagementPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 mb-4">
-        {['All Projects', 'AI Projects', 'NON AI Projects', 'Future Prospects', 'Completed Projects'].map(tab => (
+        {['All Projects', 'AI Projects', 'NON AI Projects', 'UI/UX & Digital Marketing', 'Future Prospects', 'Completed Projects'].map(tab => (
           <button
             key={tab}
             className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white text-black border'} font-medium`}
@@ -1063,7 +1072,7 @@ export default function ProjectManagementPage() {
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Project Type:</span>
-                      <span className="font-medium text-gray-900">{selectedProject.projectType === 'ai' ? 'AI' : 'NON AI'}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.projectType === 'ai' ? 'AI' : selectedProject.projectType === 'non-ai' ? 'NON AI' : 'UI/UX & Digital Marketing'}</span>
                     </p>
                   </div>
                 </div>
