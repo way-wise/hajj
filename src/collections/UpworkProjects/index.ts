@@ -94,7 +94,6 @@ const UpworkProjects: CollectionConfig = {
     {
       name: 'remarks',
       type: 'textarea',
-      required: true,
       label: 'Remarks',
     },
     {

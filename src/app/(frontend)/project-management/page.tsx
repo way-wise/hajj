@@ -278,9 +278,24 @@ export default function ProjectManagementPage() {
       alert('Please log in to add a project');
       return;
     }
+
+    // Validate required fields
+    const requiredFields = [
+      'country', 'client', 'name', 'assigned', 'tech', 
+      'budget', 'milestone', 'status', 'completion', 
+      'start', 'end', 'next', 'projectType'
+    ];
+    
+    const missingFields = requiredFields.filter(field => !formData[field as keyof ProjectFormData]);
+    if (missingFields.length > 0) {
+      alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
+      console.log('Sending form data:', formData);
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upwork-projects`, {
         method: 'POST',
         credentials: 'include',

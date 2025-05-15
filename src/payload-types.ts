@@ -1359,7 +1359,7 @@ export interface UpworkProject {
   milestone: string;
   status: 'Waiting' | 'Active' | 'Completed' | 'Cancelled';
   completion: number;
-  remarks: string;
+  remarks?: string | null;
   start: string;
   end: string;
   next: string;
