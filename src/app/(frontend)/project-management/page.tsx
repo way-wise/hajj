@@ -56,8 +56,8 @@ interface ProjectFormData {
   name: string;
   assigned: string;
   tech: string;
-  budget: string;
-  milestone: string;
+  budget: string | number;
+  milestone: string | number;
   status: 'Waiting' | 'Active' | 'Completed' | 'Cancelled';
   completion: number;
   remarks: string;
@@ -417,6 +417,64 @@ export default function ProjectManagementPage() {
     setShowDetailsModal(true);
   };
 
+  // Add function to calculate total paid amount
+  const calculateTotalPaidAmount = () => {
+    const filteredProjects = getFilteredProjects();
+    console.log('Calculating total for projects:', filteredProjects.length);
+    
+    const total = filteredProjects.reduce((total, project) => {
+      // Handle different formats of milestone data
+      let paidAmount = 0;
+      if (typeof project.milestone === 'number') {
+        paidAmount = project.milestone;
+      } else if (typeof project.milestone === 'string') {
+        // Remove any currency symbols, commas, and spaces, then parse
+        const cleanAmount = project.milestone.replace(/[$,€£¥₹\s]/g, '');
+        paidAmount = parseFloat(cleanAmount) || 0;
+      }
+      
+      console.log(`Project: ${project.name}, Milestone: ${project.milestone}, Parsed: ${paidAmount}`);
+      return total + paidAmount;
+    }, 0);
+    
+    console.log('Total calculated:', total);
+    return total;
+  };
+
+  // Add function to calculate total budget
+  const calculateTotalBudget = () => {
+    const filteredProjects = getFilteredProjects();
+    console.log('Calculating total budget for projects:', filteredProjects.length);
+    
+    const total = filteredProjects.reduce((total, project) => {
+      // Handle different formats of budget data
+      let budgetAmount = 0;
+      if (typeof project.budget === 'number') {
+        budgetAmount = project.budget;
+      } else if (typeof project.budget === 'string') {
+        // Remove any currency symbols, commas, and spaces, then parse
+        const cleanAmount = project.budget.replace(/[$,€£¥₹\s]/g, '');
+        budgetAmount = parseFloat(cleanAmount) || 0;
+      }
+      
+      console.log(`Project: ${project.name}, Budget: ${project.budget}, Parsed: ${budgetAmount}`);
+      return total + budgetAmount;
+    }, 0);
+    
+    console.log('Total budget calculated:', total);
+    return total;
+  };
+
+  // Add function to format currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
       {/* Header */}
@@ -505,10 +563,12 @@ export default function ProjectManagementPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Budget</label>
                   <input
-                    type="text"
+                    type="number"
                     name="budget"
                     value={formData.budget}
                     onChange={handleInputChange}
+                    min="0"
+                    step="0.01"
                     className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                     required
                   />
@@ -516,10 +576,12 @@ export default function ProjectManagementPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Paid Amount</label>
                   <input
-                    type="text"
+                    type="number"
                     name="milestone"
                     value={formData.milestone}
                     onChange={handleInputChange}
+                    min="0"
+                    step="0.01"
                     className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                     required
                   />
@@ -710,10 +772,12 @@ export default function ProjectManagementPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Budget</label>
                   <input
-                    type="text"
+                    type="number"
                     name="budget"
                     value={formData.budget}
                     onChange={handleInputChange}
+                    min="0"
+                    step="0.01"
                     className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                     required
                   />
@@ -721,10 +785,12 @@ export default function ProjectManagementPage() {
                 <div>
                   <label className="block text-sm font-medium text-gray-700">Paid Amount</label>
                   <input
-                    type="text"
+                    type="number"
                     name="milestone"
                     value={formData.milestone}
                     onChange={handleInputChange}
+                    min="0"
+                    step="0.01"
                     className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                     required
                   />
@@ -939,8 +1005,8 @@ export default function ProjectManagementPage() {
                     <td className="px-4 py-2 text-purple-700">{proj.name}</td>
                     <td className="px-4 py-2 text-gray-900">{proj.assigned}</td>
                     <td className="px-4 py-2 text-gray-900">{proj.tech}</td>
-                    <td className="px-4 py-2 text-gray-900">{proj.budget}</td>
-                    <td className="px-4 py-2 text-gray-900">{proj.milestone}</td>
+                    <td className="px-4 py-2 text-gray-900">${proj.budget}</td>
+                    <td className="px-4 py-2 text-gray-900">${proj.milestone}</td>
                     <td className="px-4 py-2 w-40">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-gray-200 rounded h-2">
@@ -997,6 +1063,30 @@ export default function ProjectManagementPage() {
             </tbody>
           </table>
         </div>
+        
+        {/* Total Paid Amount Summary */}
+        {!isLoading && !error && getFilteredProjects().length > 0 && (
+          <div className="mt-6 bg-white rounded shadow p-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800">Summary</h3>
+                <p className="text-sm text-gray-600">Total projects: {getFilteredProjects().length}</p>
+              </div>
+              <div className="text-center">
+                <p className="text-sm text-gray-600">Total Budget</p>
+                <p className="text-xl font-bold text-blue-600">
+                  {formatCurrency(calculateTotalBudget())}
+                </p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-gray-600">Total Paid Amount</p>
+                <p className="text-xl font-bold text-green-600">
+                  {formatCurrency(calculateTotalPaidAmount())}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Project Details Modal */}
