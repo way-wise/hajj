@@ -1,7 +1,7 @@
 import { checkRole } from '@/collections/Users/checkRole'
 import type { Access } from 'payload'
 
-const adminsAndOwner: Access = ({ req: { user }, doc }) => {
+const adminsAndOwner: Access = ({ req: { user } }) => {
   if (user) {
     if (checkRole(['admin'], user)) {
       return true
