@@ -1283,6 +1283,8 @@ export interface HajjQuery {
   waywise_service_fee: number;
   discount?: number | null;
   grand_total?: number | null;
+  createdBy?: string | null;
+  updatedBy?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2248,6 +2250,8 @@ export interface HajjQueriesSelect<T extends boolean = true> {
   waywise_service_fee?: T;
   discount?: T;
   grand_total?: T;
+  createdBy?: T;
+  updatedBy?: T;
   updatedAt?: T;
   createdAt?: T;
 }
