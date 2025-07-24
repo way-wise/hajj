@@ -3,20 +3,23 @@ import type { CollectionConfig } from 'payload'
 import { checkRole } from '../Users/checkRole'
 import { admins } from '@/access/admins'
 import { anyone } from '@/access/anyone'
+import owner from '@/access/adminsAndOwner'
+import adminsAndOwner from '@/access/adminsAndOwner'
 
 const HajjQuery: CollectionConfig = {
   slug: 'hajj-queries',
   access: {
     create: ({ req: { user } }) => checkRole(['admin', 'operation'], user),
-    read: anyone,
-    update: ({ req: { user } }) => checkRole(['admin', 'operation'], user),
-    delete: admins,
+    read: adminsAndOwner,
+    update: adminsAndOwner,
+    delete: adminsAndOwner,
   },
   admin: {
     useAsTitle: 'package_type',
     livePreview: {
       url: ({ data }) => `${process.env.NEXT_PUBLIC_SERVER_URL}/hajj-query/${data.id}`,
     },
+    hidden: false,
     components: {
       views: {
         edit: {
@@ -189,7 +192,32 @@ const HajjQuery: CollectionConfig = {
         },
       },
     },
+    {
+      label: 'Created By',
+      name: 'createdBy',
+      type: 'text',
+      hidden: true,
+    },
+    {
+      label: 'Updated By',
+      name: 'updatedBy',
+      type: 'text',
+      hidden: true,
+    },
   ],
+  hooks: {
+    beforeChange: [
+      ({ req, operation, data }) => {
+        if (operation === 'create' && req.user) {
+          data.createdBy = req.user.id;
+        }
+        if (operation === 'update' && req.user) {
+          data.updatedBy = req.user.id;
+        }
+        return data;
+      },
+    ],
+  },
 }
 
 export default HajjQuery
