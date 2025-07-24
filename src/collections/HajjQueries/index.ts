@@ -35,7 +35,6 @@ const HajjQuery: CollectionConfig = {
       },
     },
     hideAPIURL: true,
-    hidden: ({ user }) => !checkRole(['admin', 'operation'], user as any),
   },
   fields: [
     {
