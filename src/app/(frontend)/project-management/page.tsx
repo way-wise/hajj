@@ -300,10 +300,19 @@ export default function ProjectManagementPage() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+
+    // Convert numeric inputs to numbers
+    let processedValue: string | number | boolean = value;
+    if (type === 'number') {
+      processedValue = value === '' ? '' : Number(value);
+    } else if (type === 'checkbox') {
+      processedValue = (e.target as HTMLInputElement).checked;
+    }
+
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [name]: processedValue
     }));
   };
 
@@ -321,7 +330,24 @@ export default function ProjectManagementPage() {
       'startDate', 'endDate', 'estimatedTime', 'projectType'
     ];
 
-    const missingFields = requiredFields.filter(field => !formData[field as keyof ProjectFormData]);
+    const missingFields = requiredFields.filter(field => {
+      const value = formData[field as keyof ProjectFormData];
+      // Handle numeric fields (completion can be 0, which is valid)
+      if (field === 'completion') {
+        return value === '' || value === null || value === undefined;
+      }
+      // Handle other numeric fields that can be 0
+      if (field === 'budget' || field === 'paidAmount') {
+        return value === '' || value === null || value === undefined;
+      }
+      // For string fields, check if empty or just whitespace
+      return !value || (typeof value === 'string' && value.trim() === '');
+    });
+
+    // Debug logging to help troubleshoot validation issues
+    console.log('Form validation - formData:', formData);
+    console.log('Form validation - missingFields:', missingFields);
+
     if (missingFields.length > 0) {
       alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
       return;
