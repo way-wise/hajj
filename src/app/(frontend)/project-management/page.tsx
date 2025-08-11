@@ -27,18 +27,17 @@ interface Project {
   client: string;
   name: string;
   assigned: string;
-  tech: string;
   budget: string;
+  paidAmount: string;
   milestone: string;
   status: string;
   completion: number;
   remarks: string;
-  start: string;
-  end: string;
-  next: string;
+  startDate: string;
+  endDate: string;
   estimatedTime: string;
   isActive: boolean;
-  projectType: 'ai' | 'non-ai' | 'ui-ux-marketing';
+  projectType: 'ai' | 'non-ai' | 'ui-ux' | 'digital-marketing';
   isArchived: boolean;
   updatedAt?: string;
 }
@@ -55,26 +54,22 @@ interface ProjectFormData {
   client: string;
   name: string;
   assigned: string;
-  tech: string;
   budget: string | number;
-  milestone: string | number;
+  paidAmount: string | number;
+  milestone: string;
   status: 'Waiting' | 'Active' | 'Completed' | 'Cancelled';
   completion: number;
   remarks: string;
-  start: string;
-  end: string;
-  next: string;
+  startDate: string;
+  endDate: string;
   estimatedTime: string;
   isActive: boolean;
-  projectType: 'ai' | 'non-ai' | 'ui-ux-marketing';
+  projectType: 'ai' | 'non-ai' | 'ui-ux' | 'digital-marketing';
 }
 
 export default function ProjectManagementPage() {
   const { user } = useAuth()
-    const router = useRouter()
-    if(!user) {
-        router.push('/signin')
-    }
+  const router = useRouter()
   const [activeTab, setActiveTab] = useState('NON AI Projects');
   const [showAddProjectModal, setShowAddProjectModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -90,19 +85,39 @@ export default function ProjectManagementPage() {
     client: '',
     name: '',
     assigned: '',
-    tech: '',
     budget: '',
+    paidAmount: '',
     milestone: '',
     status: 'Waiting',
     completion: 0,
     remarks: '',
-    start: '',
-    end: '',
-    next: '',
+    startDate: '',
+    endDate: '',
     estimatedTime: '',
     isActive: true,
     projectType: 'non-ai'
   });
+
+  // Helper function to reset form data
+  const resetFormData = () => {
+    setFormData({
+      country: '',
+      client: '',
+      name: '',
+      assigned: '',
+      budget: '',
+      paidAmount: '',
+      milestone: '',
+      status: 'Waiting',
+      completion: 0,
+      remarks: '',
+      startDate: '',
+      endDate: '',
+      estimatedTime: '',
+      isActive: true,
+      projectType: 'non-ai'
+    });
+  };
 
   // Add sorting function
   const handleSort = () => {
@@ -147,26 +162,33 @@ export default function ProjectManagementPage() {
   // Modify getFilteredProjects to include archive filtering
   const getFilteredProjects = () => {
     if (!projects) return [];
-    
+
     let filteredProjects;
     switch (activeTab) {
       case 'AI Projects':
-        filteredProjects = projects.filter(project => 
-          project.projectType === 'ai' && 
+        filteredProjects = projects.filter(project =>
+          project.projectType === 'ai' &&
           !project.isArchived &&
           project.status !== 'Cancelled'
         );
         break;
       case 'NON AI Projects':
-        filteredProjects = projects.filter(project => 
-          project.projectType === 'non-ai' && 
+        filteredProjects = projects.filter(project =>
+          project.projectType === 'non-ai' &&
           !project.isArchived &&
           project.status !== 'Cancelled'
         );
         break;
-      case 'UI/UX & Digital Marketing':
-        filteredProjects = projects.filter(project => 
-          project.projectType === 'ui-ux-marketing' && 
+      case 'UI/UX Projects':
+        filteredProjects = projects.filter(project =>
+          project.projectType === 'ui-ux' &&
+          !project.isArchived &&
+          project.status !== 'Cancelled'
+        );
+        break;
+      case 'Digital Marketing':
+        filteredProjects = projects.filter(project =>
+          project.projectType === 'digital-marketing' &&
           !project.isArchived &&
           project.status !== 'Cancelled'
         );
@@ -175,19 +197,19 @@ export default function ProjectManagementPage() {
         filteredProjects = projects.filter(project => project.isArchived);
         break;
       case 'Future Prospects':
-        filteredProjects = projects.filter(project => 
-          project.status === 'Cancelled' && 
+        filteredProjects = projects.filter(project =>
+          project.status === 'Cancelled' &&
           !project.isArchived
         );
         break;
       case 'All Projects':
-        filteredProjects = projects.filter(project => 
+        filteredProjects = projects.filter(project =>
           !project.isArchived &&
           project.status !== 'Cancelled'
         );
         break;
       default:
-        filteredProjects = projects.filter(project => 
+        filteredProjects = projects.filter(project =>
           !project.isArchived &&
           project.status !== 'Cancelled'
         );
@@ -207,6 +229,12 @@ export default function ProjectManagementPage() {
     return filteredProjects;
   };
 
+    useEffect(() => {
+    if(!user) {
+      router.push('/signin')
+    }
+  }, [user, router])
+
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -220,7 +248,7 @@ export default function ProjectManagementPage() {
           'Content-Type': 'application/json',
         },
       });
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch projects');
       }
@@ -231,12 +259,12 @@ export default function ProjectManagementPage() {
 
       // Validate each project has required fields
       const validProjects = projects.filter(project => {
-        const isValid = project && 
-          typeof project === 'object' && 
-          'country' in project && 
-          'client' in project && 
+        const isValid = project &&
+          typeof project === 'object' &&
+          'country' in project &&
+          'client' in project &&
           'name' in project;
-        
+
         if (!isValid) {
           console.warn('Invalid project data:', project);
         }
@@ -246,10 +274,17 @@ export default function ProjectManagementPage() {
       // Normalize project type field
       const processedProjects = validProjects.map(project => {
         // Handle both old and new field names
-        const projectType = project.projectType || project['projectType '] || 'non-ai';
+        let projectType = project.projectType || project['projectType '] || 'non-ai';
+        projectType = projectType.trim().toLowerCase();
+
+        // Migrate old 'ui-ux-marketing' to 'ui-ux' (you can manually change to 'digital-marketing' if needed)
+        if (projectType === 'ui-ux-marketing') {
+          projectType = 'ui-ux'; // Default migration to UI/UX
+        }
+
         return {
           ...project,
-          projectType: projectType.trim().toLowerCase()
+          projectType
         };
       });
 
@@ -279,13 +314,13 @@ export default function ProjectManagementPage() {
       return;
     }
 
-    // Validate required fields
+            // Validate required fields
     const requiredFields = [
-      'country', 'client', 'name', 'assigned', 'tech', 
-      'budget', 'milestone', 'status', 'completion', 
-      'start', 'end', 'next', 'projectType'
+      'country', 'client', 'name', 'assigned',
+      'budget', 'paidAmount', 'milestone', 'status', 'completion',
+      'startDate', 'endDate', 'estimatedTime', 'projectType'
     ];
-    
+
     const missingFields = requiredFields.filter(field => !formData[field as keyof ProjectFormData]);
     if (missingFields.length > 0) {
       alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
@@ -294,15 +329,30 @@ export default function ProjectManagementPage() {
 
     setIsSubmitting(true);
 
-    try {
-      console.log('Sending form data:', formData);
+        try {
+      // Prepare data with default values for removed fields and proper type conversion
+      const createData = {
+        ...formData,
+        // Convert numbers to strings where API expects text
+        budget: String(formData.budget),
+        paidAmount: Number(formData.paidAmount),
+        completion: Number(formData.completion),
+        // Add default values for removed fields
+        tech: 'Not specified',
+        next: 'No action specified',
+        // Ensure boolean fields are properly set
+        isActive: formData.isActive ?? true,
+        isArchived: false,
+      };
+
+      console.log('Sending form data:', createData);
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upwork-projects`, {
         method: 'POST',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(createData),
       });
 
       if (!response.ok) {
@@ -316,26 +366,9 @@ export default function ProjectManagementPage() {
       }
 
       // Reset form and close modal
-      setFormData({
-        country: '',
-        client: '',
-        name: '',
-        assigned: '',
-        tech: '',
-        budget: '',
-        milestone: '',
-        status: 'Waiting',
-        completion: 0,
-        remarks: '',
-        start: '',
-        end: '',
-        estimatedTime: '',
-        next: '',
-        isActive: true,
-        projectType: 'non-ai'
-      });
+      resetFormData();
       setShowAddProjectModal(false);
-      
+
       // Refresh the projects list
       await fetchProjects();
     } catch (error) {
@@ -353,15 +386,14 @@ export default function ProjectManagementPage() {
       client: project.client,
       name: project.name,
       assigned: project.assigned,
-      tech: project.tech,
       budget: project.budget,
+      paidAmount: project.paidAmount || project.milestone, // Handle backward compatibility
       milestone: project.milestone,
       status: project.status as 'Waiting' | 'Active' | 'Completed' | 'Cancelled',
       completion: project.completion,
       remarks: project.remarks,
-      start: formatDateForInput(project.start),
-      end: formatDateForInput(project.end),
-      next: project.next,
+      startDate: project.startDate || '', // Handle backward compatibility
+      endDate: project.endDate || '', // Handle backward compatibility
       estimatedTime: project.estimatedTime,
       isActive: project.isActive ?? true,
       projectType: project.projectType
@@ -378,13 +410,29 @@ export default function ProjectManagementPage() {
 
     setIsSubmitting(true);
     try {
+      // Prepare data with backward compatibility for old required fields and proper type conversion
+      const updateData = {
+        ...formData,
+        // Convert numbers to strings where API expects text
+        budget: String(formData.budget),
+        paidAmount: Number(formData.paidAmount),
+        completion: Number(formData.completion),
+        // Add default values for removed fields to maintain compatibility
+        tech: (selectedProject as any).tech || 'Not specified',
+        next: (selectedProject as any).next || 'No action specified',
+        // Ensure milestone is handled correctly for backward compatibility
+        milestone: formData.milestone || selectedProject.milestone || 'No milestone',
+        // Ensure boolean fields are properly set
+        isActive: formData.isActive ?? true,
+      };
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/upwork-projects/${selectedProject.id}`, {
         method: 'PATCH',
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updateData),
       });
 
       if (!response.ok) {
@@ -400,6 +448,8 @@ export default function ProjectManagementPage() {
       const updatedProject = await response.json();
       console.log('Project updated successfully:', updatedProject);
 
+      // Reset form and close modal
+      resetFormData();
       setShowEditModal(false);
       setSelectedProject(null);
       await fetchProjects(); // Refresh the projects list
@@ -421,22 +471,23 @@ export default function ProjectManagementPage() {
   const calculateTotalPaidAmount = () => {
     const filteredProjects = getFilteredProjects();
     console.log('Calculating total for projects:', filteredProjects.length);
-    
-    const total = filteredProjects.reduce((total, project) => {
-      // Handle different formats of milestone data
+
+        const total = filteredProjects.reduce((total, project) => {
+      // Handle different formats of paidAmount data (with backward compatibility)
       let paidAmount = 0;
-      if (typeof project.milestone === 'number') {
-        paidAmount = project.milestone;
-      } else if (typeof project.milestone === 'string') {
+      const amountField = project.paidAmount || project.milestone;
+      if (typeof amountField === 'number') {
+        paidAmount = amountField;
+      } else if (typeof amountField === 'string') {
         // Remove any currency symbols, commas, and spaces, then parse
-        const cleanAmount = project.milestone.replace(/[$,€£¥₹\s]/g, '');
+        const cleanAmount = amountField.replace(/[$,€£¥₹\s]/g, '');
         paidAmount = parseFloat(cleanAmount) || 0;
       }
-      
-      console.log(`Project: ${project.name}, Milestone: ${project.milestone}, Parsed: ${paidAmount}`);
+
+      console.log(`Project: ${project.name}, Paid Amount: ${amountField}, Parsed: ${paidAmount}`);
       return total + paidAmount;
     }, 0);
-    
+
     console.log('Total calculated:', total);
     return total;
   };
@@ -445,7 +496,7 @@ export default function ProjectManagementPage() {
   const calculateTotalBudget = () => {
     const filteredProjects = getFilteredProjects();
     console.log('Calculating total budget for projects:', filteredProjects.length);
-    
+
     const total = filteredProjects.reduce((total, project) => {
       // Handle different formats of budget data
       let budgetAmount = 0;
@@ -456,11 +507,11 @@ export default function ProjectManagementPage() {
         const cleanAmount = project.budget.replace(/[$,€£¥₹\s]/g, '');
         budgetAmount = parseFloat(cleanAmount) || 0;
       }
-      
+
       console.log(`Project: ${project.name}, Budget: ${project.budget}, Parsed: ${budgetAmount}`);
       return total + budgetAmount;
     }, 0);
-    
+
     console.log('Total budget calculated:', total);
     return total;
   };
@@ -480,8 +531,11 @@ export default function ProjectManagementPage() {
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Project Management Dashboard</h1>
-        <button 
-          onClick={() => setShowAddProjectModal(true)}
+                <button
+          onClick={() => {
+            resetFormData();
+            setShowAddProjectModal(true);
+          }}
           className="bg-purple-500 hover:bg-purple-600 text-white px-5 py-2 rounded flex items-center gap-2"
         >
           <span className="text-lg">+</span> Add Project
@@ -494,8 +548,11 @@ export default function ProjectManagementPage() {
           <div className="bg-white text-black p-6 w-full max-w-2xl">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Add New Project</h2>
-              <button 
-                onClick={() => setShowAddProjectModal(false)}
+                            <button
+                onClick={() => {
+                  resetFormData();
+                  setShowAddProjectModal(false);
+                }}
                 className="text-gray-500 hover:text-gray-700"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -550,17 +607,6 @@ export default function ProjectManagementPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Tech Stack</label>
-                  <input
-                    type="text"
-                    name="tech"
-                    value={formData.tech}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                    required
-                  />
-                </div>
-                <div>
                   <label className="block text-sm font-medium text-gray-700">Budget</label>
                   <input
                     type="number"
@@ -577,8 +623,8 @@ export default function ProjectManagementPage() {
                   <label className="block text-sm font-medium text-gray-700">Paid Amount</label>
                   <input
                     type="number"
-                    name="milestone"
-                    value={formData.milestone}
+                    name="paidAmount"
+                    value={formData.paidAmount}
                     onChange={handleInputChange}
                     min="0"
                     step="0.01"
@@ -612,7 +658,8 @@ export default function ProjectManagementPage() {
                   >
                     <option value="ai">AI</option>
                     <option value="non-ai">NON AI</option>
-                    <option value="ui-ux-marketing">UI/UX & Digital Marketing</option>
+                    <option value="ui-ux">UI/UX</option>
+                    <option value="digital-marketing">Digital Marketing</option>
                   </select>
                 </div>
                 <div>
@@ -629,53 +676,74 @@ export default function ProjectManagementPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Start Date</label>
+                  <label className="block text-sm font-medium text-gray-700">Project Start Date</label>
                   <input
-                    type="date"
-                    name="start"
-                    value={formData.start}
+                    type="text"
+                    name="startDate"
+                    value={formData.startDate}
                     onChange={handleInputChange}
+                    placeholder="e.g., January 15, 2024"
                     className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">End Date</label>
+                  <label className="block text-sm font-medium text-gray-700">Project End Date</label>
                   <input
-                    type="date"
-                    name="end"
-                    value={formData.end}
+                    type="text"
+                    name="endDate"
+                    value={formData.endDate}
                     onChange={handleInputChange}
+                    placeholder="e.g., March 30, 2024"
+                    className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Milestone</label>
+                  <input
+                    type="text"
+                    name="milestone"
+                    value={formData.milestone}
+                    onChange={handleInputChange}
+                    placeholder="e.g., First phase completed, MVP delivered"
+                    className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Project Estimated Time</label>
+                  <input
+                    type="text"
+                    name="estimatedTime"
+                    value={formData.estimatedTime}
+                    onChange={handleInputChange}
+                    placeholder="e.g., 3 months, 6 weeks"
                     className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                     required
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Project Estimated Time</label>
-                <input
-                  name="estimatedTime"
-                  value={formData.estimatedTime}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Next Action</label>
+                <label className="block text-sm font-medium text-gray-700">Remarks</label>
                 <textarea
-                  name="next"
-                  value={formData.next}
+                  name="remarks"
+                  value={formData.remarks}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                   rows={2}
-                  required
+                  placeholder="Any additional notes or comments"
                 ></textarea>
               </div>
               <div className="flex justify-end gap-2 mt-6">
                 <button
                   type="button"
-                  onClick={() => setShowAddProjectModal(false)}
+                  onClick={() => {
+                    resetFormData();
+                    setShowAddProjectModal(false);
+                  }}
                   className="px-4 py-2 border rounded-md hover:bg-gray-50"
                   disabled={isSubmitting}
                 >
@@ -700,8 +768,9 @@ export default function ProjectManagementPage() {
           <div className="bg-white text-black p-6 w-full max-w-2xl">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Edit Project</h2>
-              <button 
+                            <button
                 onClick={() => {
+                  resetFormData();
                   setShowEditModal(false);
                   setSelectedProject(null);
                 }}
@@ -759,17 +828,6 @@ export default function ProjectManagementPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Tech Stack</label>
-                  <input
-                    type="text"
-                    name="tech"
-                    value={formData.tech}
-                    onChange={handleInputChange}
-                    className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                    required
-                  />
-                </div>
-                <div>
                   <label className="block text-sm font-medium text-gray-700">Budget</label>
                   <input
                     type="number"
@@ -786,8 +844,8 @@ export default function ProjectManagementPage() {
                   <label className="block text-sm font-medium text-gray-700">Paid Amount</label>
                   <input
                     type="number"
-                    name="milestone"
-                    value={formData.milestone}
+                    name="paidAmount"
+                    value={formData.paidAmount}
                     onChange={handleInputChange}
                     min="0"
                     step="0.01"
@@ -821,7 +879,8 @@ export default function ProjectManagementPage() {
                   >
                     <option value="ai">AI</option>
                     <option value="non-ai">NON AI</option>
-                    <option value="ui-ux-marketing">UI/UX & Digital Marketing</option>
+                    <option value="ui-ux">UI/UX</option>
+                    <option value="digital-marketing">Digital Marketing</option>
                   </select>
                 </div>
                 <div>
@@ -838,54 +897,72 @@ export default function ProjectManagementPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">Start Date</label>
+                  <label className="block text-sm font-medium text-gray-700">Project Start Date</label>
                   <input
-                    type="date"
-                    name="start"
-                    value={formData.start}
+                    type="text"
+                    name="startDate"
+                    value={formData.startDate}
                     onChange={handleInputChange}
+                    placeholder="e.g., January 15, 2024"
                     className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700">End Date</label>
+                  <label className="block text-sm font-medium text-gray-700">Project End Date</label>
                   <input
-                    type="date"
-                    name="end"
-                    value={formData.end}
+                    type="text"
+                    name="endDate"
+                    value={formData.endDate}
                     onChange={handleInputChange}
+                    placeholder="e.g., March 30, 2024"
+                    className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Milestone</label>
+                  <input
+                    type="text"
+                    name="milestone"
+                    value={formData.milestone}
+                    onChange={handleInputChange}
+                    placeholder="e.g., First phase completed, MVP delivered"
+                    className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700">Project Estimated Time</label>
+                  <input
+                    type="text"
+                    name="estimatedTime"
+                    value={formData.estimatedTime}
+                    onChange={handleInputChange}
+                    placeholder="e.g., 3 months, 6 weeks"
                     className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                     required
                   />
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700">Project Estimated Time</label>
-                <input
-                  type="text"
-                  name="estimatedTime"
-                  value={formData.estimatedTime}
-                  onChange={handleInputChange}
-                  className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Next Action</label>
+                <label className="block text-sm font-medium text-gray-700">Remarks</label>
                 <textarea
-                  name="next"
-                  value={formData.next}
+                  name="remarks"
+                  value={formData.remarks}
                   onChange={handleInputChange}
                   className="mt-1 block w-full px-2 py-1 !rounded-[5px] border border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500"
                   rows={2}
-                  required
+                  placeholder="Any additional notes or comments"
                 ></textarea>
               </div>
               <div className="flex justify-end gap-2 mt-6">
                 <button
                   type="button"
                   onClick={() => {
+                    resetFormData();
                     setShowEditModal(false);
                     setSelectedProject(null);
                   }}
@@ -909,7 +986,7 @@ export default function ProjectManagementPage() {
 
       {/* Tabs */}
       <div className="flex gap-2 mb-4">
-        {['All Projects', 'AI Projects', 'NON AI Projects', 'UI/UX & Digital Marketing', 'Future Prospects', 'Completed Projects'].map(tab => (
+        {['All Projects', 'AI Projects', 'NON AI Projects', 'UI/UX Projects', 'Digital Marketing', 'Future Prospects', 'Completed Projects'].map(tab => (
           <button
             key={tab}
             className={`px-4 py-2 rounded ${activeTab === tab ? 'bg-purple-500 text-white' : 'bg-white text-black border'} font-medium`}
@@ -950,7 +1027,6 @@ export default function ProjectManagementPage() {
                 <th className="px-4 py-2 text-left">Client Name</th>
                 <th className="px-4 py-2 text-left">Project Name</th>
                 <th className="px-4 py-2 text-left">Assigned To</th>
-                <th className="px-4 py-2 text-left">Tech Stack</th>
                 <th className="px-4 py-2 text-left">Budget</th>
                 <th className="px-4 py-2 text-left">Paid Amount</th>
                 <th className="px-4 py-2 text-left">
@@ -974,26 +1050,25 @@ export default function ProjectManagementPage() {
                   </div>
                 </th>
                 <th className="px-4 py-2 text-left">Start/End Date</th>
-                <th className="px-4 py-2 text-left">Next Action</th>
                 <th className="px-4 py-2 text-left">Actions</th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan={10} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
                     Loading projects...
                   </td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td colSpan={10} className="px-4 py-8 text-center text-red-500">
+                  <td colSpan={8} className="px-4 py-8 text-center text-red-500">
                     {error}
                   </td>
                 </tr>
               ) : !Array.isArray(projects) || getFilteredProjects().length === 0 ? (
                 <tr>
-                  <td colSpan={10} className="px-4 py-8 text-center text-gray-500">
+                  <td colSpan={8} className="px-4 py-8 text-center text-gray-500">
                     No projects found
                   </td>
                 </tr>
@@ -1004,9 +1079,8 @@ export default function ProjectManagementPage() {
                     <td className="px-4 py-2 text-gray-900 uppercase">{proj.client}</td>
                     <td className="px-4 py-2 text-purple-700">{proj.name}</td>
                     <td className="px-4 py-2 text-gray-900">{proj.assigned}</td>
-                    <td className="px-4 py-2 text-gray-900">{proj.tech}</td>
                     <td className="px-4 py-2 text-gray-900">${proj.budget}</td>
-                    <td className="px-4 py-2 text-gray-900">${proj.milestone}</td>
+                    <td className="px-4 py-2 text-gray-900">${proj.paidAmount || proj.milestone}</td>
                     <td className="px-4 py-2 w-40">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-gray-200 rounded h-2">
@@ -1019,14 +1093,13 @@ export default function ProjectManagementPage() {
                       </div>
                     </td>
                     <td className="px-4 py-2 text-xs text-gray-900">
-                      <div>From: {formatDateForDisplay(proj.start)} {proj.estimatedTime ? `(${proj.estimatedTime})` : ''}</div>
-                      <div>To: {formatDateForDisplay(proj.end)}</div>
+                      <div>From: {proj.startDate || 'N/A'} {proj.estimatedTime ? `(${proj.estimatedTime})` : ''}</div>
+                      <div>To: {proj.endDate || 'N/A'}</div>
                     </td>
-                    <td className="px-4 py-2 text-gray-900">{proj.next}</td>
                     <td className="px-4 py-2">
                       <div className="flex gap-2">
-                        <button 
-                          className="border p-1 rounded text-gray-900 hover:bg-gray-100" 
+                        <button
+                          className="border p-1 rounded text-gray-900 hover:bg-gray-100"
                           title="View Details"
                           onClick={() => handleShowDetails(proj)}
                         >
@@ -1035,8 +1108,8 @@ export default function ProjectManagementPage() {
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                           </svg>
                         </button>
-                        <button 
-                          className="border p-1 rounded text-gray-900 hover:bg-gray-100" 
+                        <button
+                          className="border p-1 rounded text-gray-900 hover:bg-gray-100"
                           title="Edit"
                           onClick={() => handleEditClick(proj)}
                         >
@@ -1045,8 +1118,8 @@ export default function ProjectManagementPage() {
                           </svg>
                         </button>
                         {proj.completion === 100 && !proj.isArchived && (
-                          <button 
-                            className="border p-1 rounded text-gray-900 hover:bg-yellow-50 text-yellow-600 border-yellow-200" 
+                          <button
+                            className="border p-1 rounded text-gray-900 hover:bg-yellow-50 text-yellow-600 border-yellow-200"
                             title="Archive Project"
                             onClick={() => handleArchiveProject(proj)}
                           >
@@ -1063,7 +1136,7 @@ export default function ProjectManagementPage() {
             </tbody>
           </table>
         </div>
-        
+
         {/* Total Paid Amount Summary */}
         {!isLoading && !error && getFilteredProjects().length > 0 && (
           <div className="mt-6 bg-white rounded shadow p-4">
@@ -1098,7 +1171,7 @@ export default function ProjectManagementPage() {
                 <h2 className="text-2xl font-bold text-gray-800">{selectedProject.name}</h2>
                 <p className="text-gray-500 mt-1">Project Details</p>
               </div>
-              <button 
+              <button
                 onClick={() => setShowDetailsModal(false)}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
               >
@@ -1107,7 +1180,7 @@ export default function ProjectManagementPage() {
                 </svg>
               </button>
             </div>
-            
+
             <div className="grid grid-cols-2 gap-8">
               <div className="space-y-6">
                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -1131,10 +1204,7 @@ export default function ProjectManagementPage() {
                       <span className="text-gray-600">Assigned To:</span>
                       <span className="font-medium text-gray-900">{selectedProject.assigned}</span>
                     </p>
-                    <p className="flex justify-between">
-                      <span className="text-gray-600">Tech Stack:</span>
-                      <span className="font-medium text-gray-900">{selectedProject.tech}</span>
-                    </p>
+
                   </div>
                 </div>
 
@@ -1143,11 +1213,15 @@ export default function ProjectManagementPage() {
                   <div className="space-y-2">
                     <p className="flex justify-between">
                       <span className="text-gray-600">Budget:</span>
-                      <span className="font-medium text-gray-900">{selectedProject.budget}</span>
+                      <span className="font-medium text-gray-900">${selectedProject.budget}</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Paid Amount:</span>
+                      <span className="font-medium text-gray-900">${selectedProject.paidAmount || selectedProject.milestone}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Milestone:</span>
-                      <span className="font-medium text-gray-900">{selectedProject.milestone}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.milestone || 'N/A'}</span>
                     </p>
                   </div>
                 </div>
@@ -1177,7 +1251,13 @@ export default function ProjectManagementPage() {
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Project Type:</span>
-                      <span className="font-medium text-gray-900">{selectedProject.projectType === 'ai' ? 'AI' : selectedProject.projectType === 'non-ai' ? 'NON AI' : 'UI/UX & Digital Marketing'}</span>
+                      <span className="font-medium text-gray-900">
+                        {selectedProject.projectType === 'ai' ? 'AI' :
+                         selectedProject.projectType === 'non-ai' ? 'NON AI' :
+                         selectedProject.projectType === 'ui-ux' ? 'UI/UX' :
+                         selectedProject.projectType === 'digital-marketing' ? 'Digital Marketing' :
+                         selectedProject.projectType}
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -1187,11 +1267,15 @@ export default function ProjectManagementPage() {
                   <div className="space-y-2">
                     <p className="flex justify-between">
                       <span className="text-gray-600">Start Date:</span>
-                      <span className="font-medium text-gray-900">{formatDateForDisplay(selectedProject.start)}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.startDate || 'N/A'}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">End Date:</span>
-                      <span className="font-medium text-gray-900">{formatDateForDisplay(selectedProject.end)}</span>
+                      <span className="font-medium text-gray-900">{selectedProject.endDate || 'N/A'}</span>
+                    </p>
+                    <p className="flex justify-between">
+                      <span className="text-gray-600">Estimated Time:</span>
+                      <span className="font-medium text-gray-900">{selectedProject.estimatedTime || 'N/A'}</span>
                     </p>
                   </div>
                 </div>
@@ -1203,10 +1287,7 @@ export default function ProjectManagementPage() {
                       <p className="text-gray-600 mb-1">Remarks:</p>
                       <p className="font-medium bg-white p-2 rounded border text-gray-900">{selectedProject.remarks}</p>
                     </div>
-                    <div>
-                      <p className="text-gray-600 mb-1">Next Action:</p>
-                      <p className="font-medium bg-white p-2 rounded border text-gray-900">{selectedProject.next}</p>
-                    </div>
+
                     <div>
                       <p className="text-gray-600 mb-1">Last Edited:</p>
                       <p className="font-medium bg-white p-2 rounded border text-gray-900">

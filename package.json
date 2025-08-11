@@ -73,7 +73,7 @@
     "react-facebook-pixel": "^1.0.4",
     "react-hook-form": "^7.54.0",
     "react-pdf": "^9.1.1",
-    "sharp": "0.32.6",
+    "sharp": "^0.34.3",
     "sonner": "^1.7.1",
     "stripe": "^17.4.0",
     "tailwind-merge": "^2.5.5",
@@ -101,5 +101,6 @@
   },
   "engines": {
     "node": "^18.20.2 || >=20.9.0"
-  }
+  },
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
 }

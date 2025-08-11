@@ -3,14 +3,18 @@
 import { useAuth } from "@/providers/Auth"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 const TechSubPlatform = () => {
     const { user } = useAuth()
     const router = useRouter()
-    if(!user) {
-        router.push('/signin')
-    }
-    
+
+    useEffect(() => {
+        if(!user) {
+            router.push('/signin')
+        }
+    }, [user, router])
+
   return (
     <div className="container py-28">
         <h1 className="text-center text-3xl font-bold">Tech Sub Platform</h1>

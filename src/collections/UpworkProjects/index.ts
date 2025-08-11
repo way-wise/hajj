@@ -44,7 +44,7 @@ const UpworkProjects: CollectionConfig = {
     {
       name: 'tech',
       type: 'text',
-      required: true,
+      required: false,
       label: 'Tech Stack',
     },
     {
@@ -58,6 +58,12 @@ const UpworkProjects: CollectionConfig = {
       type: 'text',
       required: true,
       label: 'Milestone',
+    },
+    {
+      name: 'paidAmount',
+      type: 'number',
+      required: true,
+      label: 'Paid Amount',
     },
     {
       name: 'status',
@@ -99,19 +105,31 @@ const UpworkProjects: CollectionConfig = {
     {
       name: 'start',
       type: 'date',
-      required: true,
-      label: 'Start Date',
+      required: false,
+      label: 'Start Date (Legacy)',
     },
     {
       name: 'end',
       type: 'date',
+      required: false,
+      label: 'End Date (Legacy)',
+    },
+    {
+      name: 'startDate',
+      type: 'text',
       required: true,
-      label: 'End Date',
+      label: 'Project Start Date',
+    },
+    {
+      name: 'endDate',
+      type: 'text',
+      required: true,
+      label: 'Project End Date',
     },
     {
       name: 'next',
       type: 'textarea',
-      required: true,
+      required: false,
       label: 'Next Action',
     },
     {
@@ -140,8 +158,12 @@ const UpworkProjects: CollectionConfig = {
           value: 'non-ai',
         },
         {
-          label: 'UI/UX & Digital Marketing',
-          value: 'ui-ux-marketing',
+          label: 'UI/UX',
+          value: 'ui-ux',
+        },
+        {
+          label: 'Digital Marketing',
+          value: 'digital-marketing',
         },
       ],
       defaultValue: 'non-ai',

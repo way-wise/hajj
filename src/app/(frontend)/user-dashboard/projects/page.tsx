@@ -1,9 +1,9 @@
 'use client'
 
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import qs from 'qs'
 import { useAuth } from '@/providers/Auth';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 interface ProjectsProps {
@@ -13,10 +13,13 @@ interface ProjectsProps {
 const Projects: FC<ProjectsProps> = () => {
 
     const { user } = useAuth()
+    const router = useRouter()
 
-    if (!user) {
-        redirect(`/`)
-    }
+    useEffect(() => {
+        if (!user) {
+            router.push('/')
+        }
+    }, [user, router])
 
     const clientId = user?.id;
 

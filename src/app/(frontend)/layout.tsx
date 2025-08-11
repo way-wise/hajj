@@ -1,5 +1,17 @@
 import type { Metadata } from 'next'
 
+// Polyfill for Promise.withResolvers (Node.js 22+ feature)
+if (typeof Promise !== 'undefined' && !(Promise as any).withResolvers) {
+  (Promise as any).withResolvers = function() {
+    let resolve: any, reject: any;
+    const promise = new Promise((res, rej) => {
+      resolve = res;
+      reject = rej;
+    });
+    return { promise, resolve, reject };
+  };
+}
+
 import { Inter } from 'next/font/google'
 import React from 'react'
 

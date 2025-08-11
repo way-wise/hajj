@@ -1,13 +1,13 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/utilities/cn'
 import { Button } from '@/components/ui/button'
-import { redirect } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '@/providers/Auth'
@@ -16,10 +16,13 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function SignupClient({ className, ...props }: UserAuthFormProps) {
   const { user } = useAuth()
+  const router = useRouter()
 
-  if (user) {
-    redirect(`/`)
-  }
+  useEffect(() => {
+    if (user) {
+      router.push('/')
+    }
+  }, [user, router])
 
   const {
     register,
