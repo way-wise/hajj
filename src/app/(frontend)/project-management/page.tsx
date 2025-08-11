@@ -344,9 +344,7 @@ export default function ProjectManagementPage() {
       return !value || (typeof value === 'string' && value.trim() === '');
     });
 
-    // Debug logging to help troubleshoot validation issues
-    console.log('Form validation - formData:', formData);
-    console.log('Form validation - missingFields:', missingFields);
+
 
     if (missingFields.length > 0) {
       alert(`Please fill in all required fields: ${missingFields.join(', ')}`);
@@ -413,7 +411,7 @@ export default function ProjectManagementPage() {
       name: project.name,
       assigned: project.assigned,
       budget: project.budget,
-      paidAmount: project.paidAmount || project.milestone, // Handle backward compatibility
+      paidAmount: project.paidAmount !== undefined && project.paidAmount !== null ? project.paidAmount : (project.milestone || ''), // Handle backward compatibility
       milestone: project.milestone,
       status: project.status as 'Waiting' | 'Active' | 'Completed' | 'Cancelled',
       completion: project.completion,
@@ -501,7 +499,7 @@ export default function ProjectManagementPage() {
         const total = filteredProjects.reduce((total, project) => {
       // Handle different formats of paidAmount data (with backward compatibility)
       let paidAmount = 0;
-      const amountField = project.paidAmount || project.milestone;
+      const amountField = project.paidAmount !== undefined && project.paidAmount !== null ? project.paidAmount : project.milestone;
       if (typeof amountField === 'number') {
         paidAmount = amountField;
       } else if (typeof amountField === 'string') {
@@ -1106,7 +1104,7 @@ export default function ProjectManagementPage() {
                     <td className="px-4 py-2 text-purple-700">{proj.name}</td>
                     <td className="px-4 py-2 text-gray-900">{proj.assigned}</td>
                     <td className="px-4 py-2 text-gray-900">${proj.budget}</td>
-                    <td className="px-4 py-2 text-gray-900">${proj.paidAmount || proj.milestone}</td>
+                    <td className="px-4 py-2 text-gray-900">${proj.paidAmount !== undefined && proj.paidAmount !== null ? proj.paidAmount : (proj.milestone || 0)}</td>
                     <td className="px-4 py-2 w-40">
                       <div className="flex items-center gap-2">
                         <div className="w-full bg-gray-200 rounded h-2">
@@ -1243,7 +1241,7 @@ export default function ProjectManagementPage() {
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Paid Amount:</span>
-                      <span className="font-medium text-gray-900">${selectedProject.paidAmount || selectedProject.milestone}</span>
+                      <span className="font-medium text-gray-900">${selectedProject.paidAmount !== undefined && selectedProject.paidAmount !== null ? selectedProject.paidAmount : (selectedProject.milestone || 0)}</span>
                     </p>
                     <p className="flex justify-between">
                       <span className="text-gray-600">Milestone:</span>
