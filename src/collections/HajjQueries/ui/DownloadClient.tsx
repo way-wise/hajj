@@ -83,12 +83,12 @@ const DownloadClient = ({ data, showButton = true }: { data: any; showButton: bo
             <div className="logo-container">
               <img src="/assets/waywise-islam-logo.png" alt="Way Wise" className="logo" />
               <div className="company-info">
-                <span className="company-name">Way Wise Islam & Al Muqaddas</span>
+                <span className="company-name">Way Wise Islam</span>
                 <div className="subtitle">
                   <span>An American and Bangladeshi Joint Venture</span>
                 </div>
               </div>
-              <img src="/assets/mukaddas-logo.png" alt="Muqaddas" className="logo" />
+              {/* <img src="/assets/mukaddas-logo.png" alt="Muqaddas" className="logo" /> */}
             </div>
             <span className="main-title">Customized {data?.package_type} Package</span>
             <div
